@@ -2,7 +2,6 @@ package com.tech.app.windows.handlers;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 public class MainWindowHandler extends WindowHandler {
 
