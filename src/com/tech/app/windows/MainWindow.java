@@ -7,7 +7,7 @@ import javax.swing.*;
 public class MainWindow extends Window {
 
     public MainWindow(int width, int height) {
-        super("Fenetre principale", width, height, true, true);
+        super("Fenetre principale - RDP", width, height, true, true);
         setWindowHandler(new MainWindowHandler(this));
 
         build();

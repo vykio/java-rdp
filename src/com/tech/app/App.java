@@ -1,3 +1,8 @@
+/**
+ * Application : Java 11
+ * Point d'entrée de l'application : public static void main()
+ */
+
 package com.tech.app;
 
 import com.tech.app.windows.MainWindow;
