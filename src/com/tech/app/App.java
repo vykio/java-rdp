@@ -5,12 +5,16 @@
 
 package com.tech.app;
 
+import com.tech.app.maths.Matrix;
 import com.tech.app.windows.MainWindow;
 
 public class App implements Runnable {
     @Override
     public void run() {
         MainWindow mainWindow = new MainWindow(500,500);
+
+
+
     }
 
     public synchronized void start() {
