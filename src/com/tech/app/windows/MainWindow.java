@@ -64,6 +64,9 @@ public class MainWindow extends Window {
     }
 
     protected void build() {
-
+        EventQueue.invokeLater(() -> {
+            this.createMenuBar();
+            this.setVisible(true);
+        });
     }
 }
