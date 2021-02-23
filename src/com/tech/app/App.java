@@ -6,14 +6,19 @@
 package com.tech.app;
 
 import com.tech.app.maths.Matrix;
+import com.tech.app.models.v4.System;
 import com.tech.app.windows.MainWindow;
+import com.tech.app.models.v4.*;
 
 public class App implements Runnable {
     @Override
     public void run() {
         MainWindow mainWindow = new MainWindow(500,500);
 
+        System system = new System(3,2);
+        java.lang.System.out.println(system);
 
+        system.testC();
 
     }
 
