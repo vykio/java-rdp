@@ -35,4 +35,32 @@ public class Transition {
     public void addParents(ArrayList<Place> places) { this.parents.addAll(places); }
     public void removeParent(Place p) { this.parents.remove(p); }
 
+    public String toString() {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("T(\"").append(this.name).append("\", ").append(this.x).append(", ").append(this.y).append(", ");
+
+        sb.append("c:[");
+        for (int i = 0; i < this.childrens.size(); i++) {
+            sb.append(this.childrens.get(i));
+            if (i != this.childrens.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("], ");
+
+        sb.append("p:[");
+        for (int i = 0; i < this.parents.size(); i++) {
+            sb.append(this.parents.get(i));
+            if (i != this.parents.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("])");
+
+
+        return sb.toString();
+
+    }
+
 }

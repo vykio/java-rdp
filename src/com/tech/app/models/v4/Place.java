@@ -25,4 +25,8 @@ public class Place {
     public void setMarquage(int marquage) { this.marquage = Math.max(marquage, 0); }
     public void resetMarquage() { this.marquage = 0; }
 
+    public String toString() {
+        return "P(\""+ this.name + "\", " + this.x + ", " + this.y + ", m:"+ this.marquage + ")";
+    }
+
 }

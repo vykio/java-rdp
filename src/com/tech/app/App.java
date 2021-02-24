@@ -15,10 +15,17 @@ public class App implements Runnable {
     public void run() {
         MainWindow mainWindow = new MainWindow(500,500);
 
-        System system = new System(3,2);
+        System system = new System();
+        system.update();
         java.lang.System.out.println(system);
 
-        system.testC();
+        Place p = new Place("P1", 0, 0, 1);
+        Transition t = new Transition("t1", 0, 0);
+        t.addParent(p);
+
+        system.addPlace(p);
+        system.addTransition(t);
+        java.lang.System.out.println(system);
 
     }
 
