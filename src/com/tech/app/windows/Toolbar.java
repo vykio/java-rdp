@@ -10,6 +10,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import static javax.swing.JOptionPane.DEFAULT_OPTION;
+
 
 public class Toolbar extends JFrame {
 
@@ -70,6 +72,7 @@ public class Toolbar extends JFrame {
         //mnuExit.setIcon(new ImageIcon("icons/exit.png"));
         mnuExit.setMnemonic('x');
         mnuExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_DOWN_MASK));
+        mnuExit.addActionListener(this::mnuExitListener);
         mnuFile.add(mnuExit);
 
         toolbar.add(mnuFile);
@@ -237,6 +240,48 @@ public class Toolbar extends JFrame {
         catch (IOException e) {
             System.out.println(e);
         }
+    }
+
+    public void mnuExitListener(ActionEvent event){
+        String options[]={"Exit","Save and Exit","Cancel"};
+        int res = JOptionPane.showOptionDialog(null, "Voules vous vraiment quitter l'application ?", "Attention",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+
+        System.out.println(res);
+
+        switch(res){
+            //Case EXIT
+            case 0:
+                dispose();
+                //Pourquoi ça m'affiche la fenêtre de dialogue pour enregistrer ??
+
+            //Case SAVE_EXIT
+            case 1:
+                //Si le fichier n'a jamais été enregistré (=> Il n'a pas de nom)
+                JFileChooser save = new JFileChooser();
+                save.showSaveDialog(this);
+                File f =save.getSelectedFile();
+                try {
+                    FileWriter fw = new FileWriter(f);
+                    String text = "Le fichier a été sauvegardé, je vais quitter le programme";
+                    fw.write(text);
+                    fw.close();
+                }
+                catch (IOException e) {
+                    System.out.println(e);
+                }
+                //SI le fichier a déja été enregistrer
+                // ????????????
+
+                //Exit
+                dispose();
+
+            //case CANCEL
+            case 2:
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + res);
+        }
+
     }
 
     // Main pour test a part
