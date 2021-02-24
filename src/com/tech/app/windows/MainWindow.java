@@ -1,17 +1,7 @@
 package com.tech.app.windows;
 
 import com.tech.app.windows.handlers.MainWindowHandler;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.EventQueue;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.tools.Tool;
+import com.tech.app.windows.toolbars.MainToolbar;
 
 public class MainWindow extends Window {
 
@@ -25,12 +15,11 @@ public class MainWindow extends Window {
 
     protected void build() {
 
-        Toolbar toolbar = new Toolbar();
-        toolbar.createMainToolbar();
-        toolbar.setVisible(true);
+        MainToolbar mt = new MainToolbar(this);
+
+        mt.applyMenu();
 
         //this.setJMenuBar(this.createMainMenuBar());
-
     }
 
 }

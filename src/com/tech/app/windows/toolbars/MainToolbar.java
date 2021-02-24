@@ -1,4 +1,4 @@
-package com.tech.app.windows;
+package com.tech.app.windows.toolbars;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,26 +15,18 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 
-public class Toolbar extends JFrame {
-
+public class MainToolbar extends  Toolbar {
     /* Construction de l'interface graphique pour tester à part*/
 
-    public Toolbar() {
-        super("Test");
-        this.setSize(600, 400);
-        this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
-        //Construction et injection de la toolbar
-        this.setJMenuBar(this.createMainToolbar());
+    public MainToolbar(JFrame frame) {
+        super(frame);
     }
 
     // Méthode de construction de la toolbar
 
-    public JMenuBar createMainToolbar() {
+    public JMenuBar getMenu() {
 
         //La toolbar en elle même :
-        JMenuBar toolbar = new JMenuBar();
 
         //Définition du menu déroulant "File" et de son contenu
 
@@ -172,10 +164,4 @@ public class Toolbar extends JFrame {
         JOptionPane.showMessageDialog(this, "Button clicked !");
     }
 
-
-    // Main pour test a part
-    public static void main(String[] args) {
-        Toolbar frame = new Toolbar();
-        frame.setVisible(true);
-    }
 }
