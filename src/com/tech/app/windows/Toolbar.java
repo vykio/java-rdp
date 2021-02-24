@@ -1,8 +1,11 @@
 package com.tech.app.windows;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -39,7 +42,16 @@ public class Toolbar extends JFrame {
         mnuFile.setMnemonic('F');
 
         JMenuItem mnuNewFile = new JMenuItem("New File");
-        mnuNewFile.setIcon(new ImageIcon("icons/new.png"));
+
+        Image imageNew = null;
+        try {
+            imageNew = ImageIO.read(getClass().getResource("/icons/new.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert imageNew != null;
+        mnuNewFile.setIcon(new ImageIcon(imageNew));
+
         mnuNewFile.setMnemonic('N');
         mnuNewFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
         mnuNewFile.addActionListener(this::mnuNewListener);
