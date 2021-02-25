@@ -39,7 +39,7 @@ public class System {
         }
     }
 
-    public void generate_W_plus() {
+    public void generate_W() {
         /*
         * Iterate through each transition
         */
@@ -47,6 +47,7 @@ public class System {
         // For each transition
         for (int i = 0; i < this.transitionVector.size(); i++) {
             List<Place> listParents = this.transitionVector.get(i).getParents();
+            List<Place> listChildrens = this.transitionVector.get(i).getChildrens();
 
             // For each place of each transition
             for (int k = 0; k < this.placeVector.size(); k++) {
@@ -57,27 +58,24 @@ public class System {
                     this.w_plus.get(k).set(i, 0);
                 }
 
-            }
-        }
-    }
-
-    public void generate_W_moins() {
-        /*
-         * Iterate through each transition
-         */
-
-        // For each transition
-        for (int i = 0; i < this.transitionVector.size(); i++) {
-            List<Place> listChildrens = this.transitionVector.get(i).getChildrens();
-
-            // For each place of each transition
-            for (int k = 0; k < this.placeVector.size(); k++) {
-                // this.w_plus.get(k).get(i)
                 if (listChildrens.contains(this.placeVector.get(k))) {
                     this.w_moins.get(k).set(i, 1);
                 } else {
                     this.w_moins.get(k).set(i, 0);
                 }
+
+            }
+        }
+    }
+
+    public void generate_C() {
+        // Pour chaque ligne i
+        for (int i = 0; i < this.C.size(); i++) {
+            // Pour chaque colonne j
+            for (int j = 0; j < this.C.get(i).size(); j++) {
+
+                /* C_ij = W+_ij - W-_ij */
+                this.C.get(i).set(j, (int)(this.w_plus.get(i).get(j) - this.w_moins.get(i).get(j)));
 
             }
         }
@@ -97,15 +95,21 @@ public class System {
 
     }
 
-    public void update() {
+    public void initialize() {
         for(int i=0;i< this.nbPlace;i++){
-            Vector<Integer> r = new Vector<>();
+            Vector<Integer> rC = new Vector<>();
+            Vector<Integer> rW_plus = new Vector<>();
+            Vector<Integer> rW_moins = new Vector<>();
+
             for(int j=0;j<this.nbTransition;j++){
-                r.add(0);
+                rC.add(0);
+                rW_plus.add(0);
+                rW_moins.add(0);
             }
-            this.C.add(r);
-            this.w_plus.add(r);
-            this.w_moins.add(r);
+
+            this.C.add(rC);
+            this.w_plus.add(rW_plus);
+            this.w_moins.add(rW_moins);
         }
 
         for(int i = 0; i < this.nbPlace; i++) {
@@ -186,25 +190,6 @@ public class System {
             result.append("\n");
         }
         java.lang.System.out.println(result.toString());
-    }
-
-    public void testC() {
-
-        for(int i=0;i< this.nbPlace;i++){
-            Vector<Integer> r = new Vector<>();
-            for(int j=0;j<this.nbTransition;j++){
-                r.add((int)(Math.random() * 100));
-            }
-            C.add(r);
-        }
-        for(int i=0;i<this.nbPlace;i++){
-            Vector<Integer> r = C.get(i);
-            for(int j=0;j<this.nbTransition;j++){
-                java.lang.System.out.print(r.get(j) + "\t");
-            }
-            java.lang.System.out.println();
-        }
-        // matrix.get(1).get(0); //2nd row 1st column
     }
 
 }
