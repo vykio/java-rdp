@@ -13,9 +13,7 @@ public class System {
     List<Transition> transitionVector;
 
     Vector<Integer> M0;
-    Vector<Vector<Integer>> w_plus;
-    Vector<Vector<Integer>> w_moins;
-    Vector<Vector<Integer>> C;
+    Vector<Vector<Integer>> w_plus, w_moins, C;
 
     //int[] M0;
     //int[][] w_plus;
@@ -33,6 +31,56 @@ public class System {
         this.w_plus = new Vector<Vector<Integer>>();
         this.w_moins = new Vector<Vector<Integer>>();
         this.C = new Vector<Vector<Integer>>(); //new int[nbPlace][nbTransition];
+    }
+
+    public void generate_M0() {
+        for (int i = 0; i < this.placeVector.size(); i++) {
+            M0.set(i, this.placeVector.get(i).getMarquage());
+        }
+    }
+
+    public void generate_W_plus() {
+        /*
+        * Iterate through each transition
+        */
+
+        // For each transition
+        for (int i = 0; i < this.transitionVector.size(); i++) {
+            List<Place> listParents = this.transitionVector.get(i).getParents();
+
+            // For each place of each transition
+            for (int k = 0; k < this.placeVector.size(); k++) {
+                // this.w_plus.get(k).get(i)
+                if (listParents.contains(this.placeVector.get(k))) {
+                    this.w_plus.get(k).set(i, 1);
+                } else {
+                    this.w_plus.get(k).set(i, 0);
+                }
+
+            }
+        }
+    }
+
+    public void generate_W_moins() {
+        /*
+         * Iterate through each transition
+         */
+
+        // For each transition
+        for (int i = 0; i < this.transitionVector.size(); i++) {
+            List<Place> listChildrens = this.transitionVector.get(i).getChildrens();
+
+            // For each place of each transition
+            for (int k = 0; k < this.placeVector.size(); k++) {
+                // this.w_plus.get(k).get(i)
+                if (listChildrens.contains(this.placeVector.get(k))) {
+                    this.w_moins.get(k).set(i, 1);
+                } else {
+                    this.w_moins.get(k).set(i, 0);
+                }
+
+            }
+        }
     }
 
     public void addPlace(Place p) {
@@ -55,13 +103,13 @@ public class System {
             for(int j=0;j<this.nbTransition;j++){
                 r.add(0);
             }
-            C.add(r);
-            w_plus.add(r);
-            w_moins.add(r);
+            this.C.add(r);
+            this.w_plus.add(r);
+            this.w_moins.add(r);
         }
 
         for(int i = 0; i < this.nbPlace; i++) {
-            M0.add(0);
+            this.M0.add(0);
         }
     }
 
@@ -69,33 +117,33 @@ public class System {
         StringBuilder result;
 
         result = new StringBuilder("M0\n");
-        for (int i = 0; i < M0.size(); i++) {
-            result.append(i).append(".\t").append(M0.get(i)).append("\n");
+        for (int i = 0; i < this.M0.size(); i++) {
+            result.append(i).append(".\t").append(this.M0.get(i)).append("\n");
         }
 
         result.append("\nW+:\n");
-        for (int i = 0; i < w_plus.size(); i++) {
+        for (int i = 0; i < this.w_plus.size(); i++) {
             result.append(i).append(".\t");
-            for (int j = 0; j < w_plus.get(i).size(); j++) {
-                result.append(w_plus.get(i).get(j)).append("\t");
+            for (int j = 0; j < this.w_plus.get(i).size(); j++) {
+                result.append(this.w_plus.get(i).get(j)).append("\t");
             }
             result.append("\n");
         }
 
         result.append("\nW-:\n");
-        for (int i = 0; i < w_moins.size(); i++) {
+        for (int i = 0; i < this.w_moins.size(); i++) {
             result.append(i).append(".\t");
-            for (int j = 0; j < w_moins.get(i).size(); j++) {
-                result.append(w_moins.get(i).get(j)).append("\t");
+            for (int j = 0; j < this.w_moins.get(i).size(); j++) {
+                result.append(this.w_moins.get(i).get(j)).append("\t");
             }
             result.append("\n");
         }
 
         result.append("\nC:\n");
-        for (int i = 0; i < C.size(); i++) {
+        for (int i = 0; i < this.C.size(); i++) {
             result.append(i).append(".\t");
-            for (int j = 0; j < C.get(i).size(); j++) {
-                result.append(C.get(i).get(j)).append("\t");
+            for (int j = 0; j < this.C.get(i).size(); j++) {
+                result.append(this.C.get(i).get(j)).append("\t");
             }
             result.append("\n");
         }
@@ -112,6 +160,32 @@ public class System {
 
 
         return result.toString();
+    }
+
+    public void print_W_plus() {
+        StringBuilder result = new StringBuilder();
+        result.append("\nW+:\n");
+        for (int i = 0; i < this.w_plus.size(); i++) {
+            result.append(i).append(".\t");
+            for (int j = 0; j < this.w_plus.get(i).size(); j++) {
+                result.append(this.w_plus.get(i).get(j)).append("\t");
+            }
+            result.append("\n");
+        }
+        java.lang.System.out.println(result.toString());
+    }
+
+    public void print_W_moins() {
+        StringBuilder result = new StringBuilder();
+        result.append("\nW-:\n");
+        for (int i = 0; i < this.w_moins.size(); i++) {
+            result.append(i).append(".\t");
+            for (int j = 0; j < this.w_moins.get(i).size(); j++) {
+                result.append(this.w_moins.get(i).get(j)).append("\t");
+            }
+            result.append("\n");
+        }
+        java.lang.System.out.println(result.toString());
     }
 
     public void testC() {
