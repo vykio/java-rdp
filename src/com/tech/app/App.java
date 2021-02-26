@@ -5,10 +5,10 @@
 
 package com.tech.app;
 
-import com.tech.app.maths.Matrix;
-import com.tech.app.models.v4.System;
+import com.tech.app.models.Place;
+import com.tech.app.models.System;
+import com.tech.app.models.Transition;
 import com.tech.app.windows.MainWindow;
-import com.tech.app.models.v4.*;
 
 public class App implements Runnable {
     @Override

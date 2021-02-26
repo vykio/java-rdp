@@ -1,33 +1,32 @@
 package com.tech.app.models;
 
-import java.util.ArrayList;
-import java.util.List;
+public class Place {
 
-public class Place extends Node {
+    private String name;
+    private int x, y, marquage;
 
-    private int nbJeton;
-    private boolean active;
-
-    public Place(int x, int y, int nbJeton, ArrayList<Transition> transitionsSuivantes) {
-        super(x, y, Node.type.PLACE);
-        this.nbJeton = nbJeton;
-        this.active = false;
-        this.addChildrens(transitionsSuivantes);
-
+    public Place(String name, int x, int y, int marquage) {
+        this.name = name;
+        this.x = x;
+        this.y = y;
+        this.marquage = marquage;
     }
 
-    public Place(int x, int y, ArrayList<Transition> transitionsSuivantes) {
-        this(x,y, 0, transitionsSuivantes);
+    public Place(String name, int x, int y) { this(name, x, y, 0); }
+    public Place(String name) { this(name, 0, 0, 0); }
+
+    public String getName() { return name; }
+    public int getX() { return x; }
+    public int getY() { return y; }
+    public int getMarquage() { return marquage; }
+
+    public void addMarquage(int marquage) { this.marquage += marquage; }
+    public void removeMarquage(int marquage) { this.marquage = Math.max(this.marquage - marquage, 0); }
+    public void setMarquage(int marquage) { this.marquage = Math.max(marquage, 0); }
+    public void resetMarquage() { this.marquage = 0; }
+
+    public String toString() {
+        return "P(\""+ this.name + "\", " + this.x + ", " + this.y + ", m:"+ this.marquage + ")";
     }
-
-    public Place(int x, int y) {
-        this(x,y, 0, new ArrayList<Transition>());
-    }
-
-    public int getNbJeton() { return this.nbJeton; }
-    public void setNbJeton(int nbJeton) { this.nbJeton = nbJeton; }
-
-    public boolean isActive() { return this.active; }
-    public void setActive(boolean active) { this.active = active; }
 
 }

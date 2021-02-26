@@ -1,4 +1,4 @@
-package com.tech.app.models.v4;
+package com.tech.app.models;
 
 import java.util.ArrayList;
 import java.util.List;
