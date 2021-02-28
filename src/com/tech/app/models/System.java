@@ -1,5 +1,7 @@
 package com.tech.app.models;
 
+import com.tech.app.functions.FList;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -10,6 +12,7 @@ public class System {
     private int nbTransition;
 
     List<Place> placeVector;
+
     List<Transition> transitionVector;
 
     Vector<Integer> M0;
@@ -46,20 +49,24 @@ public class System {
 
         // For each transition
         for (int i = 0; i < this.transitionVector.size(); i++) {
-            List<Place> listParents = this.transitionVector.get(i).getParents();
-            List<Place> listChildrens = this.transitionVector.get(i).getChildrens();
+            List<Arc> listParents = this.transitionVector.get(i).getParents();
+            List<Arc> listChildrens = this.transitionVector.get(i).getChildrens();
 
             // For each place of each transition
             for (int k = 0; k < this.placeVector.size(); k++) {
                 // this.w_plus.get(k).get(i)
-                if (listParents.contains(this.placeVector.get(k))) {
-                    this.w_plus.get(k).set(i, 1);
+
+                /* pour chaque arc, on le transforme en place + poids */
+
+
+                if (FList.contains(listParents, this.placeVector.get(k))) {
+                    this.w_plus.get(k).set(i, FList.poids_arc(listParents, this.placeVector.get(k)));
                 } else {
                     this.w_plus.get(k).set(i, 0);
                 }
 
-                if (listChildrens.contains(this.placeVector.get(k))) {
-                    this.w_moins.get(k).set(i, 1);
+                if (FList.contains(listChildrens, this.placeVector.get(k))) {
+                    this.w_moins.get(k).set(i, FList.poids_arc(listChildrens, this.placeVector.get(k)));
                 } else {
                     this.w_moins.get(k).set(i, 0);
                 }

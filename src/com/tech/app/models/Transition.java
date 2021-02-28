@@ -7,9 +7,9 @@ public class Transition {
 
     private String name;
     private int x, y;
-    private List<Place> childrens, parents;
+    private List<Arc> childrens, parents;
 
-    public Transition(String name, int x, int y, ArrayList<Place> childrens, ArrayList<Place> parents) {
+    public Transition(String name, int x, int y, ArrayList<Arc> childrens, ArrayList<Arc> parents) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -17,23 +17,25 @@ public class Transition {
         this.parents = parents;
     }
 
-    public Transition(String name, int x, int y, ArrayList<Place> childrens) { this(name, x, y, childrens, new ArrayList<Place>()); }
-    public Transition(String name, int x, int y) { this(name, x, y, new ArrayList<Place>(), new ArrayList<Place>()); }
+    public Transition(String name, int x, int y, ArrayList<Arc> childrens) { this(name, x, y, childrens, new ArrayList<Arc>()); }
+    public Transition(String name, int x, int y) { this(name, x, y, new ArrayList<Arc>(), new ArrayList<Arc>()); }
     public Transition(String name) { this(name, 0, 0); }
 
     public String getName() { return name; }
     public int getX() { return x; }
     public int getY() { return y; }
-    public List<Place> getChildrens() { return this.childrens; }
-    public List<Place> getParents() { return this.parents; }
+    public List<Arc> getChildrens() { return this.childrens; }
+    public List<Arc> getParents() { return this.parents; }
 
-    public void addChildren(Place p) { this.childrens.add(p); }
-    public void addChildrens(ArrayList<Place> places) { this.childrens.addAll(places); }
-    public void removeChildren(Place p) { this.childrens.remove(p); }
+    public void addChildren(Place p) { this.childrens.add(new Arc(p)); }
+    public void addChildren(Arc a) { this.childrens.add(a); }
+    public void addChildrens(ArrayList<Arc> arcs) { this.childrens.addAll(arcs); }
+    public void removeChildren(Arc a) { this.childrens.remove(a); }
 
-    public void addParent(Place p) { this.parents.add(p); }
-    public void addParents(ArrayList<Place> places) { this.parents.addAll(places); }
-    public void removeParent(Place p) { this.parents.remove(p); }
+    public void addParent(Place p) { this.parents.add(new Arc(p)); }
+    public void addParent(Arc a) { this.parents.add(a); }
+    public void addParents(ArrayList<Arc> arcs) { this.parents.addAll(arcs); }
+    public void removeParent(Arc a) { this.parents.remove(a); }
 
     public String toString() {
 

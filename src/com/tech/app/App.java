@@ -5,6 +5,7 @@
 
 package com.tech.app;
 
+import com.tech.app.models.Arc;
 import com.tech.app.models.Place;
 import com.tech.app.models.System;
 import com.tech.app.models.Transition;
@@ -27,7 +28,7 @@ public class App implements Runnable {
 
         /* Ajout des places d'entrées et de sorties */
         t.addChildren(p);
-        t.addParent(p2);
+        t.addParent(new Arc(p, 2));
         t.addParent(p3);
         t2.addChildren(p2);
         t2.addChildren(p3);
