@@ -41,17 +41,19 @@ public class App implements Runnable {
         system.addTransition(t);
         system.addTransition(t2);
 
-        /* Mettre à jour la taille des matrices */
-        system.initialize();
+        /* Experimentation */
+        Place p4 = new Place("P4", 0, 0, 1);
+        system.addPlace(p4);
+        Transition t4 = new Transition("t4", 0, 0);
+        t4.addChildren(new Arc(p, 3));
+        t4.addParent(p4);
+        system.addTransition(t4);
 
-        /* Générer les matrices M0, W+, W- et C en fonction des places et des transitions */
-        system.generate_M0();
-        system.generate_W();
-        system.generate_C();
+        // Doit retourner une petite erreur car "p4" != "P4"
+        system.removePlace("p4");
 
         /* Affichage du système */
         java.lang.System.out.println(system);
-
 
     }
 

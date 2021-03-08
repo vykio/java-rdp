@@ -36,13 +36,19 @@ public class System {
         this.C = new Vector<Vector<Integer>>(); //new int[nbPlace][nbTransition];
     }
 
-    public void generate_M0() {
+    /**
+     * Remplir M0
+     */
+    public void fill_M0() {
         for (int i = 0; i < this.placeVector.size(); i++) {
             M0.set(i, this.placeVector.get(i).getMarquage());
         }
     }
 
-    public void generate_W() {
+    /**
+     * Remplir W+ et W-
+     */
+    public void fill_W() {
         /*
         * Iterate through each transition
         */
@@ -75,7 +81,10 @@ public class System {
         }
     }
 
-    public void generate_C() {
+    /**
+     * Remplir C
+     */
+    public void fill_C() {
         // Pour chaque ligne i
         for (int i = 0; i < this.C.size(); i++) {
             // Pour chaque colonne j
@@ -88,21 +97,95 @@ public class System {
         }
     }
 
+    /**
+     * Ajouter une place, et mettre à jour les matrices
+     * @param p : Place à ajouter
+     */
     public void addPlace(Place p) {
         this.placeVector.add(p);
         this.nbPlace++;
+        this.updateMatrices();
     }
 
+    /**
+     * Ajouter une transition, puis mettre à jour les matrices
+     * @param t : Transition à ajouter
+     */
     public void addTransition(Transition t) {
         this.transitionVector.add(t);
         this.nbTransition++;
+        this.updateMatrices();
     }
 
+    /**
+     * Supprimer une place
+     * @param name : Nom de la place
+     */
     public void removePlace(String name) {
+        Place p = FList.getPlaceByName(this.placeVector, name);
+        if (p != null) {
+            this.removePlace(p);
+        } else {
+            java.lang.System.out.println("[!] Error - place \""+ name + "\" is null");
+        }
 
     }
 
-    public void initialize() {
+    /**
+     * Supprimer une place
+     * @param place : Objet place à supprimer
+     */
+    public void removePlace(Place place) {
+        this.placeVector.remove(place);
+        this.nbPlace--;
+        this.updateMatrices();
+    }
+
+    /**
+     * Supprimer une transition
+     * @param transition : Objet transition à supprimer
+     */
+    public void removeTransition(Transition transition){
+        this.transitionVector.remove(transition);
+        this.nbTransition--;
+        this.updateMatrices();
+    }
+
+    /**
+     * Mettre à jour les matrices
+     * Future amélioration : Transformer les autres fonctions
+     * pour ne pas avoir à vider complétement les matrices
+     * afin de changer leur taille
+     */
+    public void updateMatrices() {
+        this.clearMatrices();
+        this.initialize();
+        this.fillAll();
+    }
+
+    /**
+     * Remplir toutes les matrices comme il faut !
+     */
+    private void fillAll() {
+        this.fill_M0();
+        this.fill_W();
+        this.fill_C();
+    }
+
+    /**
+     * Vider complétement les matrices : utiliser initialize() ensuite
+     */
+    private void clearMatrices() {
+        this.M0 = new Vector<Integer>();
+        this.w_plus = new Vector<Vector<Integer>>();
+        this.w_moins = new Vector<Vector<Integer>>();
+        this.C = new Vector<Vector<Integer>>();
+    }
+
+    /**
+     * Remplir les matrices à la bonne taille avec des 0
+     */
+    private void initialize() {
         for(int i=0;i< this.nbPlace;i++){
             Vector<Integer> rC = new Vector<>();
             Vector<Integer> rW_plus = new Vector<>();
