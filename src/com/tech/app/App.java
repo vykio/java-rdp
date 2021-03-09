@@ -11,6 +11,8 @@ import com.tech.app.models.System;
 import com.tech.app.models.Transition;
 import com.tech.app.windows.MainWindow;
 
+import java.awt.*;
+
 public class App implements Runnable {
     @Override
     public void run() {
@@ -57,11 +59,10 @@ public class App implements Runnable {
 
     }
 
+
     public synchronized void start() {
         new Thread(this).start();
     }
 
-    public static void main(String[] args) {
-        new App().start();
-    }
+    public static void main(String[] args) {new App().start();}
 }
