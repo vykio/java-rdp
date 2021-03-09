@@ -12,10 +12,10 @@ import javax.swing.*;
 import static javax.swing.JOptionPane.DEFAULT_OPTION;
 
 
-public class MainToolbar extends  Toolbar {
+public class Menu extends  MenuBar {
     /* Construction de l'interface graphique pour tester à part*/
 
-    public MainToolbar(JFrame frame) {
+    public Menu(JFrame frame) {
         super(frame);
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }

@@ -1,7 +1,9 @@
 package com.tech.app.windows;
 
 import com.tech.app.windows.handlers.MainWindowHandler;
-import com.tech.app.windows.toolbars.MainToolbar;
+import com.tech.app.windows.toolbars.DrawingToolbar;
+import com.tech.app.windows.toolbars.Menu;
+import com.tech.app.windows.toolbars.MenuBar;
 
 import javax.swing.*;
 
@@ -16,9 +18,11 @@ public class MainWindow extends Window {
 
     protected void build() {
 
-        MainToolbar mt = new MainToolbar(this);
+        Menu menu = new Menu(this);
+        menu.applyMenu();
 
-        mt.applyMenu();
+        DrawingToolbar dToolbar = new DrawingToolbar(this);
+        dToolbar.applyToolbar();
 
         //this.setJMenuBar(this.createMainMenuBar());
     }
