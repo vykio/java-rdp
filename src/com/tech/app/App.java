@@ -16,7 +16,7 @@ import java.awt.*;
 public class App implements Runnable {
     @Override
     public void run() {
-        MainWindow mainWindow = new MainWindow(500,500);
+        MainWindow mainWindow = new MainWindow(900,500);
 
         /* Instanciation du système */
         System system = new System();
