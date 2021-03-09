@@ -5,6 +5,8 @@ import javax.swing.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class DrawingToolbar extends Toolbar {
@@ -20,70 +22,82 @@ public class DrawingToolbar extends Toolbar {
     public JToolBar getToolbar() {
         JToolBar toolbar = new JToolBar();
 
-        JButton btnNew = new JButton( new ImageIcon( "icons/new.png") );
+        JButton btnNew = new JButton();
         btnNew.setToolTipText( "New File (CTRL+N)" );
-        btnNew.addActionListener( this::btnNewListener );
         toolbar.add( btnNew );
 
-        JButton btnOpen = new JButton( new ImageIcon( "icons/open.png") );
-        btnNew.setToolTipText( "New File (CTRL+O)" );
-        btnNew.addActionListener( this::btnNewListener );
+        JButton btnOpen = new JButton();
+        btnOpen.setToolTipText( "Open File (CTRL+O)" );
+        btnOpen.addActionListener( this::btnOpenListener );
         toolbar.add( btnOpen );
 
-        JButton btnSave = new JButton( new ImageIcon( "icons/save.png" ) );
+        JButton btnSave = new JButton();
         btnSave.setToolTipText( "Save (CTRL+S)" );
         toolbar.add( btnSave );
 
-        JButton btnSaveAs = new JButton( new ImageIcon( "icons/save_as.png" ) );
+        JButton btnSaveAs = new JButton();
         btnSaveAs.setToolTipText( "Save As..." );
+        btnSaveAs.addActionListener( this::btnSaveAsListener);
         toolbar.add( btnSaveAs );
 
         toolbar.addSeparator();
 
-        JButton btnCopy = new JButton( new ImageIcon( "icons/copy.png") );
+        JButton btnCopy = new JButton();
         btnCopy.setToolTipText( "Copy (CTRL+C)" );
         toolbar.add( btnCopy );
 
-        JButton btnCut = new JButton( new ImageIcon( "icons/cut.png") );
+        JButton btnCut = new JButton();
         btnCut.setToolTipText( "Cut (CTRL+X)" );
         toolbar.add( btnCut );
 
-        JButton btnPaste = new JButton( new ImageIcon( "icons/paste.png") );
+        JButton btnPaste = new JButton();
         btnPaste.setToolTipText( "Paste (CTRL+V)" );
         toolbar.add( btnPaste );
 
         toolbar.addSeparator();
 
-        JButton btnUndo = new JButton( new ImageIcon( "icons/undo.png") );
+        JButton btnUndo = new JButton();
         btnUndo.setToolTipText( "Undo (CTRL+Z)" );
         toolbar.add( btnUndo );
 
-        JButton btnRedo = new JButton( new ImageIcon( "icons/redo.png") );
+        JButton btnRedo = new JButton();
         btnRedo.setToolTipText( "Redo" );
         toolbar.add( btnRedo );
 
         toolbar.addSeparator();
 
-        JButton btnPlace = new JButton( new ImageIcon( "icons/place.png") );
+        JToggleButton btnPlace = new JToggleButton();
         btnPlace.setToolTipText( "Place" );
+        btnPlace.addActionListener( this::btnPlaceListener );
         toolbar.add( btnPlace );
 
-        JButton btnTransition = new JButton( new ImageIcon( "icons/transition.png") );
+        JToggleButton btnTransition = new JToggleButton();
         btnTransition.setToolTipText( "Transition" );
+        btnTransition.addActionListener( this::btnTransitionListener );
         toolbar.add( btnTransition );
 
-        JButton btnArc = new JButton( new ImageIcon( "icons/arc.png") );
+        JToggleButton btnArc = new JToggleButton();
         btnArc.setToolTipText( "Arc" );
+        btnNew.addActionListener( this::btnArcListener );
         toolbar.add( btnArc );
 
-        JButton btnAttributs = new JButton( new ImageIcon( "icons/attributs.png") );
+        JToggleButton btnAttributs = new JToggleButton();
         btnAttributs.setToolTipText( "Attributs" );
+        btnNew.addActionListener( this::btnAttributsListener );
         toolbar.add( btnAttributs );
 
-        JButton btnSelect = new JButton( new ImageIcon( "icons/select.png") );
+        JToggleButton btnSelect = new JToggleButton();
         btnSelect.setToolTipText( "Select" );
         toolbar.add( btnSelect );
 
+        // Goupe de boutons pour ne pouvoir sélectionner qu'une seule des 5 fonctionnalités uniques
+        // -> place, transition, arc, attributs, select
+        ButtonGroup btnGroup = new ButtonGroup();
+        btnGroup.add(btnPlace);
+        btnGroup.add(btnTransition);
+        btnGroup.add(btnArc);
+        btnGroup.add(btnAttributs);
+        btnGroup.add(btnSelect);
 
         //Gestion des icônes => améliorable !
         Image imageNew = null;
@@ -154,14 +168,47 @@ public class DrawingToolbar extends Toolbar {
         return toolbar;
     }
 
-    private void btnNewListener( ActionEvent event ) {
-        JOptionPane.showMessageDialog( this, "Button clicked !" );
+    public void btnOpenListener(ActionEvent event) {
+        JFileChooser choix = new JFileChooser();
+        int retour = choix.showOpenDialog(this);
+        choix.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        if(retour==JFileChooser.APPROVE_OPTION){
+            choix.getSelectedFile().getName();
+            choix.getSelectedFile().getAbsolutePath();
+        } else {
+            JOptionPane.showMessageDialog(this, "Aucun fichier choisi !");
+        }
     }
-    /*
-    public static void main(String[] args) throws Exception {
-        UIManager.setLookAndFeel( new NimbusLookAndFeel() );
-        DrawingToolbar frame = new DrawingToolbar(this);
-        frame.setVisible( true );
+
+    public void btnSaveAsListener(ActionEvent event) {
+        JFileChooser save = new JFileChooser();
+        save.showSaveDialog(this);
+        File f =save.getSelectedFile();
+        try {
+            FileWriter fw = new FileWriter(f);
+            String text = "Le fichier a été sauvegardé";
+            fw.write(text);
+            fw.close();
+        }
+        catch (IOException e) {
+            System.out.println(e);
+        }
     }
-    */
+
+    public void btnPlaceListener(ActionEvent event){
+
+    }
+
+    public void btnTransitionListener(ActionEvent event){
+
+    }
+
+    public void btnArcListener(ActionEvent event){
+
+    }
+
+    public void btnAttributsListener(ActionEvent event){
+
+    }
+
 }
