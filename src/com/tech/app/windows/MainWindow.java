@@ -1,6 +1,7 @@
 package com.tech.app.windows;
 
 import com.tech.app.windows.handlers.MainWindowHandler;
+import com.tech.app.windows.panels.DrawPanel;
 import com.tech.app.windows.toolbars.DrawingToolbar;
 import com.tech.app.windows.toolbars.Menu;
 import com.tech.app.windows.toolbars.MenuBar;
@@ -24,7 +25,11 @@ public class MainWindow extends Window {
         DrawingToolbar dToolbar = new DrawingToolbar(this);
         dToolbar.applyToolbar();
 
-        //this.setJMenuBar(this.createMainMenuBar());
+        DrawPanel dp = new DrawPanel(this);
+        dp.applyPanel();
+
     }
+
+
 
 }
