@@ -1,14 +1,18 @@
 package com.tech.app.windows.handlers;
 
+import com.tech.app.models.Place;
 import com.tech.app.windows.panels.DrawPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
 
 
 public class DrawMouse extends MouseAdapter {
-
 
     public boolean mousePressed = false;
     public boolean mouseReleased = true;
@@ -16,7 +20,8 @@ public class DrawMouse extends MouseAdapter {
     public boolean mouseEntered = false;
     public boolean mouseExited = true;
 
-
+    private int x;
+    private int y;
 
     public enum MODE {
         NONE,
@@ -26,6 +31,7 @@ public class DrawMouse extends MouseAdapter {
         ATTRIBUTS,
         SELECT
     }
+
     public MODE mode;
     public DrawPanel drawPanel;
     public Graphics g;
@@ -33,7 +39,23 @@ public class DrawMouse extends MouseAdapter {
     public DrawMouse(JFrame frame, DrawPanel drawPanel){
         this.drawPanel = drawPanel;
         drawPanel.addMouseListener(this);
+        drawPanel.addMouseMotionListener(this);
+        drawPanel.addMouseWheelListener(new ScaleHandler());
         this.mode = MODE.NONE;
+    }
+
+    class ScaleHandler implements MouseWheelListener {
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            final double factor = (e.getWheelRotation() < 0) ? 1.1 : 0.9;
+            double scale = drawPanel.scaleX * factor;
+            scale = Math.max(drawPanel.MIN_ZOOM, scale);
+            scale = Math.min(drawPanel.MAX_ZOOM, scale);
+            drawPanel.scaleX = scale;
+            drawPanel.scaleY = scale;
+            drawPanel.transform = AffineTransform.getScaleInstance(drawPanel.scaleX, drawPanel.scaleY);
+            System.out.println("Scale: " + scale);
+            drawPanel.repaint();
+        }
     }
 
     public void action(MODE mode){
@@ -47,26 +69,26 @@ public class DrawMouse extends MouseAdapter {
     @Override
     public void mouseClicked(java.awt.event.MouseEvent mouseEvent) {
         System.out.println("Mouse clicked");
-
-
         mouseClicked = true;
     }
 
     @Override
     public void mousePressed(java.awt.event.MouseEvent mouseEvent) {
         System.out.println("Mouse pressed");
+        x = mouseEvent.getX();
+        y = mouseEvent.getY();
 
         if(mouseEntered){
             if (SwingUtilities.isLeftMouseButton(mouseEvent)){
                 switch(mode){
                     case PLACE:
-                        drawPanel.addPlace(mouseEvent.getX(),mouseEvent.getY());
+                        drawPanel.addPlace(mouseEvent.getX() /drawPanel.scaleX,mouseEvent.getY() / drawPanel.scaleY);
                         System.out.println("Place mise");
                         break;
                     case ARC:
                         break;
                     case TRANSITION:
-                        drawPanel.addTransition(mouseEvent.getX(),mouseEvent.getY());
+                        drawPanel.addTransition(mouseEvent.getX() / drawPanel.scaleX,mouseEvent.getY()/ drawPanel.scaleY);
                         System.out.println("Transition mise");
                         break;
                     case ATTRIBUTS:
@@ -102,4 +124,23 @@ public class DrawMouse extends MouseAdapter {
         System.out.println("Mouse out");
         mouseEntered = false;
     }
+
+    public void mouseDragged(MouseEvent e) {
+        int dx = e.getX() - x;
+        int dy = e.getY() - y;
+
+        if (SwingUtilities.isMiddleMouseButton(e)) {
+
+            drawPanel.updatePositions(drawPanel.scaleX, drawPanel.scaleY, dx, dy);
+
+        } else if (SwingUtilities.isLeftMouseButton(e)) {
+            if (mode == MODE.SELECT) {
+                drawPanel.updatePosition(x/drawPanel.scaleX,y/drawPanel.scaleY, drawPanel.scaleX, drawPanel.scaleY, dx, dy);
+            }
+        }
+
+        x += dx;
+        y += dy;
+    }
+
 }

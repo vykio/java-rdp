@@ -1,29 +1,33 @@
 package com.tech.app.models;
 
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Transition {
 
     private String name;
-    private int x, y;
+    private double x, y;
     private List<Arc> childrens, parents;
 
-    public Transition(String name, int x, int y, ArrayList<Arc> childrens, ArrayList<Arc> parents) {
+    public Transition(String name, double x, double y, ArrayList<Arc> childrens, ArrayList<Arc> parents) {
         this.name = name;
         this.x = x;
         this.y = y;
         this.childrens = childrens;
         this.parents = parents;
+        this.forme = new Rectangle2D.Float((float) this.x, (float) this.y, 40 ,40 );
     }
 
-    public Transition(String name, int x, int y, ArrayList<Arc> childrens) { this(name, x, y, childrens, new ArrayList<Arc>()); }
-    public Transition(String name, int x, int y) { this(name, x, y, new ArrayList<Arc>(), new ArrayList<Arc>()); }
+    public Transition(String name, double x, double y, ArrayList<Arc> childrens) { this(name, x, y, childrens, new ArrayList<Arc>()); }
+    public Transition(String name, double x, double y) { this(name, x, y, new ArrayList<Arc>(), new ArrayList<Arc>()); }
     public Transition(String name) { this(name, 0, 0); }
 
     public String getName() { return name; }
-    public int getX() { return x; }
-    public int getY() { return y; }
+    public double getX() { return x; }
+    public double getY() { return y; }
     public List<Arc> getChildrens() { return this.childrens; }
     public List<Arc> getParents() { return this.parents; }
 
@@ -63,6 +67,25 @@ public class Transition {
 
         return sb.toString();
 
+    }
+
+    /* PARTIE GRAPHIQUE */
+    public Rectangle2D.Float forme;
+
+    public void draw(Graphics g) {
+        String label = this.name;
+        Graphics2D g2 = (Graphics2D) g;
+        g.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        g.drawString(label, (int)(x-(forme.width)/4) ,(int)(y+5));
+        g2.setStroke(new BasicStroke(5.0f));
+        g2.draw(new Rectangle2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
+    }
+
+    public void updatePosition(double x, double y) {
+        forme.x = (float)this.x-(forme.width)/2;
+        forme.y = (float)this.y-(forme.height)/2;
+        this.x = x;
+        this.y = y;
     }
 
 }
