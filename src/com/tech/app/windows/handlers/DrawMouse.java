@@ -30,7 +30,7 @@ public class DrawMouse extends MouseAdapter {
     public DrawMouse(JFrame frame, DrawPanel drawPanel){
         this.drawPanel = drawPanel;
         drawPanel.addMouseListener(this);
-
+        this.mode = MODE.NONE;
     }
 
     public void action(MODE mode){
