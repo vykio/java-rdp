@@ -1,11 +1,14 @@
 package com.tech.app.windows;
 
 import com.tech.app.models.Model;
-import com.tech.app.windows.handlers.MainWindowHandler;
 import com.tech.app.windows.handlers.DrawMouse;
+import com.tech.app.windows.handlers.MainWindowHandler;
 import com.tech.app.windows.panels.DrawPanel;
 import com.tech.app.windows.toolbars.DrawingToolbar;
 import com.tech.app.windows.toolbars.Menu;
+import com.tech.app.windows.toolbars.MenuBar;
+
+import javax.swing.*;
 
 public class MainWindow extends Window {
 

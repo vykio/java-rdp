@@ -50,22 +50,25 @@ public class DrawMouse extends MouseAdapter {
         System.out.println("Mouse pressed");
 
         if(mouseEntered){
-            switch(mode){
-                case PLACE:
-                    drawPanel.addPlace(mouseEvent.getX(),mouseEvent.getY());
-                    System.out.println("Place mise");
-                    break;
-                case ARC:
-                    break;
-                case TRANSITION:
-                    drawPanel.addTransition(mouseEvent.getX(),mouseEvent.getY());
-                    System.out.println("Transition mise");
-                    break;
-                case ATTRIBUTS:
-                    break;
-                case SELECT:
-                    break;
+            if (SwingUtilities.isLeftMouseButton(mouseEvent)){
+                switch(mode){
+                    case PLACE:
+                        drawPanel.addPlace(mouseEvent.getX(),mouseEvent.getY());
+                        System.out.println("Place mise");
+                        break;
+                    case ARC:
+                        break;
+                    case TRANSITION:
+                        drawPanel.addTransition(mouseEvent.getX(),mouseEvent.getY());
+                        System.out.println("Transition mise");
+                        break;
+                    case ATTRIBUTS:
+                        break;
+                    case SELECT:
+                        break;
+                }
             }
+
 
         }
 
