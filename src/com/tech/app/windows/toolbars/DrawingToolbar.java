@@ -1,8 +1,10 @@
 package com.tech.app.windows.toolbars;
 
+import com.tech.app.windows.handlers.DrawMouse;
+import com.tech.app.windows.panels.DrawPanel;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -12,9 +14,11 @@ import java.io.IOException;
 public class DrawingToolbar extends Toolbar {
 
     /* Construction de l'interface graphique pour tester à part*/
+    DrawMouse drawMouse;
 
-    public DrawingToolbar(JFrame frame) {
+    public DrawingToolbar(JFrame frame,DrawMouse drawMouse) {
         super(frame);
+        this.drawMouse = drawMouse;
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
@@ -88,6 +92,7 @@ public class DrawingToolbar extends Toolbar {
 
         JToggleButton btnSelect = new JToggleButton();
         btnSelect.setToolTipText( "Select" );
+        btnSelect.addActionListener( this::btnSelectListener );
         toolbar.add( btnSelect );
 
         // Goupe de boutons pour ne pouvoir sélectionner qu'une seule des 5 fonctionnalités uniques
@@ -169,6 +174,9 @@ public class DrawingToolbar extends Toolbar {
     }
 
     public void btnOpenListener(ActionEvent event) {
+
+        System.out.println("Open File button clicked");
+
         JFileChooser choix = new JFileChooser();
         int retour = choix.showOpenDialog(this);
         choix.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -181,6 +189,9 @@ public class DrawingToolbar extends Toolbar {
     }
 
     public void btnSaveAsListener(ActionEvent event) {
+
+        System.out.println("Save as button clicked");
+
         JFileChooser save = new JFileChooser();
         save.showSaveDialog(this);
         File f =save.getSelectedFile();
@@ -196,19 +207,25 @@ public class DrawingToolbar extends Toolbar {
     }
 
     public void btnPlaceListener(ActionEvent event){
-
+        System.out.println("Place button clicked");
+      drawMouse.action(DrawMouse.MODE.PLACE);
+      MouseInfo.getPointerInfo().getLocation().getX();
     }
 
     public void btnTransitionListener(ActionEvent event){
-
+        System.out.println("Transition button clicked");
     }
 
     public void btnArcListener(ActionEvent event){
-
+        System.out.println("Arc button clicked");
     }
 
     public void btnAttributsListener(ActionEvent event){
+        System.out.println("Attributs button clicked");
+    }
 
+    public void btnSelectListener(ActionEvent event){
+        System.out.println("Select button clicked");
     }
 
 }

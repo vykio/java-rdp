@@ -7,11 +7,9 @@ package com.tech.app;
 
 import com.tech.app.models.Arc;
 import com.tech.app.models.Place;
-import com.tech.app.models.System;
+import com.tech.app.models.Model;
 import com.tech.app.models.Transition;
 import com.tech.app.windows.MainWindow;
-
-import java.awt.*;
 
 public class App implements Runnable {
     @Override
@@ -19,7 +17,7 @@ public class App implements Runnable {
         MainWindow mainWindow = new MainWindow(900,500);
 
         /* Instanciation du système */
-        System system = new System();
+        Model model = new Model();
 
         /* Définition des places et des transitions */
         Place p = new Place("P1", 0, 0, 1);
@@ -37,25 +35,25 @@ public class App implements Runnable {
         t2.addParent(p);
 
         /* Ajout des places et des transitions au système */
-        system.addPlace(p);
-        system.addPlace(p2);
-        system.addPlace(p3);
-        system.addTransition(t);
-        system.addTransition(t2);
+        model.addPlace(p);
+        model.addPlace(p2);
+        model.addPlace(p3);
+        model.addTransition(t);
+        model.addTransition(t2);
 
         /* Experimentation */
         Place p4 = new Place("P4", 0, 0, 1);
-        system.addPlace(p4);
+        model.addPlace(p4);
         Transition t4 = new Transition("t4", 0, 0);
         t4.addChildren(new Arc(p, 3));
         t4.addParent(p4);
-        system.addTransition(t4);
+        model.addTransition(t4);
 
         // Doit retourner une petite erreur car "p4" != "P4"
-        system.removePlace("p4");
+        model.removePlace("p4");
 
         /* Affichage du système */
-        java.lang.System.out.println(system);
+        java.lang.System.out.println(model);
 
     }
 

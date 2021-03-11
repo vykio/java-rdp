@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class System {
+public class Model {
 
     private int nbPlace;
     private int nbTransition;
 
-    List<Place> placeVector;
+    public List<Place> placeVector;
 
-    List<Transition> transitionVector;
+    public List<Transition> transitionVector;
 
     Vector<Integer> M0;
     Vector<Vector<Integer>> w_plus, w_moins, C;
@@ -23,7 +23,7 @@ public class System {
     //int[][] w_moins;
     //int[][] C;
 
-    public System() {
+    public Model() {
         this.nbPlace = 0;
         this.nbTransition = 0;
 
