@@ -47,13 +47,18 @@ public class DrawPanel extends JPanel {
         model.addPlace(new Place("p0", x, y));
         repaint();
     }
+
+    public void clearAll() {
+        model.clearAll();
+        repaint();
+    }
     
     public void paintPlace(Graphics g, String label, int x, int y){
         System.out.println("Je suis dans la fn paintPLace");
 
         g.setColor(Color.BLACK);
-        g.drawOval(x,y,20,20);
-        g.setFont(new Font("Comic Sans MS", Font.BOLD, 10));
+        g.drawOval(x,y,40,40);
+        g.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         g.drawString(label, x+5,y-10);
     }
 
@@ -70,8 +75,8 @@ public class DrawPanel extends JPanel {
     public void paintTransition(Graphics g, String label, int x, int y){
         System.out.println("Je suis dans la fn paintTransition");
         g.setColor(Color.BLACK);
-        g.drawRect(x,y,20,20);
-        g.setFont(new Font("Comic Sans MS", Font.BOLD, 10));
+        g.drawRect(x,y,40,40);
+        g.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         g.drawString(label,x ,y-10);
     }
 

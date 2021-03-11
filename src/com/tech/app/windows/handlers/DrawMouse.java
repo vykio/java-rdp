@@ -15,6 +15,9 @@ public class DrawMouse extends MouseAdapter {
     public boolean mouseClicked = false;
     public boolean mouseEntered = false;
     public boolean mouseExited = true;
+
+
+
     public enum MODE {
         NONE,
         PLACE,
@@ -35,6 +38,10 @@ public class DrawMouse extends MouseAdapter {
 
     public void action(MODE mode){
         this.mode=mode;
+    }
+
+    public void clearPanel() {
+        this.drawPanel.clearAll();
     }
 
     @Override

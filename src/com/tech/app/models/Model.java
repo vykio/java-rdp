@@ -182,6 +182,12 @@ public class Model {
         this.C = new Vector<Vector<Integer>>();
     }
 
+    public void clearAll() {
+        clearMatrices();
+        this.placeVector = new ArrayList<Place>();
+        this.transitionVector = new ArrayList<Transition>();
+    }
+
     /**
      * Remplir les matrices à la bonne taille avec des 0
      */

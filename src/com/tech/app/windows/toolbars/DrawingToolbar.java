@@ -209,7 +209,7 @@ public class DrawingToolbar extends Toolbar {
 
     public void btnClearListener(ActionEvent event){
         System.out.println("Clear board button clicked");
-        
+        drawMouse.clearPanel();
     }
 
 
