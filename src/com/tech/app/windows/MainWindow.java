@@ -23,7 +23,7 @@ public class MainWindow extends Window {
 
         Model model = new Model();
 
-        DrawPanel dp = new DrawPanel(this, model);
+        DrawPanel dp = new DrawPanel(this,model);
         dp.applyPanel();
 
         DrawMouse drawMouse = new DrawMouse(this,dp);

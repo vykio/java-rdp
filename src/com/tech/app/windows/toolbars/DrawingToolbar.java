@@ -54,9 +54,10 @@ public class DrawingToolbar extends Toolbar {
         btnCut.setToolTipText( "Cut (CTRL+X)" );
         toolbar.add( btnCut );
 
-        JButton btnPaste = new JButton();
-        btnPaste.setToolTipText( "Paste (CTRL+V)" );
-        toolbar.add( btnPaste );
+        JButton btnClear = new JButton();
+        btnClear.setToolTipText( "Clear board" );
+        btnClear.addActionListener( this::btnClearListener );
+        toolbar.add( btnClear );
 
         toolbar.addSeparator();
 
@@ -82,12 +83,12 @@ public class DrawingToolbar extends Toolbar {
 
         JToggleButton btnArc = new JToggleButton();
         btnArc.setToolTipText( "Arc" );
-        btnNew.addActionListener( this::btnArcListener );
+        btnArc.addActionListener( this::btnArcListener );
         toolbar.add( btnArc );
 
         JToggleButton btnAttributs = new JToggleButton();
         btnAttributs.setToolTipText( "Attributs" );
-        btnNew.addActionListener( this::btnAttributsListener );
+        btnAttributs.addActionListener( this::btnAttributsListener );
         toolbar.add( btnAttributs );
 
         JToggleButton btnSelect = new JToggleButton();
@@ -112,7 +113,7 @@ public class DrawingToolbar extends Toolbar {
         Image imageUndo = null;
         Image imageRedo = null;
         Image imageCopy = null;
-        Image imagePaste = null;
+        Image imageClear = null;
         Image imageCut = null;
         Image imagePlace = null;
         Image imageTransition = null;
@@ -129,7 +130,7 @@ public class DrawingToolbar extends Toolbar {
             imageUndo = ImageIO.read(getClass().getResource("/icons/undo.png"));
             imageRedo = ImageIO.read(getClass().getResource("/icons/redo.png"));
             imageCopy = ImageIO.read(getClass().getResource("/icons/copy.png"));
-            imagePaste = ImageIO.read(getClass().getResource("/icons/paste.png"));
+            imageClear = ImageIO.read(getClass().getResource("/icons/clear.png"));
             imageCut = ImageIO.read(getClass().getResource("/icons/cut.png"));
             imagePlace = ImageIO.read(getClass().getResource("/icons/place.png"));
             imageTransition = ImageIO.read(getClass().getResource("/icons/transition.png"));
@@ -147,7 +148,7 @@ public class DrawingToolbar extends Toolbar {
         assert imageUndo != null;
         assert imageRedo != null;
         assert imageCopy != null;
-        assert imagePaste != null;
+        assert imageClear != null;
         assert imageCut != null;
         assert imagePlace != null;
         assert imageTransition != null;
@@ -161,7 +162,7 @@ public class DrawingToolbar extends Toolbar {
         btnUndo.setIcon(new ImageIcon(imageUndo));
         btnRedo.setIcon(new ImageIcon(imageRedo));
         btnCopy.setIcon(new ImageIcon(imageCopy));
-        btnPaste.setIcon(new ImageIcon(imagePaste));
+        btnClear.setIcon(new ImageIcon(imageClear));
         btnCut.setIcon(new ImageIcon(imageCut));
         btnPlace.setIcon(new ImageIcon(imagePlace));
         btnTransition.setIcon(new ImageIcon(imageTransition));
@@ -206,6 +207,12 @@ public class DrawingToolbar extends Toolbar {
         }
     }
 
+    public void btnClearListener(ActionEvent event){
+        System.out.println("Clear board button clicked");
+        
+    }
+
+
     public void btnPlaceListener(ActionEvent event){
         System.out.println("Place button clicked");
       drawMouse.action(DrawMouse.MODE.PLACE);
@@ -214,18 +221,22 @@ public class DrawingToolbar extends Toolbar {
 
     public void btnTransitionListener(ActionEvent event){
         System.out.println("Transition button clicked");
+        drawMouse.action(DrawMouse.MODE.TRANSITION);
     }
 
     public void btnArcListener(ActionEvent event){
         System.out.println("Arc button clicked");
+        drawMouse.action(DrawMouse.MODE.ARC);
     }
 
     public void btnAttributsListener(ActionEvent event){
         System.out.println("Attributs button clicked");
+        drawMouse.action(DrawMouse.MODE.ATTRIBUTS);
     }
 
     public void btnSelectListener(ActionEvent event){
         System.out.println("Select button clicked");
+        drawMouse.action(DrawMouse.MODE.SELECT);
     }
 
 }

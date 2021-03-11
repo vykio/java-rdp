@@ -4,9 +4,10 @@ import com.tech.app.windows.panels.DrawPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseListener;
+import java.awt.event.MouseAdapter;
 
-public class DrawMouse implements MouseListener {
+
+public class DrawMouse extends MouseAdapter {
 
 
     public boolean mousePressed = false;
@@ -19,7 +20,8 @@ public class DrawMouse implements MouseListener {
         PLACE,
         TRANSITION,
         ARC,
-        DEFAULT
+        ATTRIBUTS,
+        SELECT
     }
     public MODE mode;
     public DrawPanel drawPanel;
@@ -38,16 +40,35 @@ public class DrawMouse implements MouseListener {
     @Override
     public void mouseClicked(java.awt.event.MouseEvent mouseEvent) {
         System.out.println("Mouse clicked");
-        if(mouseEntered && mode == MODE.PLACE){
-            drawPanel.addPlace(mouseEvent.getX(),mouseEvent.getY());
-            System.out.println("Place mise");
-        }
+
+
         mouseClicked = true;
     }
 
     @Override
     public void mousePressed(java.awt.event.MouseEvent mouseEvent) {
         System.out.println("Mouse pressed");
+
+        if(mouseEntered){
+            switch(mode){
+                case PLACE:
+                    drawPanel.addPlace(mouseEvent.getX(),mouseEvent.getY());
+                    System.out.println("Place mise");
+                    break;
+                case ARC:
+                    break;
+                case TRANSITION:
+                    drawPanel.addTransition(mouseEvent.getX(),mouseEvent.getY());
+                    System.out.println("Transition mise");
+                    break;
+                case ATTRIBUTS:
+                    break;
+                case SELECT:
+                    break;
+            }
+
+        }
+
         mousePressed = true;
     }
 
