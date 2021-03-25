@@ -55,7 +55,7 @@ public class DrawMouse extends MouseAdapter {
             drawPanel.scaleX = scale;
             drawPanel.scaleY = scale;
             drawPanel.transform = AffineTransform.getScaleInstance(drawPanel.scaleX, drawPanel.scaleY);
-            System.out.println("Scale: " + scale);
+            //System.out.println("Scale: " + scale);
             drawPanel.repaint();
         }
     }

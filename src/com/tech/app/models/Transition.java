@@ -12,7 +12,7 @@ public class Transition {
     private double x, y;
     private List<Arc> childrens, parents;
 
-    public final static int WIDTH=40, HEIGHT=10;
+    public final static int WIDTH=10, HEIGHT=40;
 
     public Transition(String name, double x, double y, ArrayList<Arc> childrens, ArrayList<Arc> parents) {
         this.name = name;

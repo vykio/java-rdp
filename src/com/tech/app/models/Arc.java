@@ -1,10 +1,7 @@
 package com.tech.app.models;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Arc2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.Path2D;
+import java.awt.geom.*;
 
 public class Arc {
 
@@ -64,7 +61,8 @@ public class Arc {
         g2.transform(at);
 
         /* Ligne */
-        g2.draw(new Line2D.Double(start, 0, len, 0));
+        //g2.draw(new Line2D.Double(start, 0, len, 0));
+        g2.draw(new CubicCurve2D.Double(start, 0, (start+len)/3, 0 ,2*(start+len)/3, 0 , len, 0));
 
         /* Fléche */
         Path2D path = new Path2D.Double();
@@ -80,6 +78,10 @@ public class Arc {
 
     public void draw(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
+        /* Antialiasing */
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
         g2.setStroke(new BasicStroke(1f));
 
         /* Orientation de la flêche */

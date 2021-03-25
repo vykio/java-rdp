@@ -25,6 +25,7 @@ public class DrawingToolbar extends Toolbar {
     @Override
     public JToolBar getToolbar() {
         JToolBar toolbar = new JToolBar();
+        toolbar.setFloatable(false);
 
         JButton btnNew = new JButton();
         btnNew.setToolTipText( "New File (CTRL+N)" );
