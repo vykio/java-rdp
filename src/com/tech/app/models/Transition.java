@@ -1,5 +1,7 @@
 package com.tech.app.models;
 
+import com.tech.app.functions.FMaths;
+
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
@@ -12,7 +14,10 @@ public class Transition {
     private double x, y;
     private List<Arc> childrens, parents;
 
-    public final static int WIDTH=10, HEIGHT=40;
+    private int orientation; // 0 : Verticale; 1 : Horizontale
+
+    private final int LARGE_SIDE = 40, MIN_SIDE = 10;
+    public int WIDTH=MIN_SIDE, HEIGHT=LARGE_SIDE;
 
     public Transition(String name, double x, double y, ArrayList<Arc> childrens, ArrayList<Arc> parents) {
         this.name = name;
@@ -20,6 +25,7 @@ public class Transition {
         this.y = y;
         this.childrens = childrens;
         this.parents = parents;
+        this.orientation = 0;
         this.forme = new Rectangle2D.Float((float) (this.x-(WIDTH/2)), (float) (this.y-(HEIGHT/2)), WIDTH ,HEIGHT );
     }
 
@@ -46,7 +52,7 @@ public class Transition {
     public String toString() {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("T(\"").append(this.name).append("\", ").append(this.x).append(", ").append(this.y).append(", ");
+        sb.append("T(\"").append(this.name).append("\", ").append(FMaths.round(this.x, 2)).append(", ").append(FMaths.round(this.y,2 )).append(", ");
 
         sb.append("c:[");
         for (int i = 0; i < this.childrens.size(); i++) {
@@ -113,5 +119,18 @@ public class Transition {
 
     }
 
+    public void changeOrientation(int index) {
+        if (index == 0) {
+            this.WIDTH = MIN_SIDE;
+            this.HEIGHT = LARGE_SIDE;
+        } else {
+            this.HEIGHT = MIN_SIDE;
+            this.WIDTH = LARGE_SIDE;
+        }
+        this.forme.x = (float) (this.x-(WIDTH/2));
+        this.forme.y = (float) (this.y-(HEIGHT/2));
+        this.forme.width = WIDTH;
+        this.forme.height = HEIGHT;
+    }
 
 }

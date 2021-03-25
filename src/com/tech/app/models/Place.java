@@ -1,5 +1,7 @@
 package com.tech.app.models;
 
+import com.tech.app.functions.FMaths;
+
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
@@ -35,7 +37,7 @@ public class Place {
     public void resetMarquage() { this.marquage = 0; }
 
     public String toString() {
-        return "P(\""+ this.name + "\", " + this.x + ", " + this.y + ", m:"+ this.marquage + ")";
+        return "P(\""+ this.name + "\", " + FMaths.round(this.x, 2) + ", " + FMaths.round(this.y, 2) + ", m:"+ this.marquage + ")";
     }
 
     /* PARTIE GRAPHIQUE */
@@ -54,6 +56,10 @@ public class Place {
         g2.draw(new Ellipse2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
 
         g.drawString(label, (int)(x-(forme.width)/4) ,(int)(y-25));
+
+        if (marquage > 0) {
+            g.drawString("" + marquage, (int)(x-(forme.width)/4) ,(int)(y+5));
+        }
 
     }
 

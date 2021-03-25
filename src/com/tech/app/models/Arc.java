@@ -8,16 +8,18 @@ public class Arc {
     private Place place;
     private int poids;
     private boolean placeToTransition;
+    private Transition transition;
 
-    public Arc(Place place, int poids, double xOrigin, double yOrigin, boolean placeToTransition){
+    public Arc(Place place, int poids, double xOrigin, double yOrigin, boolean placeToTransition, Transition transition){
         this.place = place;
         this.poids = poids;
         this.placeToTransition = placeToTransition;
+        this.transition = transition;
         this.forme = new Line2D.Double(xOrigin, yOrigin, this.place.getX(), this.place.getY());
     }
 
     public Arc(Place place, int poids){
-        this(place, poids, 0,0, false);
+        this(place, poids, 0,0, false, null);
     }
 
     public Arc(Place place) { this(place, 1); }
@@ -47,7 +49,7 @@ public class Arc {
         double start;
         int ARR_SIZE = 10;
         if (this.placeToTransition) {
-            len = len - (double)Math.min(Transition.WIDTH, Transition.HEIGHT)/2;
+            len = len - (double)Math.min(transition.WIDTH, transition.HEIGHT)/2;
             start = this.place.forme.width/2;
         } else {
             len = len - this.place.forme.width/2;

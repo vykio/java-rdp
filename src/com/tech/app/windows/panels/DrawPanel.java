@@ -23,6 +23,7 @@ public class DrawPanel extends JPanel {
     private final Model model;
 
     private double arcOriginX = 0, arcOriginY =0, arcDestX=0, arcDestY=0;
+    private int indexOfClickArc = 0;
     public Object draggedObject = null;
 
     /* Variables de départ pour indexation P et T */
@@ -53,6 +54,12 @@ public class DrawPanel extends JPanel {
             t.updatePosition(t.getX() + dx * 1 / scaleX, t.getY() + dy * 1 / scaleY);
             repaint();
         }
+
+        /* Mettre à jour les coordonnées des arcs en cours de création */
+        arcOriginX += dx / scaleX;
+        arcOriginY += dy / scaleY;
+        arcDestX += dx / scaleX;
+        arcDestY += dy / scaleY;
     }
 
     /* Bouger un objet donné en paramètre */
@@ -101,6 +108,8 @@ public class DrawPanel extends JPanel {
             }
         }
 
+        drawTooltips(g);
+
         /* Afficher l'objet sélectionné au dessus des autres:
         * donc affichage en dernier */
         if (draggedObject != null) {
@@ -109,14 +118,31 @@ public class DrawPanel extends JPanel {
             } else {
                 ((Transition)draggedObject).draw(g);
             }
+            Color color = g.getColor();
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX)));
+            g.drawString(draggedObject.toString(), (int)(10/scaleX), (int)((this.frame.getContentPane().getSize().getHeight()-50)/scaleY));
+            g.setColor(color);
         }
 
+    }
+
+    private void drawTooltips(Graphics g) {
+        Color color = g.getColor();
+        g.setColor(Color.BLUE);
+        g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX)));
+        if (this.indexOfClickArc == 1) {
+            g.drawString("Arc origin set", (int)(10/scaleX), (int)((this.frame.getContentPane().getSize().getHeight()-80)/scaleY));
+        }
+        g.setColor(color);
     }
 
     /* Nettoyer tout ! (model et canvas) */
     public void clearAll() {
         model.clearAll();
         draggedObject = null;
+        idTransition = 0;
+        idPlace = 0;
         repaint();
     }
 
@@ -138,9 +164,9 @@ public class DrawPanel extends JPanel {
             if (obj1.getClass() != obj2.getClass()) {
 
                 if (obj1 instanceof Transition) {
-                    ((Transition) obj1).addParent(new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false));
+                    ((Transition) obj1).addParent(new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1));
                 } else {
-                    ((Transition) obj2).addChildren(new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true));
+                    ((Transition) obj2).addChildren(new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2));
                 }
 
             }
@@ -166,19 +192,21 @@ public class DrawPanel extends JPanel {
 
     /* Déterminer les deux couples de coordonnées pour créer un arc */
     public void loadCoordinatesArc(double x, double y) {
-        if (this.arcDestX == 0 && this.arcOriginX == 0) {
-            this.arcOriginX = x;
-            this.arcOriginY = y;
-        } else if (this.arcDestX == 0) {
-            this.arcDestX = x;
-            this.arcDestY = y;
-            this.addArc(this.arcOriginX, this.arcOriginY, this.arcDestX, this.arcDestY);
-        } else {
+        /* Si il n'y a pas eu de 1er click en mode Arc */
+        if (indexOfClickArc == 0) {
             this.arcOriginX = x;
             this.arcOriginY = y;
             this.arcDestX = 0;
             this.arcDestY = 0;
+            this.indexOfClickArc = 1;
+        } else {
+            // Si nous cliquons pour la deuxieme fois en mode Arc
+            this.arcDestX = x;
+            this.arcDestY = y;
+            this.addArc(this.arcOriginX, this.arcOriginY, this.arcDestX, this.arcDestY);
+            this.indexOfClickArc = 0;
         }
+        repaint();
     }
 
     /* Retourner l'objet sur lequel on a cliqué */
@@ -198,7 +226,30 @@ public class DrawPanel extends JPanel {
 
     /* Afficher dans la console le système */
     public void showModel() {
+        model.updateMatrices();
         System.out.println(model);
     }
 
+    public void showOptions(Object obj) {
+        if (obj instanceof Place) {
+            try {
+                String result = JOptionPane.showInputDialog("Marquage :");
+                int num = Integer.parseInt(result);
+                ((Place)obj).setMarquage(num);
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only integers are allowed");
+            }
+
+        } else {
+            try {
+                Object[] orientation = { "Verticale", "Horizontale" };
+                JComboBox comboBox = new JComboBox(orientation);
+                JOptionPane.showMessageDialog(null, comboBox, "Orientation de la transition", JOptionPane.QUESTION_MESSAGE);
+                ((Transition)obj).changeOrientation(comboBox.getSelectedIndex());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(frame.getContentPane(), "Error...");
+            }
+        }
+        repaint();
+    }
 }

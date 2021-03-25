@@ -37,6 +37,7 @@ public class DrawMouse extends MouseAdapter {
     public Graphics g;
 
     private Object objectDragged = null;
+    private Object objectSelected = null;
 
     public DrawMouse(JFrame frame, DrawPanel drawPanel){
         this.drawPanel = drawPanel;
@@ -97,7 +98,12 @@ public class DrawMouse extends MouseAdapter {
                         System.out.println("Transition mise");
                         break;
                     case ATTRIBUTS:
-                        drawPanel.showModel();
+                        objectSelected = drawPanel.getSelectedObject(mouseEvent.getX() / drawPanel.scaleX, mouseEvent.getY() / drawPanel.scaleY);
+                        if (objectSelected != null) {
+                            drawPanel.showOptions(objectSelected);
+                        } else {
+                            drawPanel.showModel();
+                        }
                         break;
                     case SELECT:
                         objectDragged = drawPanel.getSelectedObject(x/drawPanel.scaleX, y/drawPanel.scaleY);
