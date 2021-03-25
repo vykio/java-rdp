@@ -12,13 +12,15 @@ public class Transition {
     private double x, y;
     private List<Arc> childrens, parents;
 
+    public final static int WIDTH=40, HEIGHT=10;
+
     public Transition(String name, double x, double y, ArrayList<Arc> childrens, ArrayList<Arc> parents) {
         this.name = name;
         this.x = x;
         this.y = y;
         this.childrens = childrens;
         this.parents = parents;
-        this.forme = new Rectangle2D.Float((float) this.x, (float) this.y, 40 ,40 );
+        this.forme = new Rectangle2D.Float((float) (this.x-(WIDTH/2)), (float) (this.y-(HEIGHT/2)), WIDTH ,HEIGHT );
     }
 
     public Transition(String name, double x, double y, ArrayList<Arc> childrens) { this(name, x, y, childrens, new ArrayList<Arc>()); }
@@ -73,12 +75,27 @@ public class Transition {
     public Rectangle2D.Float forme;
 
     public void draw(Graphics g) {
+        for (Arc a : this.parents) {
+            a.draw(g);
+        }
+
+        for (Arc a : this.childrens) {
+            a.draw(g);
+        }
+
+        /* Afficher le carré de transition au dessus de l'arc */
         String label = this.name;
         Graphics2D g2 = (Graphics2D) g;
-        g.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        g.drawString(label, (int)(x-(forme.width)/4) ,(int)(y+5));
-        g2.setStroke(new BasicStroke(5.0f));
+        g.setFont(new Font("Console", Font.PLAIN, 15));
+
+        g2.setStroke(new BasicStroke(2.0f));
+        Color color = g2.getColor();
+        g2.setColor(g2.getBackground());
+        g2.fill(new Rectangle2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
+        g2.setColor(color);
         g2.draw(new Rectangle2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
+        g.drawString(label, (int)(x-(forme.width)/4) ,(int)(y+5));
+
     }
 
     public void updatePosition(double x, double y) {
@@ -86,6 +103,15 @@ public class Transition {
         forme.y = (float)this.y-(forme.height)/2;
         this.x = x;
         this.y = y;
+
+        for (Arc a : this.parents) {
+            a.updatePosition(x, y);
+        }
+        for (Arc a : this.childrens) {
+            a.updatePosition(x, y);
+        }
+
     }
+
 
 }

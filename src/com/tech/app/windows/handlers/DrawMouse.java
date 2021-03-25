@@ -36,6 +36,8 @@ public class DrawMouse extends MouseAdapter {
     public DrawPanel drawPanel;
     public Graphics g;
 
+    private Object objectDragged = null;
+
     public DrawMouse(JFrame frame, DrawPanel drawPanel){
         this.drawPanel = drawPanel;
         drawPanel.addMouseListener(this);
@@ -68,17 +70,18 @@ public class DrawMouse extends MouseAdapter {
 
     @Override
     public void mouseClicked(java.awt.event.MouseEvent mouseEvent) {
-        System.out.println("Mouse clicked");
+        //System.out.println("Mouse clicked");
         mouseClicked = true;
     }
 
     @Override
     public void mousePressed(java.awt.event.MouseEvent mouseEvent) {
-        System.out.println("Mouse pressed");
+        //System.out.println("Mouse pressed");
         x = mouseEvent.getX();
         y = mouseEvent.getY();
 
         if(mouseEntered){
+
             if (SwingUtilities.isLeftMouseButton(mouseEvent)){
                 switch(mode){
                     case PLACE:
@@ -86,14 +89,18 @@ public class DrawMouse extends MouseAdapter {
                         System.out.println("Place mise");
                         break;
                     case ARC:
+                        drawPanel.loadCoordinatesArc(mouseEvent.getX() /drawPanel.scaleX, mouseEvent.getY() /drawPanel.scaleY);
+                        System.out.println("Arc test");
                         break;
                     case TRANSITION:
                         drawPanel.addTransition(mouseEvent.getX() / drawPanel.scaleX,mouseEvent.getY()/ drawPanel.scaleY);
                         System.out.println("Transition mise");
                         break;
                     case ATTRIBUTS:
+                        drawPanel.showModel();
                         break;
                     case SELECT:
+                        objectDragged = drawPanel.getSelectedObject(x/drawPanel.scaleX, y/drawPanel.scaleY);
                         break;
                 }
             }
@@ -106,22 +113,25 @@ public class DrawMouse extends MouseAdapter {
 
     @Override
     public void mouseReleased(java.awt.event.MouseEvent mouseEvent) {
-        System.out.println("Mouse released");
+        //System.out.println("Mouse released");
         mousePressed = false;
         mouseClicked = false;
+        if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
+            objectDragged = null;
+        }
 
     }
 
     @Override
     public void mouseEntered(java.awt.event.MouseEvent mouseEvent) {
-        System.out.println("Mouse in");
+        //System.out.println("Mouse in");
         mouseEntered = true;
 
     }
 
     @Override
     public void mouseExited(java.awt.event.MouseEvent mouseEvent) {
-        System.out.println("Mouse out");
+        //System.out.println("Mouse out");
         mouseEntered = false;
     }
 
@@ -135,7 +145,8 @@ public class DrawMouse extends MouseAdapter {
 
         } else if (SwingUtilities.isLeftMouseButton(e)) {
             if (mode == MODE.SELECT) {
-                drawPanel.updatePosition(x/drawPanel.scaleX,y/drawPanel.scaleY, drawPanel.scaleX, drawPanel.scaleY, dx, dy);
+
+                drawPanel.updatePosition(objectDragged ,x/drawPanel.scaleX,y/drawPanel.scaleY, drawPanel.scaleX, drawPanel.scaleY, dx, dy);
             }
         }
 

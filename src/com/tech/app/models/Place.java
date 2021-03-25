@@ -9,13 +9,16 @@ public class Place {
     private double x;
     private double y;
     private int marquage;
+    public boolean draggable;
+
+    private final static int WIDTH = 40, HEIGHT = 40;
 
     public Place(String name, double x, double y, int marquage) {
         this.name = name;
         this.x = x;
         this.y = y;
         this.marquage = marquage;
-        this.forme = new Ellipse2D.Float((float)this.x, (float)this.y, 40 ,40);
+        this.forme = new Ellipse2D.Float((float)(this.x-(WIDTH/2)), (float)(this.y-(HEIGHT/2)), WIDTH ,HEIGHT);
     }
 
     public Place(String name, double x, double y) { this(name, x, y, 0); }
@@ -41,10 +44,17 @@ public class Place {
     public void draw(Graphics g) {
         String label = this.name;
         Graphics2D g2 = (Graphics2D) g;
-        g.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        g.drawString(label, (int)(x-(forme.width)/4) ,(int)(y+5));
-        g2.setStroke(new BasicStroke(5.0f));
+        g.setFont(new Font("Console", Font.PLAIN, 15));
+
+        Color color = g2.getColor();
+        g2.setColor(g2.getBackground());
+        g2.setStroke(new BasicStroke(2.0f));
+        g2.fill(new Ellipse2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
+        g2.setColor(color);
         g2.draw(new Ellipse2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
+
+        g.drawString(label, (int)(x-(forme.width)/4) ,(int)(y-25));
+
     }
 
     public void updatePosition(double x, double y) {
