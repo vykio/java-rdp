@@ -7,6 +7,7 @@ package com.tech.app.windows;
 import com.tech.app.windows.handlers.WindowHandler;
 
 import javax.swing.*;
+import java.awt.*;
 
 public abstract class Window extends JFrame {
 
@@ -29,6 +30,7 @@ public abstract class Window extends JFrame {
 
         this.setTitle(this.title);
         this.setSize(this.width, this.height);
+        this.setPreferredSize(new Dimension(this.width, this.height));
         this.setResizable(this.resizable);
         this.setVisible(this.visible);
 
