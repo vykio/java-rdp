@@ -35,7 +35,7 @@ public class DrawPanel extends JPanel {
     public final double MIN_ZOOM = 0.5;
 
     /* Variables d'agrandissement et zoom */
-    public double scaleFactor = 2;
+    public double scaleFactor = 1;
     public double scaleX = scaleFactor;
     public double scaleY = scaleFactor;
 
@@ -141,7 +141,7 @@ public class DrawPanel extends JPanel {
         if (this.indexOfClickArc == 1) {
             g.drawString("Arc origin set", (int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-80)*scaleFactor/scaleY));
         }
-        g.drawString("X:" + mouseX + "-Y:" + mouseY, (int)(10/scaleX*scaleFactor), (int)(50/scaleY*scaleFactor));
+        g.drawString("X:" + mouseX/scaleX + "-Y:" + mouseY/scaleY, (int)(10/scaleX*scaleFactor), (int)(50/scaleY*scaleFactor));
         g.setColor(color);
     }
 
