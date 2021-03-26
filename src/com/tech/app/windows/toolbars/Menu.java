@@ -168,7 +168,6 @@ public class Menu extends  MenuBar {
             imageCut = ImageIO.read(getClass().getResource("/icons/cut.png"));
             imageAbout = ImageIO.read(getClass().getResource("/icons/about.png"));
 
-
         } catch (IOException e) {
             e.printStackTrace();
         }

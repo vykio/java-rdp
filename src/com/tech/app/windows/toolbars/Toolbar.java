@@ -18,5 +18,6 @@ public abstract class Toolbar extends JToolBar {
         frame.getContentPane();
         frame.add( this.getToolbar(), BorderLayout.NORTH );
         this.frame.setVisible(true);
+
     }
 }
