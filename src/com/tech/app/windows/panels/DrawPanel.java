@@ -82,6 +82,8 @@ public class DrawPanel extends JPanel {
         }
     }
 
+    public double mouseX, mouseY;
+
     /* Méthode pour afficher à l'écran */
     @Override
     public void paintComponent(Graphics g) {
@@ -134,6 +136,7 @@ public class DrawPanel extends JPanel {
         if (this.indexOfClickArc == 1) {
             g.drawString("Arc origin set", (int)(10/scaleX), (int)((this.frame.getContentPane().getSize().getHeight()-80)/scaleY));
         }
+        g.drawString("X:" + mouseX + "-Y:" + mouseY, (int)(10/scaleX), (int)(500/scaleY));
         g.setColor(color);
     }
 

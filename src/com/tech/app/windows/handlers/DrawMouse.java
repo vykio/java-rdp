@@ -81,6 +81,10 @@ public class DrawMouse extends MouseAdapter {
         x = mouseEvent.getX();
         y = mouseEvent.getY();
 
+        drawPanel.mouseX = x;
+        drawPanel.mouseY = y;
+        drawPanel.repaint();
+
         if(mouseEntered){
 
             if (SwingUtilities.isLeftMouseButton(mouseEvent)){
