@@ -1,5 +1,7 @@
 package com.tech.app.windows.panels;
 
+import com.tech.app.functions.FMaths;
+import com.tech.app.functions.FUtils;
 import com.tech.app.models.Arc;
 import com.tech.app.models.Model;
 import com.tech.app.models.Place;
@@ -35,15 +37,21 @@ public class DrawPanel extends JPanel {
     public final double MIN_ZOOM = 0.5;
 
     /* Variables d'agrandissement et zoom */
-    public double scaleX = 1;
-    public double scaleY = 1;
+    public double scaleFactor;
+    public double scaleX;
+    public double scaleY;
+
     public AffineTransform transform;
 
     public DrawPanel(JFrame frame, Model model) {
+        this.scaleFactor = FUtils.OS.isMacOs() ? 2 : 1;
+        this.scaleX = this.scaleFactor;
+        this.scaleY = this.scaleFactor;
+
         this.frame = frame;
         this.model = model;
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
-        this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        //this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
     }
 
     /* Utilisé pour déplacer tous les objets (click-molette) */
@@ -70,16 +78,16 @@ public class DrawPanel extends JPanel {
         if (obj != null) {
             if (obj instanceof Place) {
                 Place p = (Place) obj;
-                if (p.forme.getBounds2D().contains(x, y)) {
+                //if (p.forme.getBounds2D().contains(x, y)) {
                     p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
                     repaint();
-                }
+                //}
             } else {
                 Transition p = (Transition) obj;
-                if (p.forme.getBounds2D().contains(x, y)) {
+                //if (p.forme.getBounds2D().contains(x, y)) {
                     p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
                     repaint();
-                }
+                //}
             }
         }
     }
@@ -124,8 +132,8 @@ public class DrawPanel extends JPanel {
             }
             Color color = g.getColor();
             g.setColor(Color.BLACK);
-            g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX)));
-            g.drawString(draggedObject.toString(), (int)(10/scaleX), (int)((this.frame.getContentPane().getSize().getHeight()-50)/scaleY));
+            g.setFont(new Font("Console", Font.PLAIN, (int)(scaleFactor*15/scaleX)));
+            g.drawString(draggedObject.toString(), (int)(10/scaleX), (int)((this.frame.getContentPane().getSize().getHeight()-50)*scaleFactor/scaleY));
             g.setColor(color);
         }
 
@@ -134,11 +142,11 @@ public class DrawPanel extends JPanel {
     private void drawTooltips(Graphics g) {
         Color color = g.getColor();
         g.setColor(Color.BLUE);
-        g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX)));
+        g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX*scaleFactor)));
         if (this.indexOfClickArc == 1) {
-            g.drawString("Arc origin set", (int)(10/scaleX), (int)((this.frame.getContentPane().getSize().getHeight()-80)/scaleY));
+            g.drawString("Arc origin set", (int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-80)*scaleFactor/scaleY));
         }
-        g.drawString("X:" + mouseX + "-Y:" + mouseY, (int)(10/scaleX), (int)(50/scaleY));
+        //g.drawString("X:" + FMaths.round(mouseX/scaleX,2) + "-Y:" + FMaths.round(mouseY/scaleY, 2), (int)(10/scaleX*scaleFactor), (int)(50/scaleY*scaleFactor));
         g.setColor(color);
     }
 
@@ -153,7 +161,7 @@ public class DrawPanel extends JPanel {
 
     /* Ajouter une place au système */
     public void addPlace(double x, double y){
-        model.addPlace(new Place("p" + idPlace, x, y));
+        model.addPlace(new Place("P" + idPlace, x, y));
         this.idPlace++;
         repaint();
     }
