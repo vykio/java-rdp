@@ -11,10 +11,16 @@ import com.tech.app.models.Model;
 import com.tech.app.models.Transition;
 import com.tech.app.windows.MainWindow;
 
+import javax.swing.*;
+
 public class App implements Runnable {
     @Override
     public void run() {
-        MainWindow mainWindow = new MainWindow(900,500);
+        try {
+            MainWindow mainWindow = new MainWindow(900,500);
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
 
         /* Instanciation du système */
         /*Model model = new Model();*/
