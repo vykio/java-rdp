@@ -5,6 +5,7 @@
 
 package com.tech.app;
 
+import com.tech.app.functions.CheckThreadViolationRepaintManager;
 import com.tech.app.models.Arc;
 import com.tech.app.models.Place;
 import com.tech.app.models.Model;
@@ -65,7 +66,8 @@ public class App implements Runnable {
 
 
     public synchronized void start() {
-        new Thread(this).start();
+        SwingUtilities.invokeLater(this);
+        RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
     }
 
     public static void main(String[] args) {new App().start();}
