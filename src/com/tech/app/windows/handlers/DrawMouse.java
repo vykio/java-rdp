@@ -89,19 +89,19 @@ public class DrawMouse extends MouseAdapter {
             if (SwingUtilities.isLeftMouseButton(mouseEvent)){
                 switch(mode){
                     case PLACE:
-                        drawPanel.addPlace(mouseEvent.getX() /drawPanel.scaleX,mouseEvent.getY() / drawPanel.scaleY);
+                        drawPanel.addPlace(x/drawPanel.scaleX,y/ drawPanel.scaleY);
                         System.out.println("Place mise");
                         break;
                     case ARC:
-                        drawPanel.loadCoordinatesArc(mouseEvent.getX() /drawPanel.scaleX, mouseEvent.getY() /drawPanel.scaleY);
+                        drawPanel.loadCoordinatesArc(x /drawPanel.scaleX, y /drawPanel.scaleY);
                         System.out.println("Arc test");
                         break;
                     case TRANSITION:
-                        drawPanel.addTransition(mouseEvent.getX() / drawPanel.scaleX,mouseEvent.getY()/ drawPanel.scaleY);
+                        drawPanel.addTransition(x / drawPanel.scaleX,y/ drawPanel.scaleY);
                         System.out.println("Transition mise");
                         break;
                     case ATTRIBUTS:
-                        objectSelected = drawPanel.getSelectedObject(mouseEvent.getX() / drawPanel.scaleX, mouseEvent.getY() / drawPanel.scaleY);
+                        objectSelected = drawPanel.getSelectedObject(x / drawPanel.scaleX, y / drawPanel.scaleY);
                         if (objectSelected != null) {
                             drawPanel.showOptions(objectSelected);
                         } else {

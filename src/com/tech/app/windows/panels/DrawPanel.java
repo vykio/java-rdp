@@ -44,6 +44,7 @@ public class DrawPanel extends JPanel {
         this.model = model;
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+
     }
 
     /* Utilisé pour déplacer tous les objets (click-molette) */
