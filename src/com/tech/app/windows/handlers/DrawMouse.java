@@ -78,8 +78,8 @@ public class DrawMouse extends MouseAdapter {
     @Override
     public void mousePressed(java.awt.event.MouseEvent mouseEvent) {
         //System.out.println("Mouse pressed");
-        x = mouseEvent.getX();
-        y = mouseEvent.getY();
+        x = mouseEvent.getX() * (int)drawPanel.scaleFactor;
+        y = mouseEvent.getY() * (int)drawPanel.scaleFactor;
 
         drawPanel.mouseX = x;
         drawPanel.mouseY = y;
@@ -110,6 +110,7 @@ public class DrawMouse extends MouseAdapter {
                         break;
                     case SELECT:
                         objectDragged = drawPanel.getSelectedObject(x/drawPanel.scaleX, y/drawPanel.scaleY);
+                        System.out.println(objectDragged);
                         break;
                 }
             }
@@ -145,8 +146,8 @@ public class DrawMouse extends MouseAdapter {
     }
 
     public void mouseDragged(MouseEvent e) {
-        int dx = e.getX() - x;
-        int dy = e.getY() - y;
+        int dx = e.getX()*(int)drawPanel.scaleFactor - x;
+        int dy = e.getY()*(int)drawPanel.scaleFactor - y;
 
         if (SwingUtilities.isMiddleMouseButton(e)) {
 

@@ -35,8 +35,10 @@ public class DrawPanel extends JPanel {
     public final double MIN_ZOOM = 0.5;
 
     /* Variables d'agrandissement et zoom */
-    public double scaleX = 1;
-    public double scaleY = 1;
+    public double scaleFactor = 2;
+    public double scaleX = scaleFactor;
+    public double scaleY = scaleFactor;
+
     public AffineTransform transform;
 
     public DrawPanel(JFrame frame, Model model) {
@@ -125,8 +127,8 @@ public class DrawPanel extends JPanel {
             }
             Color color = g.getColor();
             g.setColor(Color.BLACK);
-            g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX)));
-            g.drawString(draggedObject.toString(), (int)(10/scaleX), (int)((this.frame.getContentPane().getSize().getHeight()-50)/scaleY));
+            g.setFont(new Font("Console", Font.PLAIN, (int)(scaleFactor*15/scaleX)));
+            g.drawString(draggedObject.toString(), (int)(10/scaleX), (int)((this.frame.getContentPane().getSize().getHeight()-50)*scaleFactor/scaleY));
             g.setColor(color);
         }
 
@@ -135,11 +137,11 @@ public class DrawPanel extends JPanel {
     private void drawTooltips(Graphics g) {
         Color color = g.getColor();
         g.setColor(Color.BLUE);
-        g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX)));
+        g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX*scaleFactor)));
         if (this.indexOfClickArc == 1) {
-            g.drawString("Arc origin set", (int)(10/scaleX), (int)((this.frame.getContentPane().getSize().getHeight()-80)/scaleY));
+            g.drawString("Arc origin set", (int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-80)*scaleFactor/scaleY));
         }
-        g.drawString("X:" + mouseX + "-Y:" + mouseY, (int)(10/scaleX), (int)(50/scaleY));
+        g.drawString("X:" + mouseX + "-Y:" + mouseY, (int)(10/scaleX*scaleFactor), (int)(50/scaleY*scaleFactor));
         g.setColor(color);
     }
 
