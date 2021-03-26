@@ -288,4 +288,17 @@ public class Model {
         java.lang.System.out.println(result.toString());
     }
 
+    public String get_C() {
+        StringBuilder result = new StringBuilder();
+        result.append("C:\n");
+        for (int i = 0; i < this.C.size(); i++) {
+            result.append(i).append(". \t");
+            for (int j = 0; j < this.C.get(i).size(); j++) {
+                result.append(this.C.get(i).get(j)).append(" \t");
+            }
+            result.append("\n");
+        }
+        return (result.toString());
+    }
+
 }

@@ -246,6 +246,7 @@ public class DrawPanel extends JPanel {
     public void showModel() {
         model.updateMatrices();
         System.out.println(model);
+        JOptionPane.showMessageDialog(frame.getContentPane(), model.get_C());
     }
 
     public void showOptions(Object obj) {
