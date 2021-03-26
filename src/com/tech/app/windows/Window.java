@@ -30,12 +30,14 @@ public abstract class Window extends JFrame {
 
         this.setTitle(this.title);
         this.setSize(this.width, this.height);
+        this.setMinimumSize(new Dimension(this.width, this.height));
         this.setPreferredSize(new Dimension(this.width, this.height));
         this.setResizable(this.resizable);
         this.setVisible(this.visible);
 
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
     }
 
     public Window(String title, int width, int height, boolean resizable, boolean visible) { this(title, width, height, null, resizable, visible); }
