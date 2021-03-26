@@ -18,7 +18,7 @@ import javax.swing.*;
 public class MainWindow extends Window {
 
     public MainWindow(int width, int height) throws UnsupportedLookAndFeelException {
-        super("Fenetre principale - RDP - " + FUtils.OS.getOs(), width, height, true, true);
+        super("Java_RDP - " + FUtils.OS.getOs(), width, height, true, true);
         UIManager.setLookAndFeel(new MetalLookAndFeel());
         setWindowHandler(new MainWindowHandler(this));
         build();
