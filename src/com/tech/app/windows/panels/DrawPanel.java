@@ -161,7 +161,7 @@ public class DrawPanel extends JPanel {
 
     /* Ajouter une place au système */
     public void addPlace(double x, double y){
-        model.addPlace(new Place("p" + idPlace, x, y));
+        model.addPlace(new Place("P" + idPlace, x, y));
         this.idPlace++;
         repaint();
     }
