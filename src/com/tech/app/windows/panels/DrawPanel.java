@@ -45,6 +45,7 @@ public class DrawPanel extends JPanel {
 
     public DrawPanel(JFrame frame, Model model) {
         this.scaleFactor = FUtils.OS.isMacOs() ? 2 : 1;
+        System.out.println(scaleFactor);
         this.scaleX = this.scaleFactor;
         this.scaleY = this.scaleFactor;
 
@@ -66,10 +67,10 @@ public class DrawPanel extends JPanel {
         }
 
         /* Mettre à jour les coordonnées des arcs en cours de création */
-        arcOriginX += dx / scaleX;
-        arcOriginY += dy / scaleY;
-        arcDestX += dx / scaleX;
-        arcDestY += dy / scaleY;
+        arcOriginX += dx / scaleX*scaleFactor;
+        arcOriginY += dy / scaleY*scaleFactor;
+        arcDestX += dx / scaleX*scaleFactor;
+        arcDestY += dy / scaleY*scaleFactor;
     }
 
     /* Bouger un objet donné en paramètre */
@@ -177,8 +178,12 @@ public class DrawPanel extends JPanel {
             if (obj1.getClass() != obj2.getClass()) {
 
                 if (obj1 instanceof Transition) {
+                    System.out.println(obj1);
+                    System.out.println(obj2);
                     ((Transition) obj1).addParent(new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1));
                 } else {
+                    System.out.println(obj1);
+                    System.out.println(obj2);
                     ((Transition) obj2).addChildren(new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2));
                 }
 

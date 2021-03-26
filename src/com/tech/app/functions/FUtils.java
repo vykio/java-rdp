@@ -11,7 +11,7 @@ public final class FUtils {
         }
 
         public static boolean isMacOs() {
-            return (getOs().toLowerCase(Locale.ROOT).contains("max"));
+            return (getOs().toLowerCase(Locale.ROOT).contains("mac"));
         }
 
     }
