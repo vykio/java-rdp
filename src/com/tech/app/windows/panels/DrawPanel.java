@@ -42,6 +42,7 @@ public class DrawPanel extends JPanel {
     public DrawPanel(JFrame frame, Model model) {
         this.frame = frame;
         this.model = model;
+        this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
     }
 
     /* Utilisé pour déplacer tous les objets (click-molette) */
@@ -136,7 +137,7 @@ public class DrawPanel extends JPanel {
         if (this.indexOfClickArc == 1) {
             g.drawString("Arc origin set", (int)(10/scaleX), (int)((this.frame.getContentPane().getSize().getHeight()-80)/scaleY));
         }
-        g.drawString("X:" + mouseX + "-Y:" + mouseY, (int)(10/scaleX), (int)(500/scaleY));
+        g.drawString("X:" + mouseX + "-Y:" + mouseY, (int)(10/scaleX), (int)(50/scaleY));
         g.setColor(color);
     }
 
