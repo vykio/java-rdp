@@ -1,5 +1,7 @@
 package com.tech.app.windows.panels;
 
+import com.tech.app.functions.FMaths;
+import com.tech.app.functions.FUtils;
 import com.tech.app.models.Arc;
 import com.tech.app.models.Model;
 import com.tech.app.models.Place;
@@ -35,18 +37,21 @@ public class DrawPanel extends JPanel {
     public final double MIN_ZOOM = 0.5;
 
     /* Variables d'agrandissement et zoom */
-    public double scaleFactor = 1;
-    public double scaleX = scaleFactor;
-    public double scaleY = scaleFactor;
+    public double scaleFactor;
+    public double scaleX;
+    public double scaleY;
 
     public AffineTransform transform;
 
     public DrawPanel(JFrame frame, Model model) {
+        this.scaleFactor = FUtils.OS.isMacOs() ? 2 : 1;
+        this.scaleX = this.scaleFactor;
+        this.scaleY = this.scaleFactor;
+
         this.frame = frame;
         this.model = model;
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
-        this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-
+        //this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
     }
 
     /* Utilisé pour déplacer tous les objets (click-molette) */
@@ -73,16 +78,16 @@ public class DrawPanel extends JPanel {
         if (obj != null) {
             if (obj instanceof Place) {
                 Place p = (Place) obj;
-                if (p.forme.getBounds2D().contains(x, y)) {
+                //if (p.forme.getBounds2D().contains(x, y)) {
                     p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
                     repaint();
-                }
+                //}
             } else {
                 Transition p = (Transition) obj;
-                if (p.forme.getBounds2D().contains(x, y)) {
+                //if (p.forme.getBounds2D().contains(x, y)) {
                     p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
                     repaint();
-                }
+                //}
             }
         }
     }
@@ -141,7 +146,7 @@ public class DrawPanel extends JPanel {
         if (this.indexOfClickArc == 1) {
             g.drawString("Arc origin set", (int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-80)*scaleFactor/scaleY));
         }
-        g.drawString("X:" + mouseX/scaleX + "-Y:" + mouseY/scaleY, (int)(10/scaleX*scaleFactor), (int)(50/scaleY*scaleFactor));
+        //g.drawString("X:" + FMaths.round(mouseX/scaleX,2) + "-Y:" + FMaths.round(mouseY/scaleY, 2), (int)(10/scaleX*scaleFactor), (int)(50/scaleY*scaleFactor));
         g.setColor(color);
     }
 

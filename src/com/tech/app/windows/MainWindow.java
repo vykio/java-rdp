@@ -1,5 +1,6 @@
 package com.tech.app.windows;
 
+import com.tech.app.functions.FUtils;
 import com.tech.app.models.Model;
 import com.tech.app.windows.handlers.DrawMouse;
 import com.tech.app.windows.handlers.MainWindowHandler;
@@ -17,8 +18,7 @@ import javax.swing.*;
 public class MainWindow extends Window {
 
     public MainWindow(int width, int height) throws UnsupportedLookAndFeelException {
-
-        super("Fenetre principale - RDP", width, height, true, true);
+        super("Fenetre principale - RDP - " + FUtils.OS.getOs(), width, height, true, true);
         UIManager.setLookAndFeel(new MetalLookAndFeel());
         setWindowHandler(new MainWindowHandler(this));
         build();
