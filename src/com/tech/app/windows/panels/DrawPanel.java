@@ -37,11 +37,12 @@ public class DrawPanel extends JPanel {
     /* Variables d'agrandissement et zoom */
     public double scaleX = 1;
     public double scaleY = 1;
-    public AffineTransform transform = AffineTransform.getScaleInstance(scaleX, scaleY);
+    public AffineTransform transform;
 
     public DrawPanel(JFrame frame, Model model) {
         this.frame = frame;
         this.model = model;
+        this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
     }
 
