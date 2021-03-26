@@ -83,7 +83,6 @@ public class DrawMouse extends MouseAdapter {
 
         drawPanel.mouseX = x;
         drawPanel.mouseY = y;
-        drawPanel.repaint();
 
         if(mouseEntered){
 
