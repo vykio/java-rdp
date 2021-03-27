@@ -40,8 +40,6 @@ public class MainWindow extends Window {
         DrawingToolbar dToolbar = new DrawingToolbar(this,drawMouse);
         dToolbar.applyToolbar();
 
-
-
     }
 
 

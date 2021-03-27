@@ -16,6 +16,13 @@ public final class FUtils {
 
     }
 
+    public static class Screen {
 
+        public static double getScaleFactor() {
+            double hundredPercent = 96.0;
+            return java.awt.Toolkit.getDefaultToolkit().getScreenResolution() / hundredPercent;
+        }
+
+    }
 
 }
