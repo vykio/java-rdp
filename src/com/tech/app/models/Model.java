@@ -184,6 +184,8 @@ public class Model {
 
     public void clearAll() {
         clearMatrices();
+        this.nbPlace = 0;
+        this.nbTransition = 0;
         this.placeVector = new ArrayList<Place>();
         this.transitionVector = new ArrayList<Transition>();
     }
@@ -289,16 +291,58 @@ public class Model {
     }
 
     public String get_C() {
+
+        //Code pour un matrice LaTeX avec labels pour lignes et colonnes
+
         StringBuilder result = new StringBuilder();
-        result.append("C:\n");
-        for (int i = 0; i < this.C.size(); i++) {
-            result.append(i).append(". \t");
-            for (int j = 0; j < this.C.get(i).size(); j++) {
-                result.append(this.C.get(i).get(j)).append(" \t");
-            }
-            result.append("\n");
+
+        // on utilise un tableau 2X2 ->
+        // premiere ligne premiere colonne : rien
+        // première ligne deuxieme colonne : vecteur transitions
+        // deuxieme ligne première colonne : vecteur places
+        // deuxieme ligne deuxieme colonne : matrice C
+
+
+        // déclaration du tableau principal, on remplit la premiere case par du vide, et on commence à creer la deuxieme case
+        result.append("C =\\begin{array}{c  c}\\phantom{}&\\begin{array}{");
+
+
+
+        // centrer les éléments en fonction du nombre de colonnes
+        for(int k = 0; k < this.transitionVector.size();k++){
+            result.append("c");
         }
+            result.append("}");
+
+        //boucle pour créer la première ligne -> liste de tous les noms des transitions
+        for(int k = 0; k < this.transitionVector.size();k++){
+            result.append(this.transitionVector.get(k).getName());
+            if(k != this.transitionVector.size()-1) result.append("&");
+        }
+
+        result.append("\\end{array}\\\\\\begin{matrix}");
+
+        //boucle pour mettre les noms des places
+        for(int k = 0; k < this.placeVector.size();k++){
+            result.append(this.placeVector.get(k).getName()).append("\\\\");
+        }
+
+        result.append("\\end{matrix}&\\begin{pmatrix}");
+
+
+        for (int i = 0; i < this.C.size(); i++) {
+            if(i>0) result.append("\\\\");
+            for (int j = 0; j < this.C.get(i).size(); j++) {
+                if (this.C.get(i).get(j) >= 0) result.append("\\phantom{-}");
+                result.append(this.C.get(i).get(j));
+                if(j != this.C.get(i).size()-1) result.append("&");
+            }
+
+        }
+        result.append("\\end{pmatrix}\\end{array}");
+        System.out.println(result.toString());
         return (result.toString());
+
     }
 
 }

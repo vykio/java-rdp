@@ -14,10 +14,8 @@ public class Transition {
     private double x, y;
     private List<Arc> childrens, parents;
 
-    private int orientation; // 0 : Verticale; 1 : Horizontale
-
     private final int LARGE_SIDE = 40, MIN_SIDE = 10;
-    public int WIDTH=MIN_SIDE, HEIGHT=LARGE_SIDE;
+    public int WIDTH=LARGE_SIDE, HEIGHT=MIN_SIDE;
 
     public Transition(String name, double x, double y, ArrayList<Arc> childrens, ArrayList<Arc> parents) {
         this.name = name;
@@ -25,7 +23,6 @@ public class Transition {
         this.y = y;
         this.childrens = childrens;
         this.parents = parents;
-        this.orientation = 0;
         this.forme = new Rectangle2D.Float((float) (this.x-(WIDTH/2)), (float) (this.y-(HEIGHT/2)), WIDTH ,HEIGHT );
     }
 
