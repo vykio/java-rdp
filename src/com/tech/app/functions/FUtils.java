@@ -20,7 +20,11 @@ public final class FUtils {
 
         public static double getScaleFactor() {
             double hundredPercent = 96.0;
-            return java.awt.Toolkit.getDefaultToolkit().getScreenResolution() / hundredPercent;
+            double res = java.awt.Toolkit.getDefaultToolkit().getScreenResolution() / hundredPercent;
+            if (OS.isMacOs()) {
+                return 2*res;
+            }
+            return res;
         }
 
     }
