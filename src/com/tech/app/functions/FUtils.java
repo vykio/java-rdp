@@ -19,10 +19,26 @@ public final class FUtils {
 
     public static class Screen {
 
+        public static boolean hasRetinaDisplay() {
+            Object obj = Toolkit.getDefaultToolkit()
+                    .getDesktopProperty(
+                            "apple.awt.contentScaleFactor");
+            if (obj instanceof Float) {
+                Float f = (Float) obj;
+                int scale = f.intValue();
+                return (scale == 2); // 1 indicates a regular mac display.
+            }
+            return false;
+        }
+
         public static double getScaleFactor() {
             double hundredPercent = 96.0;
             if (OS.isMacOs()) {
-                return (double) Toolkit.getDefaultToolkit().getDesktopProperty("apple.awt.contentScaleFactor");
+                if (hasRetinaDisplay()) {
+                    return 2.0;
+                } else {
+                    return 1.0;
+                }
             }
             return java.awt.Toolkit.getDefaultToolkit().getScreenResolution() / hundredPercent;
         }
