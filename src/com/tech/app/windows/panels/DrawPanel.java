@@ -6,10 +6,14 @@ import com.tech.app.models.Arc;
 import com.tech.app.models.Model;
 import com.tech.app.models.Place;
 import com.tech.app.models.Transition;
+import org.scilab.forge.jlatexmath.TeXConstants;
+import org.scilab.forge.jlatexmath.TeXFormula;
+import org.scilab.forge.jlatexmath.TeXIcon;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 /**
  * Ordre d'affichage :
@@ -244,9 +248,21 @@ public class DrawPanel extends JPanel {
 
     /* Afficher dans la console le système */
     public void showModel() {
-        model.updateMatrices();
-        System.out.println(model);
-        JOptionPane.showMessageDialog(frame.getContentPane(), model.get_C());
+        if(model.placeVector.size() != 0 && model.transitionVector.size() != 0){
+            model.updateMatrices();
+            System.out.println(model);
+
+            // mise au format latex de la matrice
+            TeXFormula formula = new TeXFormula(String.valueOf(model.get_C()));
+            TeXIcon ti = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY,20);
+            BufferedImage b = new BufferedImage(ti.getIconWidth(), ti.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+            ti.paintIcon(new JOptionPane(), b.getGraphics(), 0, 0);
+
+            JOptionPane.showMessageDialog(frame.getContentPane(), null, "Matrice C", JOptionPane.PLAIN_MESSAGE,ti);
+        } else {
+            JOptionPane.showMessageDialog(frame.getContentPane(), "Veuillez créer un RDP pour pouvoir créer une matrice", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
     public void showOptions(Object obj) {
