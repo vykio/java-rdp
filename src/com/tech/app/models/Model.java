@@ -184,6 +184,8 @@ public class Model {
 
     public void clearAll() {
         clearMatrices();
+        this.nbPlace = 0;
+        this.nbTransition = 0;
         this.placeVector = new ArrayList<Place>();
         this.transitionVector = new ArrayList<Transition>();
     }
@@ -331,6 +333,7 @@ public class Model {
         for (int i = 0; i < this.C.size(); i++) {
             if(i>0) result.append("\\\\");
             for (int j = 0; j < this.C.get(i).size(); j++) {
+                if (this.C.get(i).get(j) >= 0) result.append("\\phantom{-}");
                 result.append(this.C.get(i).get(j));
                 if(j != this.C.get(i).size()-1) result.append("&");
             }
