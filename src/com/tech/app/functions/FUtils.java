@@ -1,5 +1,6 @@
 package com.tech.app.functions;
 
+import java.awt.*;
 import java.util.Locale;
 
 public final class FUtils {
@@ -20,11 +21,10 @@ public final class FUtils {
 
         public static double getScaleFactor() {
             double hundredPercent = 96.0;
-            double res = java.awt.Toolkit.getDefaultToolkit().getScreenResolution() / hundredPercent;
             if (OS.isMacOs()) {
-                return 2*res;
+                return (double) Toolkit.getDefaultToolkit().getDesktopProperty("apple.awt.contentScaleFactor");
             }
-            return res;
+            return java.awt.Toolkit.getDefaultToolkit().getScreenResolution() / hundredPercent;
         }
 
     }
