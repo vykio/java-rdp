@@ -1,6 +1,7 @@
 package com.tech.app.functions;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.Locale;
 
 public final class FUtils {
@@ -19,22 +20,17 @@ public final class FUtils {
 
     public static class Screen {
 
-        public static boolean hasRetinaDisplay() {
-            Object obj = Toolkit.getDefaultToolkit()
-                    .getDesktopProperty(
-                            "apple.awt.contentScaleFactor");
-            if (obj instanceof Float) {
-                Float f = (Float) obj;
-                int scale = f.intValue();
-                return (scale == 2); // 1 indicates a regular mac display.
-            }
-            return false;
+        public static boolean isMacRetinaDisplay() {
+            final GraphicsConfiguration gfxConfig = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+            final AffineTransform transform = gfxConfig.getDefaultTransform();
+            return !transform.isIdentity();
         }
 
         public static double getScaleFactor() {
             double hundredPercent = 96.0;
+
             if (OS.isMacOs()) {
-                if (hasRetinaDisplay()) {
+                if (isMacRetinaDisplay()) {
                     return 2.0;
                 } else {
                     return 1.0;
