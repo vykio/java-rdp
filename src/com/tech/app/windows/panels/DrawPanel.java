@@ -271,6 +271,8 @@ public class DrawPanel extends JPanel {
                 String result = JOptionPane.showInputDialog("Marquage :");
                 int num = Integer.parseInt(result);
                 ((Place)obj).setMarquage(num);
+
+                Object[] orientation = { "Verticale", "Horizontale" };
             } catch (Exception e){
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only integers are allowed");
             }
@@ -284,6 +286,26 @@ public class DrawPanel extends JPanel {
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error...");
             }
+        }
+        repaint();
+    }
+
+    public void showOptionsJetons(Object obj) {
+        if (obj instanceof Place) {
+            try {
+                String s = (String)JOptionPane.showInputDialog(
+                        frame.getContentPane(),
+                        "Nombre Jeton(s)\n" ,
+                        "le titre",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        null,
+                        "1"); // valeur initiale
+
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only integers are allowed");
+            }
+
         }
         repaint();
     }
