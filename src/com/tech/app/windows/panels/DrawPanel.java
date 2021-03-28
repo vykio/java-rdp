@@ -47,6 +47,8 @@ public class DrawPanel extends JPanel {
 
     public AffineTransform transform;
 
+    String list[] = new String[30];
+
     public DrawPanel(JFrame frame, Model model) {
         this.scaleFactor = FUtils.Screen.getScaleFactor();
         System.out.println("Scale Factor: " + this.scaleFactor);
@@ -171,6 +173,7 @@ public class DrawPanel extends JPanel {
         repaint();
     }
 
+
     /* Ajouter un arc au système */
     public void addArc(double x1,double y1, double x2, double y2){
         Object obj1 = getSelectedObject(x1, y1);
@@ -272,7 +275,16 @@ public class DrawPanel extends JPanel {
                 int num = Integer.parseInt(result);
                 ((Place)obj).setMarquage(num);
 
-                Object[] orientation = { "Verticale", "Horizontale" };
+                for (int i = 0; i < list.length; i++) {
+                    list[i] = Integer.toString(i);
+                }
+
+                /*JOptionPane.showInputDialog(frame, "Nb Jetons", "Jetons", JOptionPane.QUESTION_MESSAGE,
+                        null, list, "");
+                 int num = Integer.parseInt(result);
+                ((Place)obj).setMarquage(num);
+                 */
+
             } catch (Exception e){
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only integers are allowed");
             }
@@ -286,26 +298,6 @@ public class DrawPanel extends JPanel {
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error...");
             }
-        }
-        repaint();
-    }
-
-    public void showOptionsJetons(Object obj) {
-        if (obj instanceof Place) {
-            try {
-                String s = (String)JOptionPane.showInputDialog(
-                        frame.getContentPane(),
-                        "Nombre Jeton(s)\n" ,
-                        "le titre",
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        null,
-                        "1"); // valeur initiale
-
-            } catch (Exception e){
-                JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only integers are allowed");
-            }
-
         }
         repaint();
     }

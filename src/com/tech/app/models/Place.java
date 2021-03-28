@@ -11,20 +11,22 @@ public class Place {
     private double x;
     private double y;
     private int marquage;
+    private int jeton;
     public boolean draggable;
 
     private final static int WIDTH = 40, HEIGHT = 40;
 
-    public Place(String name, double x, double y, int marquage) {
+    public Place(String name, double x, double y, int marquage, int jeton) {
         this.name = name;
         this.x = x;
         this.y = y;
         this.marquage = marquage;
+        this.jeton = jeton;
         this.forme = new Ellipse2D.Float((float)(this.x-(WIDTH/2)), (float)(this.y-(HEIGHT/2)), WIDTH ,HEIGHT);
     }
 
-    public Place(String name, double x, double y) { this(name, x, y, 0); }
-    public Place(String name) { this(name, 0, 0, 0); }
+    public Place(String name, double x, double y) { this(name, x, y, 0,0); }
+    public Place(String name) { this(name, 0, 0, 0,0); }
 
     public String getName() { return name; }
     public double getX() { return x; }
@@ -57,10 +59,27 @@ public class Place {
 
         g.drawString(label, (int)(x-(forme.width)/4) ,(int)(y-25));
 
-        if (marquage > 0) {
-            g.drawString("" + marquage, (int)(x-(forme.width)/4) ,(int)(y+5));
+        if (marquage == 1) {
+            g2.setColor(color.black);
+            g2.fill(new Ellipse2D.Float((float)this.x-(forme.width)/6, (float)this.y-(forme.height)/6, (int)forme.width/3, (int)forme.height/3));
+        } else if( marquage == 2) {
+            g2.setColor(color.black);
+            g2.fill(new Ellipse2D.Float((float)this.x+2, (float)this.y-(forme.height)/6, (int)forme.width/3, (int)forme.height/3));
+            g2.fill(new Ellipse2D.Float((float)this.x-15, (float)this.y-(forme.height)/6, (int)forme.width/3, (int)forme.height/3));
+        } else if( marquage == 3) {
+            g2.setColor(color.black);
+            g2.fill(new Ellipse2D.Float((float)this.x+2, (float)this.y, (int)forme.width/3, (int)forme.height/3));
+            g2.fill(new Ellipse2D.Float((float)this.x-15, (float)this.y, (int)forme.width/3, (int)forme.height/3));
+            g2.fill(new Ellipse2D.Float((float)this.x-7, (float)this.y-15, (int)forme.width/3, (int)forme.height/3));
+        }else if( marquage == 4) {
+            g2.setColor(color.black);
+            g2.fill(new Ellipse2D.Float((float)this.x+3, (float)this.y, (int)forme.width/3, (int)forme.height/3));
+            g2.fill(new Ellipse2D.Float((float)this.x-14, (float)this.y, (int)forme.width/3, (int)forme.height/3));
+            g2.fill(new Ellipse2D.Float((float)this.x+3, (float)this.y-14, (int)forme.width/3, (int)forme.height/3));
+            g2.fill(new Ellipse2D.Float((float)this.x-14, (float)this.y-14, (int)forme.width/3, (int)forme.height/3));
+        }else if( marquage >4) {
+            g.drawString("" + marquage, (int) (x - (forme.width) / 4), (int) (y + 5));
         }
-
     }
 
     public void updatePosition(double x, double y) {

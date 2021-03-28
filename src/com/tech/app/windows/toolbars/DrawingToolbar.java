@@ -97,10 +97,6 @@ public class DrawingToolbar extends Toolbar {
         btnSelect.addActionListener( this::btnSelectListener );
         toolbar.add( btnSelect );
 
-        JToggleButton btnJetons = new JToggleButton();
-        btnJetons.setToolTipText( "Jeton" );
-        btnJetons.addActionListener( this::btnJetonsListener );
-        toolbar.add( btnJetons );
 
         // Goupe de boutons pour ne pouvoir sélectionner qu'une seule des 5 fonctionnalités uniques
         // -> place, transition, arc, attributs, select
@@ -110,7 +106,6 @@ public class DrawingToolbar extends Toolbar {
         btnGroup.add(btnArc);
         btnGroup.add(btnAttributs);
         btnGroup.add(btnSelect);
-        btnGroup.add(btnJetons);
 
         //Gestion des icônes => améliorable !
         Image imageNew = null;
@@ -127,7 +122,6 @@ public class DrawingToolbar extends Toolbar {
         Image imageArc = null;
         Image imageAttributs = null;
         Image imageSelect = null;
-        Image imageJetons = null;
 
         try {
             imageNew = ImageIO.read(getClass().getResource("/icons/new.png"));
@@ -144,7 +138,6 @@ public class DrawingToolbar extends Toolbar {
             imageArc = ImageIO.read(getClass().getResource("/icons/arc.png"));
             imageAttributs = ImageIO.read(getClass().getResource("/icons/attributs.png"));
             imageSelect = ImageIO.read(getClass().getResource("/icons/select.png"));
-            imageJetons = ImageIO.read(getClass().getResource("/icons/jetons.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -163,7 +156,6 @@ public class DrawingToolbar extends Toolbar {
         assert imageArc != null;
         assert imageAttributs != null;
         assert imageSelect != null;
-        assert imageJetons != null;
         btnNew.setIcon(new ImageIcon(imageNew));
         btnOpen.setIcon(new ImageIcon(imageOpen));
         btnSave.setIcon(new ImageIcon(imageSave));
@@ -178,7 +170,6 @@ public class DrawingToolbar extends Toolbar {
         btnArc.setIcon(new ImageIcon(imageArc));
         btnAttributs.setIcon(new ImageIcon(imageAttributs));
         btnSelect.setIcon(new ImageIcon(imageSelect));
-        btnJetons.setIcon(new ImageIcon(imageJetons));
 
 
         return toolbar;
@@ -247,11 +238,6 @@ public class DrawingToolbar extends Toolbar {
     public void btnSelectListener(ActionEvent event){
         System.out.println("Select button clicked");
         drawMouse.action(DrawMouse.MODE.SELECT);
-    }
-
-    public void btnJetonsListener(ActionEvent event){
-        System.out.println("Jetons button clicked");
-        drawMouse.action(DrawMouse.MODE.JETONS);
     }
 
 }

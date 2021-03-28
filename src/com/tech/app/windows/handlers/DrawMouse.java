@@ -29,8 +29,7 @@ public class DrawMouse extends MouseAdapter {
         TRANSITION,
         ARC,
         ATTRIBUTS,
-        SELECT,
-        JETONS
+        SELECT
     }
 
     public MODE mode;
@@ -113,12 +112,6 @@ public class DrawMouse extends MouseAdapter {
                     case SELECT:
                         objectDragged = drawPanel.getSelectedObject(x/drawPanel.scaleX, y/drawPanel.scaleY);
                         System.out.println(objectDragged);
-                        break;
-                    case JETONS:
-                        objectSelected = drawPanel.getSelectedObject(x / drawPanel.scaleX, y / drawPanel.scaleY);
-                        if (objectSelected != null) {
-                            drawPanel.showOptionsJetons(objectSelected);
-                        }
                         break;
                 }
             }
