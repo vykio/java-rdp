@@ -78,7 +78,9 @@ public class Place {
             g2.fill(new Ellipse2D.Float((float)this.x+3, (float)this.y-14, (int)forme.width/3, (int)forme.height/3));
             g2.fill(new Ellipse2D.Float((float)this.x-14, (float)this.y-14, (int)forme.width/3, (int)forme.height/3));
         }else if( marquage >4) {
-            g.drawString("" + marquage, (int) (x - (forme.width) / 4), (int) (y + 5));
+            Font police = new Font ("TimesRoman", Font.BOLD, 20);
+            g.setFont(police);
+            g.drawString("" + marquage, (int) (x-12), (int) (y + 5));
         }
     }
 
