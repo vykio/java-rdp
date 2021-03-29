@@ -92,6 +92,7 @@ public class Place {
             g.setFont(police);
             g.setColor(myColor);
             g.drawString("" + label, (int) (x+20), (int) (y + 5));
+            g.setColor(color.black);
         }
 
     }
