@@ -311,7 +311,7 @@ public class DrawPanel extends JPanel {
             JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
             JTextField Label = new JTextField();
             controls.add(Label);
-            JPasswordField Position = new JPasswordField();
+            JTextField Position = new JTextField();
             controls.add(Position);
             panel.add(controls, BorderLayout.CENTER);
 
