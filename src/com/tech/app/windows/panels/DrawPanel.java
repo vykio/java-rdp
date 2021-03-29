@@ -295,11 +295,11 @@ public class DrawPanel extends JPanel {
     public void showOptionsLabel(Object obj) {
         if (obj instanceof Place) {
             try {
-                ((Place)obj).resetlabel();
+                /*((Place)obj).resetlabel();
                 String result = JOptionPane.showInputDialog("Label :");
                 ((Place)obj).addLabel(result);
+*/
 
-             /*
              JPanel panel = new JPanel(new BorderLayout(5, 5));
              JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
              label.add (new JLabel("Label : ", SwingConstants.RIGHT));
@@ -316,7 +316,7 @@ public class DrawPanel extends JPanel {
             panel.add(controls, BorderLayout.CENTER);
 
                 JOptionPane.showMessageDialog(frame, panel, "Label / Position", JOptionPane.QUESTION_MESSAGE, icon);
-            */
+
 
             } catch (Exception e){
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only string are allowed");
