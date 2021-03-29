@@ -275,16 +275,6 @@ public class DrawPanel extends JPanel {
                 int num = Integer.parseInt(result);
                 ((Place)obj).setMarquage(num);
 
-                for (int i = 0; i < list.length; i++) {
-                    list[i] = Integer.toString(i);
-                }
-
-                /*JOptionPane.showInputDialog(frame, "Nb Jetons", "Jetons", JOptionPane.QUESTION_MESSAGE,
-                        null, list, "");
-                 int num = Integer.parseInt(result);
-                ((Place)obj).setMarquage(num);
-                 */
-
             } catch (Exception e){
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only integers are allowed");
             }
@@ -299,6 +289,44 @@ public class DrawPanel extends JPanel {
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error...");
             }
         }
+        repaint();
+    }
+
+    public void showOptionsLabel(Object obj) {
+        if (obj instanceof Place) {
+            try {
+                ((Place)obj).resetlabel();
+                String result = JOptionPane.showInputDialog("Label :");
+                ((Place)obj).addLabel(result);
+
+             /*
+             JPanel panel = new JPanel(new BorderLayout(5, 5));
+             JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
+             label.add (new JLabel("Label : ", SwingConstants.RIGHT));
+             label.add (new JLabel("Position : ", SwingConstants.LEFT));
+             panel.add(label, BorderLayout.WEST);
+
+             ImageIcon icon = new ImageIcon (getClass().getResource("/icons/position.png"));
+
+            JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
+            JTextField Label = new JTextField();
+            controls.add(Label);
+            JPasswordField Position = new JPasswordField();
+            controls.add(Position);
+            panel.add(controls, BorderLayout.CENTER);
+
+                JOptionPane.showMessageDialog(frame, panel, "Label / Position", JOptionPane.QUESTION_MESSAGE, icon);
+            */
+
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only string are allowed");
+            }
+        }
+        repaint();
+    }
+
+    public void errorSelect(){
+        JOptionPane.showMessageDialog(frame.getContentPane(), "Veuillez sélectionner une place ou transition");
         repaint();
     }
 }
