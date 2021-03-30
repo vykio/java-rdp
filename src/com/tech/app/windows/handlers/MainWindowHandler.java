@@ -11,7 +11,6 @@ public class MainWindowHandler extends WindowHandler {
 
     @Override
     public void windowOpened(WindowEvent e) {
-
     }
 
     @Override

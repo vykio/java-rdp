@@ -7,13 +7,10 @@ import com.tech.app.windows.handlers.MainWindowHandler;
 import com.tech.app.windows.panels.DrawPanel;
 import com.tech.app.windows.toolbars.DrawingToolbar;
 import com.tech.app.windows.toolbars.Menu;
-import com.tech.app.windows.toolbars.MenuBar;
-import javax.swing.SwingUtilities;
+
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.*;
-
-import javax.swing.*;
 
 public class MainWindow extends Window {
 
@@ -40,10 +37,6 @@ public class MainWindow extends Window {
         DrawingToolbar dToolbar = new DrawingToolbar(this,drawMouse);
         dToolbar.applyToolbar();
 
-
-
     }
-
-
 
 }
