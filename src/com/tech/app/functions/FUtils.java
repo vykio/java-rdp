@@ -16,6 +16,10 @@ public final class FUtils {
             return (getOs().toLowerCase(Locale.ROOT).contains("mac"));
         }
 
+        public static boolean isLinux() {
+            return (getOs().toLowerCase(Locale.ROOT).contains("linux"));
+        }
+
     }
 
     public static class Screen {
@@ -29,12 +33,16 @@ public final class FUtils {
         public static double getScaleFactor() {
             double hundredPercent = 96.0;
 
+            double hundredPercentLinux = 90.0;
+
             if (OS.isMacOs()) {
                 if (isMacRetinaDisplay()) {
                     return 2.0;
                 } else {
                     return 1.0;
                 }
+            } else if (OS.isLinux()) {
+                return java.awt.Toolkit.getDefaultToolkit().getScreenResolution() / hundredPercentLinux;
             }
             return java.awt.Toolkit.getDefaultToolkit().getScreenResolution() / hundredPercent;
         }
