@@ -45,6 +45,10 @@ public class DrawPanel extends JPanel {
     public double scaleX;
     public double scaleY;
 
+    /* Conversion string --> int */
+    public int convert;
+
+
     public AffineTransform transform;
 
     String list[] = new String[30];
@@ -293,17 +297,13 @@ public class DrawPanel extends JPanel {
     }
 
     public void showOptionsLabel(Object obj) {
-        if (obj instanceof Place) {
+        if (obj instanceof Place || obj instanceof Transition ) {
             try {
-                /*((Place)obj).resetlabel();
-                String result = JOptionPane.showInputDialog("Label :");
-                ((Place)obj).addLabel(result);
-*/
 
              JPanel panel = new JPanel(new BorderLayout(5, 5));
              JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
              label.add (new JLabel("Label : ", SwingConstants.RIGHT));
-             label.add (new JLabel("Position : ", SwingConstants.LEFT));
+             label.add (new JLabel("Position :", SwingConstants.LEFT));
              panel.add(label, BorderLayout.WEST);
 
              ImageIcon icon = new ImageIcon (getClass().getResource("/icons/position.png"));
@@ -311,12 +311,23 @@ public class DrawPanel extends JPanel {
             JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
             JTextField Label = new JTextField();
             controls.add(Label);
-            JTextField Position = new JTextField();
+            JTextField Position = new JTextField("4");
             controls.add(Position);
             panel.add(controls, BorderLayout.CENTER);
+           
+            JOptionPane.showMessageDialog(frame, panel, "Label / Position", JOptionPane.QUESTION_MESSAGE, icon);
+            
+            convert = Integer.parseInt(Position.getText());
+            System.out.println(Label.getText());
+            System.out.println(Position.getText());
 
-                JOptionPane.showMessageDialog(frame, panel, "Label / Position", JOptionPane.QUESTION_MESSAGE, icon);
-
+                if (obj instanceof Place) {
+                    ((Place) obj).addLabel(Label.getText());
+                    ((Place) obj).addPosition(convert);
+                } else if(obj instanceof Transition){
+                    ((Transition) obj).addLabel(Label.getText());
+                    ((Transition) obj).addPosition(convert);
+                }    
 
             } catch (Exception e){
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only string are allowed");
