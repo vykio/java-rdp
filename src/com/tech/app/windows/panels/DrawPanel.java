@@ -1,6 +1,5 @@
 package com.tech.app.windows.panels;
 
-import com.tech.app.functions.FMaths;
 import com.tech.app.functions.FUtils;
 import com.tech.app.models.Arc;
 import com.tech.app.models.Model;
@@ -30,7 +29,8 @@ public class DrawPanel extends JPanel {
 
     private double arcOriginX = 0, arcOriginY =0, arcDestX=0, arcDestY=0;
     private int indexOfClickArc = 0;
-    public Object draggedObject = null;
+    public Object selectedObject = null;
+    private boolean clickError = false;
 
     /* Variables de départ pour indexation P et T */
     private int idPlace=0;
@@ -78,8 +78,9 @@ public class DrawPanel extends JPanel {
     }
 
     /* Bouger un objet donné en paramètre */
-    public void updatePosition(Object obj, double x, double y, double scaleX, double scaleY, double dx, double dy) {
-        draggedObject = obj;
+
+    public void updatePosition(Object obj, double x, double y, double scaleX, double scaleY, int dx, int dy) {
+        selectedObject = obj;
         if (obj != null) {
             if (obj instanceof Place) {
                 Place p = (Place) obj;
@@ -115,12 +116,12 @@ public class DrawPanel extends JPanel {
 
         /* Afficher chaque places et transitions, qui ne sont pas sélectionnées */
         for (Place p:model.placeVector) {
-            if (p != draggedObject) {
+            if (p != selectedObject) {
                 p.draw(g);
             }
         }
         for (Transition t:model.transitionVector) {
-            if (t != draggedObject) {
+            if (t != selectedObject) {
                 t.draw(g);
             }
         }
@@ -129,16 +130,21 @@ public class DrawPanel extends JPanel {
 
         /* Afficher l'objet sélectionné au dessus des autres:
         * donc affichage en dernier */
-        if (draggedObject != null) {
-            if (draggedObject instanceof Place) {
-                ((Place)draggedObject).draw(g);
+        if (selectedObject != null) {
+            Color co = g.getColor();
+            g.setColor(Color.BLUE);
+
+            if (selectedObject instanceof Place) {
+                ((Place) selectedObject).draw(g);
             } else {
-                ((Transition)draggedObject).draw(g);
+                ((Transition) selectedObject).draw(g);
             }
+            g.setColor(co);
+
             Color color = g.getColor();
             g.setColor(Color.BLACK);
             g.setFont(new Font("Console", Font.PLAIN, (int)(scaleFactor*15/scaleX)));
-            g.drawString(draggedObject.toString(), (int)(10/scaleX), (int)((this.frame.getContentPane().getSize().getHeight()-50)*scaleFactor/scaleY));
+            g.drawString(selectedObject.toString(), (int)(10/scaleX), (int)((this.frame.getContentPane().getSize().getHeight()-50)*scaleFactor/scaleY));
             g.setColor(color);
         }
 
@@ -150,6 +156,9 @@ public class DrawPanel extends JPanel {
         g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX*scaleFactor)));
         if (this.indexOfClickArc == 1) {
             g.drawString("Arc origin set", (int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-80)*scaleFactor/scaleY));
+        } else if (this.clickError) {
+            g.setColor(Color.RED);
+            g.drawString("Arc illegal", (int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-80)*scaleFactor/scaleY));
         }
         //g.drawString("X:" + FMaths.round(mouseX/scaleX,2) + "-Y:" + FMaths.round(mouseY/scaleY, 2), (int)(10/scaleX*scaleFactor), (int)(50/scaleY*scaleFactor));
         g.setColor(color);
@@ -158,7 +167,7 @@ public class DrawPanel extends JPanel {
     /* Nettoyer tout ! (model et canvas) */
     public void clearAll() {
         model.clearAll();
-        draggedObject = null;
+        selectedObject = null;
         idTransition = 0;
         idPlace = 0;
         repaint();
@@ -180,7 +189,7 @@ public class DrawPanel extends JPanel {
         if (obj1 != null && obj2 != null) {
 
             if (obj1.getClass() != obj2.getClass()) {
-
+                this.clickError = false;
                 if (obj1 instanceof Transition) {
                     System.out.println(obj1);
                     System.out.println(obj2);
@@ -191,9 +200,12 @@ public class DrawPanel extends JPanel {
                     ((Transition) obj2).addChildren(new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2));
                 }
 
+            } else {
+                this.clickError = true;
             }
 
         }
+        System.out.println("ce : " + clickError);
         repaint();
 
     }
@@ -246,6 +258,23 @@ public class DrawPanel extends JPanel {
         return null;
     }
 
+    public void selectObject(Object obj) {
+        selectedObject = obj;
+        this.clickError = false;
+        repaint();
+    }
+
+    public void deleteSelectedObject() {
+        if (selectedObject != null) {
+            if (selectedObject instanceof Place) {
+                this.model.removePlace((Place)selectedObject);
+            } else {
+                this.model.removeTransition((Transition) selectedObject);
+            }
+            repaint();
+        }
+    }
+
     /* Afficher dans la console le système */
     public void showModel() {
         if(model.placeVector.size() != 0 && model.transitionVector.size() != 0){
@@ -287,4 +316,5 @@ public class DrawPanel extends JPanel {
         }
         repaint();
     }
+
 }
