@@ -20,8 +20,8 @@ public class DrawMouse extends MouseAdapter {
     public boolean mouseEntered = false;
     public boolean mouseExited = true;
 
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 
     public enum MODE {
         NONE,
@@ -77,8 +77,9 @@ public class DrawMouse extends MouseAdapter {
     @Override
     public void mousePressed(java.awt.event.MouseEvent mouseEvent) {
         //System.out.println("Mouse pressed");
-        x = mouseEvent.getX() * (int)drawPanel.scaleFactor;
-        y = mouseEvent.getY() * (int)drawPanel.scaleFactor;
+        x = mouseEvent.getX() * (double)drawPanel.scaleFactor;
+        y = mouseEvent.getY() * (double)drawPanel.scaleFactor;
+        System.out.println(drawPanel.scaleFactor);
 
         drawPanel.mouseX = x;
         drawPanel.mouseY = y;
@@ -146,8 +147,8 @@ public class DrawMouse extends MouseAdapter {
     }
 
     public void mouseDragged(MouseEvent e) {
-        int dx = e.getX()*(int)drawPanel.scaleFactor - x;
-        int dy = e.getY()*(int)drawPanel.scaleFactor - y;
+        double dx = e.getX()*drawPanel.scaleFactor - x;
+        double dy = e.getY()*drawPanel.scaleFactor - y;
 
         if (SwingUtilities.isMiddleMouseButton(e)) {
 

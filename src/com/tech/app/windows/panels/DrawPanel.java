@@ -48,8 +48,8 @@ public class DrawPanel extends JPanel {
     public AffineTransform transform;
 
     public DrawPanel(JFrame frame, Model model) {
-        this.scaleFactor = FUtils.OS.isMacOs() ? 2 : 1;
-        System.out.println(scaleFactor);
+        this.scaleFactor = FUtils.Screen.getScaleFactor();
+        System.out.println("Scale Factor: " + this.scaleFactor);
         this.scaleX = this.scaleFactor;
         this.scaleY = this.scaleFactor;
 
@@ -60,7 +60,7 @@ public class DrawPanel extends JPanel {
     }
 
     /* Utilisé pour déplacer tous les objets (click-molette) */
-    public void updatePositions(double scaleX, double scaleY, int dx, int dy) {
+    public void updatePositions(double scaleX, double scaleY, double dx, double dy) {
         for (Place p : model.placeVector) {
             p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
             repaint();
@@ -78,6 +78,7 @@ public class DrawPanel extends JPanel {
     }
 
     /* Bouger un objet donné en paramètre */
+
     public void updatePosition(Object obj, double x, double y, double scaleX, double scaleY, int dx, int dy) {
         selectedObject = obj;
         if (obj != null) {
@@ -226,7 +227,7 @@ public class DrawPanel extends JPanel {
     /* Déterminer les deux couples de coordonnées pour créer un arc */
     public void loadCoordinatesArc(double x, double y) {
         /* Si il n'y a pas eu de 1er click en mode Arc */
-        if (indexOfClickArc == 0) {
+        if (indexOfClickArc == 0 && getSelectedObject(x,y) != null) {
             this.arcOriginX = x;
             this.arcOriginY = y;
             this.arcDestX = 0;
