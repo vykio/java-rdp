@@ -16,6 +16,10 @@ public final class FUtils {
             return (getOs().toLowerCase(Locale.ROOT).contains("mac"));
         }
 
+        public static boolean isLinux() {
+            return (getOs().toLowerCase(Locale.ROOT).contains("linux"));
+        }
+
     }
 
     public static class Screen {
