@@ -79,7 +79,7 @@ public class DrawPanel extends JPanel {
 
     /* Bouger un objet donné en paramètre */
 
-    public void updatePosition(Object obj, double x, double y, double scaleX, double scaleY, int dx, int dy) {
+    public void updatePosition(Object obj, double x, double y, double scaleX, double scaleY, double dx, double dy) {
         selectedObject = obj;
         if (obj != null) {
             if (obj instanceof Place) {
