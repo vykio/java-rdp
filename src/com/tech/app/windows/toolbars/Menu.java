@@ -1,5 +1,9 @@
 package com.tech.app.windows.toolbars;
 
+import com.tech.app.models.Model;
+import com.tech.app.windows.handlers.SaveManager;
+import com.tech.app.windows.panels.DrawPanel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -15,11 +19,20 @@ import static javax.swing.JOptionPane.DEFAULT_OPTION;
 public class Menu extends  MenuBar {
     /* Construction de l'interface graphique pour tester à part*/
 
+    private Model model;
+    private SaveManager saveManager;
+    private DrawPanel dp;
+
     public Menu(JFrame frame) {
         super(frame);
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    public void applyModel(Model model) {
+        this.model = model;
+    }
+    public void applySaveManager(SaveManager sm) { this.saveManager = sm; }
+    public void applyDrawPanel(DrawPanel dp) { this.dp = dp; }
     // Méthode de construction de la toolbar
 
     public JMenuBar getMenu() {
@@ -206,9 +219,15 @@ public class Menu extends  MenuBar {
         JFileChooser choix = new JFileChooser();
         int retour = choix.showOpenDialog(this);
         choix.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        File f= choix.getSelectedFile();
         if(retour==JFileChooser.APPROVE_OPTION){
-            choix.getSelectedFile().getName();
-            choix.getSelectedFile().getAbsolutePath();
+            System.out.println(choix.getSelectedFile().getName());
+            System.out.println(choix.getSelectedFile().getAbsolutePath());
+            model = saveManager.load(f);
+            System.out.println(model);
+            dp.model = model;
+            dp.printModel();
+            dp.repaint();
         } else {
             JOptionPane.showMessageDialog(this, "Aucun fichier choisi !");
         }
@@ -218,15 +237,11 @@ public class Menu extends  MenuBar {
         JFileChooser save = new JFileChooser();
         save.showSaveDialog(this);
         File f =save.getSelectedFile();
-        try {
-            FileWriter fw = new FileWriter(f);
-            String text = "Le fichier a été sauvegardé";
-            fw.write(text);
-            fw.close();
-        }
-        catch (IOException e) {
-            System.out.println(e);
-        }
+        /*FileWriter fw = new FileWriter(f);
+        String text = "Le fichier a été sauvegardé";
+        fw.write(text);
+        fw.close();*/
+        saveManager.save(f, model);
     }
 
     public void mnuExitListener(ActionEvent event){
@@ -234,6 +249,8 @@ public class Menu extends  MenuBar {
         int res = JOptionPane.showOptionDialog(null, "Voules vous vraiment quitter l'application ?", "Attention",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
         System.out.println(res);
+
+        System.out.println("Modelllll: " + model);
 
         switch(res){
             //Case EXIT

@@ -2,8 +2,9 @@ package com.tech.app.models;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.io.Serializable;
 
-public class Arc {
+public class Arc implements Serializable {
 
     private Place place;
     private int poids;

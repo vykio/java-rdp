@@ -2,11 +2,12 @@ package com.tech.app.models;
 
 import com.tech.app.functions.FList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class Model {
+public class Model implements Serializable {
 
     private int nbPlace;
     private int nbTransition;
