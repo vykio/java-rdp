@@ -7,6 +7,11 @@ import java.io.*;
 public class SaveManager {
 
     public boolean save(File f, Model model) {
+
+        if (!f.getAbsolutePath().endsWith(".jrdp")) {
+            f = (new File(f.getAbsolutePath() + ".jrdp"));
+        }
+
         try {
             FileOutputStream fileOut = new FileOutputStream(f);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);

@@ -13,6 +13,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import static javax.swing.JOptionPane.DEFAULT_OPTION;
 
 
@@ -216,7 +219,9 @@ public class Menu extends  MenuBar {
     }
 
     public void mnuOpenListener(ActionEvent event) {
+        FileFilter filtre = new FileNameExtensionFilter("Fichier RDP (*.jrdp)", "jrdp");
         JFileChooser choix = new JFileChooser();
+        choix.setFileFilter(filtre);
         int retour = choix.showOpenDialog(this);
         choix.setFileSelectionMode(JFileChooser.FILES_ONLY);
         File f= choix.getSelectedFile();
@@ -234,9 +239,13 @@ public class Menu extends  MenuBar {
     }
 
     public void mnuSaveAsListener(ActionEvent event) {
+        FileFilter filtre = new FileNameExtensionFilter("Fichier RDP (*.jrdp)", "jrdp");
         JFileChooser save = new JFileChooser();
+        save.setFileFilter(filtre);
         save.showSaveDialog(this);
-        File f =save.getSelectedFile();
+
+        File f = save.getSelectedFile();
+
         /*FileWriter fw = new FileWriter(f);
         String text = "Le fichier a été sauvegardé";
         fw.write(text);
