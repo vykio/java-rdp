@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class Model implements Serializable {
+public class Model {
 
     private int nbPlace;
     private int nbTransition;
 
     public List<Place> placeVector;
-
     public List<Transition> transitionVector;
 
     Vector<Integer> M0;
@@ -346,4 +345,11 @@ public class Model implements Serializable {
 
     }
 
+    public void setPlaceVector(List<Place> placeVector) {
+        this.placeVector = placeVector;
+    }
+
+    public void setTransitionVector(List<Transition> transitionVector) {
+        this.transitionVector = transitionVector;
+    }
 }

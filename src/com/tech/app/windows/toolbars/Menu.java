@@ -16,7 +16,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import static javax.swing.JOptionPane.DEFAULT_OPTION;
+import static javax.swing.JOptionPane.*;
 
 
 public class Menu extends  MenuBar {
@@ -228,11 +228,16 @@ public class Menu extends  MenuBar {
         if(retour==JFileChooser.APPROVE_OPTION){
             System.out.println(choix.getSelectedFile().getName());
             System.out.println(choix.getSelectedFile().getAbsolutePath());
-            model = saveManager.load(f);
-            System.out.println(model);
-            dp.model = model;
-            dp.printModel();
-            dp.repaint();
+            model = saveManager.load(f, model);
+            if (model != null) {
+                System.out.println(model);
+                dp.model = model;
+                dp.printModel();
+                dp.repaint();
+            } else {
+                JOptionPane.showMessageDialog(this, "Version du fichier incompatible", "Erreur!", ERROR_MESSAGE);
+            }
+
         } else {
             JOptionPane.showMessageDialog(this, "Aucun fichier choisi !");
         }

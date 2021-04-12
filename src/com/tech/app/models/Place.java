@@ -71,4 +71,5 @@ public class Place implements Serializable {
         this.y = y;
     }
 
+
 }
