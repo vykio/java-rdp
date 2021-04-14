@@ -9,6 +9,9 @@ public class Arc {
     private int poids;
     private boolean placeToTransition;
     private Transition transition;
+    private CubicCurve2D.Double courbe;
+    private Rectangle2D.Double pointCtr1;
+    private Rectangle2D.Double pointCtr2;
 
     public Arc(Place place, int poids, double xOrigin, double yOrigin, boolean placeToTransition, Transition transition){
         this.place = place;
@@ -64,7 +67,16 @@ public class Arc {
 
         /* Ligne */
         //g2.draw(new Line2D.Double(start, 0, len, 0));
-        g2.draw(new CubicCurve2D.Double(start, 0, (start+len)/3, 0 ,2*(start+len)/3, 0 , len, 0));
+        courbe = new CubicCurve2D.Double(start, 0, (start+len)/3, 0 ,2*(start+len)/3, 0 , len, 0);
+        g2.draw(courbe);
+
+        /*point de controle*/
+        pointCtr1 = new Rectangle2D.Double(courbe.getCtrlX1(),courbe.getCtrlY1(), 5, 5);
+        g2.draw(pointCtr1);
+
+        pointCtr2 = new Rectangle2D.Double(courbe.getCtrlX2(),courbe.getCtrlY2(), 5, 5);
+        g2.draw(pointCtr2);
+
 
         /* Fléche */
         Path2D path = new Path2D.Double();
