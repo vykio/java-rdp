@@ -9,9 +9,8 @@ public class Arc {
     private int poids;
     private boolean placeToTransition;
     private Transition transition;
-    private CubicCurve2D.Double courbe;
-    private Rectangle2D.Double pointCtr1;
-    private Rectangle2D.Double pointCtr2;
+    private QuadCurve2D.Double courbe;
+    private PointControle pointCtr1;
 
     public Arc(Place place, int poids, double xOrigin, double yOrigin, boolean placeToTransition, Transition transition){
         this.place = place;
@@ -19,6 +18,7 @@ public class Arc {
         this.placeToTransition = placeToTransition;
         this.transition = transition;
         this.forme = new Line2D.Double(xOrigin, yOrigin, this.place.getX(), this.place.getY());
+        this.pointCtr1 = new PointControle();
     }
 
     public Arc(Place place, int poids){
@@ -44,9 +44,13 @@ public class Arc {
     /* Partie Graphique */
     public Line2D.Double forme;
 
+    private double oX, oY, angle;
+    private AffineTransform at;
+
     private void drawArrow(Graphics2D g2, double oX, double oY, double dX, double dY) {
         /* Variables internes */
         double dx = dX - oX, dy = dY - oY;
+
         double angle = Math.atan2(dy, dx);
         double len = (int) Math.sqrt(dx*dx + dy*dy);
         double start;
@@ -58,24 +62,34 @@ public class Arc {
             len = len - this.place.forme.width/2;
             start = 0;
         }
+        this.oX = oX;
+        this.oY = oY;
+        this.angle = angle;
 
-
-        /* Référentiel */
-        AffineTransform at = AffineTransform.getTranslateInstance(oX, oY);
+        at = AffineTransform.getTranslateInstance(oX, oY);
         at.concatenate(AffineTransform.getRotateInstance(angle));
         g2.transform(at);
 
+
         /* Ligne */
+        if (!this.pointCtr1.getMoved()) {
+            this.pointCtr1.setX((start + len-ARR_SIZE)/2);
+            this.pointCtr1.setY(0);
+        }
         //g2.draw(new Line2D.Double(start, 0, len, 0));
-        courbe = new CubicCurve2D.Double(start, 0, (start+len)/3, 0 ,2*(start+len)/3, 0 , len, 0);
-        g2.draw(courbe);
 
         /*point de controle*/
-        pointCtr1 = new Rectangle2D.Double(courbe.getCtrlX1(),courbe.getCtrlY1(), 5, 5);
-        g2.draw(pointCtr1);
+        pointCtr1.draw(g2);
 
-        pointCtr2 = new Rectangle2D.Double(courbe.getCtrlX2(),courbe.getCtrlY2(), 5, 5);
-        g2.draw(pointCtr2);
+
+        courbe = new QuadCurve2D.Double(start, 0, this.pointCtr1.getX(), this.pointCtr1.getY(), len, 0);
+        /* Référentiel */
+
+        //courbe = new CubicCurve2D.Double(start, 0, (start+len)/3, 0 ,2*(start+len)/3, 0 , len, 0);
+        g2.draw(courbe);
+
+
+
 
 
         /* Fléche */
@@ -117,10 +131,38 @@ public class Arc {
 
     }
 
+    public boolean containing(Point.Double origin, int size, Point.Double toCompare) {
+        double a1 = Math.abs(origin.getX() - toCompare.getX());
+        double a2 = Math.abs(origin.getY() - toCompare.getY());
+        System.out.println("(a1:a2) = (" + a1 + ":"+ a2+")");
+        return (a1 < size) && (a2 < size);
+    }
+
+    public boolean containsControlPoint1(double x, double y) {
+
+        Point.Double point = new Point.Double(pointCtr1.getX(),pointCtr1.getY());
+        Point2D.Double pointDest = new Point.Double();
+
+        at.transform(point, pointDest);
+
+        System.out.println("PtCtrlTRANSFORM:(" + pointDest.getX() + ":" + pointDest.getY()
+                            + ") PtCtrl:(" + pointCtr1.getX() + ":" + pointCtr1.getY()+ ")");
+
+        boolean res=  containing(pointDest, pointCtr1.getSize(), new Point.Double(x,y));
+        System.out.println(res);
+        return res;
+    }
+
+    public PointControle getPointCtr1() {
+        return pointCtr1;
+    }
+
+
     public void updatePosition(double x, double y) {
         this.forme.x1 = x;
         this.forme.y1 = y;
     }
+
 
 
 }
