@@ -18,7 +18,7 @@ public class Arc {
         this.placeToTransition = placeToTransition;
         this.transition = transition;
         this.forme = new Line2D.Double(xOrigin, yOrigin, this.place.getX(), this.place.getY());
-        this.pointCtr1 = new PointControle();
+        this.pointCtr1 = new PointControle(this);
     }
 
     public Arc(Place place, int poids){
@@ -45,7 +45,7 @@ public class Arc {
     public Line2D.Double forme;
 
     private double oX, oY, angle;
-    private AffineTransform at;
+    public AffineTransform at;
 
     private void drawArrow(Graphics2D g2, double oX, double oY, double dX, double dY) {
         /* Variables internes */

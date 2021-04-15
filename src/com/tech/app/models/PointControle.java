@@ -1,6 +1,9 @@
 package com.tech.app.models;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
@@ -9,11 +12,13 @@ public class PointControle implements Serializable {
     private double x, y;
     private boolean moved;
     private int size;
+    private Arc arc;
 
-    public PointControle () {
-        this(0,0);
+    public PointControle (Arc arc) {
+        this(arc, 0,0);
     }
-    public PointControle (double x, double y) {
+    public PointControle (Arc arc, double x, double y) {
+        this.arc = arc;
         this.x = x;
         this.y = y;
         this.moved = false;
