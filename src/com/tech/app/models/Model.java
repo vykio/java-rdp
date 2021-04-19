@@ -39,10 +39,12 @@ public class Model {
     /**
      * Remplir M0
      */
-    public void fill_M0() {
+    public Vector<Integer> fill_M0() {
+
         for (int i = 0; i < this.placeVector.size(); i++) {
             M0.set(i, this.placeVector.get(i).getMarquage());
         }
+        return M0;
     }
 
     /**

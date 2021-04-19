@@ -13,10 +13,8 @@ public class ModelGMA {
 
     public ModelGMA() {
         this.nbMarquages = 0;
-
+        this.M0 = R.fill_M0();
         this.markVector = new ArrayList<Marquages>();
-
-        this.M0 = new Vector<Integer>();
     }
 
     /*public void calcGMA(Marquage M)
