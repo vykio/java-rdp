@@ -8,8 +8,8 @@ import java.util.Vector;
 
 public class Model {
 
-    private int nbPlace;
-    private int nbTransition;
+    public int nbPlace;
+    public int nbTransition;
 
     public List<Place> placeVector;
 
@@ -343,6 +343,14 @@ public class Model {
         System.out.println(result.toString());
         return (result.toString());
 
+    }
+
+    public boolean canTransit(Transition t)
+    {
+        boolean result = false;
+        int i = 0;
+        //Si les parents de la transition ont un marquage suffisant pour respecter le poids de l'arc, alors on peut transiter
+        return result;
     }
 
 }
