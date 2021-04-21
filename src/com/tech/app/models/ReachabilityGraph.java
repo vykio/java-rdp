@@ -9,8 +9,8 @@ public class ReachabilityGraph {
     Model model;
     Vector<Integer> M0;
     Vector<Integer> nextM;
-    List<Vector<Integer>> marquagesAccessibles;
-    List<Vector<Integer>> marquagesATraiter;
+    public List<Vector<Integer>> marquagesAccessibles;
+    public List<Vector<Integer>> marquagesATraiter;
     List<Arc> arcs = new ArrayList<Arc>();
 
     public ReachabilityGraph(Model model){
@@ -46,10 +46,11 @@ public class ReachabilityGraph {
     }
 
     private Vector<Integer> addVector(Vector<Integer> v, Vector<Vector<Integer>> u, int t){
+        Vector<Integer> v_temp = new Vector<>();
         for(int i=0; i < v.size(); i++){
-            v.set(i,(v.get(i)+u.get(i).get(t)));
+            v_temp.add(i,(v.get(i)+u.get(i).get(t)));
         }
-        return v;
+        return v_temp;
     }
 
     private void calculateReachabilityGraph(){
@@ -59,23 +60,31 @@ public class ReachabilityGraph {
         Vector<Integer> M = new Vector<Integer>();
         Vector<Integer> M1 = new Vector<Integer>();
 
+        int i = 0;
         while(!marquagesATraiter.isEmpty()){
-            this.model.fill_W();
-            for(int i= 0; i < marquagesATraiter.size(); i++){
-                M = marquagesATraiter.get(i);
-                marquagesATraiter.remove(i);
+            System.out.println("Size-avant: " + marquagesATraiter.size());
+            M = marquagesATraiter.get(i);
+            marquagesATraiter.remove(i);
+            System.out.println("Size-après: " + marquagesATraiter.size());
+            System.out.println("Depart: " + M);
+            System.out.println("Marquages a traiter: "+ marquagesATraiter);
+            System.out.println("Marquages accessible: "+ marquagesAccessibles);
 
-                for(int t=0; t < this.model.transitionVector.size(); t++){
-                    if(couvre(M, this.model.w_moins, t)){
-                        M1 = addVector(M, this.model.C, t);
-                        if(!marquagesAccessibles.contains(M1)){
-                            marquagesAccessibles.add(M1);
-                            marquagesATraiter.add(M1);
-                            //arcs.add(new Arc())
-                        }
+            for(int t=0; t < this.model.transitionVector.size(); t++){
+                if(couvre(M, this.model.w_moins, t)){
+                    M1 = addVector(M, this.model.C, t);
+                    System.out.println("Resultante: "+M1);
+                    System.out.println("MA: " + marquagesAccessibles);
+                    if(!marquagesAccessibles.contains(M1)){
+                        System.out.println("Contains...");
+                        marquagesAccessibles.add(M1);
+                        marquagesATraiter.add(M1);
+
+                        //arcs.add(new Arc())
                     }
                 }
             }
+            i++;
         }
     }
 
