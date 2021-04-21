@@ -1,5 +1,8 @@
 package com.tech.app.windows.toolbars;
 
+import com.tech.app.models.gma.Node;
+import com.tech.app.windows.GMAWindow;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -9,6 +12,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 import static javax.swing.JOptionPane.DEFAULT_OPTION;
 
 
@@ -127,6 +132,7 @@ public class Menu extends  MenuBar {
         JMenuItem mnuGMA = new JMenuItem("GMA");
         mnuGMA.setMnemonic('G');
         mnuGMA.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK));
+        mnuGMA.addActionListener( this::openGMAWindow );
         mnuTools.add(mnuGMA);
 
         JMenuItem mnuStepper = new JMenuItem("Stepper");
@@ -195,6 +201,21 @@ public class Menu extends  MenuBar {
         mnuHelp.setIcon(new ImageIcon(imageAbout));
 
         return toolbar;
+    }
+
+    private void openGMAWindow(ActionEvent actionEvent) {
+        EventQueue.invokeLater(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            GMAWindow window = new GMAWindow(900,500);
+                        } catch (UnsupportedLookAndFeelException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
     }
 
     // Test d'une fenêtre pop-up après une action (ici lors de la création d'un nouveau fichier)

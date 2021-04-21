@@ -3,20 +3,19 @@ package com.tech.app.windows.handlers;
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 
-public class MainWindowHandler extends WindowHandler {
-
-    public MainWindowHandler(JFrame frame) {
+public class GMAWindowHandler extends WindowHandler {
+    public GMAWindowHandler(JFrame frame) {
         super(frame);
     }
 
     @Override
     public void windowOpened(WindowEvent e) {
+
     }
 
     @Override
     public void windowClosing(WindowEvent e) {
-        System.out.println("I'm out!");
-        System.exit(0);
+
     }
 
     @Override

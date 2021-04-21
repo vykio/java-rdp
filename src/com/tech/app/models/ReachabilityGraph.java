@@ -1,5 +1,7 @@
 package com.tech.app.models;
 
+import com.tech.app.models.gma.Node;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -12,12 +14,14 @@ public class ReachabilityGraph {
     public List<Vector<Integer>> marquagesAccessibles;
     public List<Vector<Integer>> marquagesATraiter;
     List<Arc> arcs = new ArrayList<Arc>();
+    public List<Node> liste_node;
 
     public ReachabilityGraph(Model model){
         this.model = model;
         this.M0 = model.M0;
         this.marquagesAccessibles = new ArrayList<Vector<Integer>>();
         this.marquagesATraiter = new ArrayList<Vector<Integer>>();
+        this.liste_node = new ArrayList<>();
     }
 
     private Vector<Integer> getM0(){
@@ -53,12 +57,24 @@ public class ReachabilityGraph {
         return v_temp;
     }
 
-    private void calculateReachabilityGraph(){
+    public void updateModel(Model model) {
+        this.model = model;
+        this.M0 = model.M0;
+        this.marquagesAccessibles = new ArrayList<Vector<Integer>>();
+        this.marquagesATraiter = new ArrayList<Vector<Integer>>();
+        this.liste_node = new ArrayList<>();
+    }
+
+    public void calculateReachabilityGraph(){
+
+        System.out.println(model);
 
         marquagesAccessibles.add(M0);
         marquagesATraiter.add(M0);
         Vector<Integer> M = new Vector<Integer>();
         Vector<Integer> M1 = new Vector<Integer>();
+
+        liste_node = new ArrayList<>();
 
         int i = 0;
         try {
@@ -68,12 +84,20 @@ public class ReachabilityGraph {
                 marquagesATraiter.remove(i);
                 System.out.println("Size-après: " + marquagesATraiter.size());
                 System.out.println("Depart: " + M);
+
+                Node m = new Node(M);
+                liste_node.add(m);
+
+
                 System.out.println("Marquages a traiter: " + marquagesATraiter);
                 System.out.println("Marquages accessible: " + marquagesAccessibles);
 
                 for (int t = 0; t < this.model.transitionVector.size(); t++) {
                     if (couvre(M, this.model.w_moins, t)) {
                         M1 = addVector(M, this.model.C, t);
+
+                        m.addParent(new Node(M1));
+
                         System.out.println("Resultante: " + M1);
                         System.out.println("MA: " + marquagesAccessibles);
                         if (!marquagesAccessibles.contains(M1)) {
@@ -90,6 +114,13 @@ public class ReachabilityGraph {
         } catch (IndexOutOfBoundsException e) {
             System.out.println("GMA terminé!");
         }
+
+        System.out.println("Liste noeuds: ");
+        for (Node n : liste_node) {
+            System.out.println(n);
+            System.out.println("----------");
+        }
+
     }
 
     public static void main(String args[]){

@@ -279,7 +279,7 @@ public class DrawPanel extends JPanel {
     public void showModel() {
         if(model.placeVector.size() != 0 && model.transitionVector.size() != 0){
             model.updateMatrices();
-            System.out.println(model);
+            //System.out.println(model);
 
             // mise au format latex de la matrice
             TeXFormula formula = new TeXFormula(String.valueOf(model.get_C()));
