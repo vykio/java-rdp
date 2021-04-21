@@ -5,7 +5,7 @@ import java.awt.geom.*;
 
 public class Arc {
 
-    private Place place;
+    public Place place;
     private int poids;
     private boolean placeToTransition;
     private Transition transition;

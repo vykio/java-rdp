@@ -347,12 +347,5 @@ public class Model {
 
     }
 
-    public boolean canTransit(Transition t)
-    {
-        boolean result = false;
-        int i = 0;
-        //Si les parents de la transition ont un marquage suffisant pour respecter le poids de l'arc, alors on peut transiter
-        return result;
-    }
 
 }

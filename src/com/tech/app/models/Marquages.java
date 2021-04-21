@@ -1,17 +1,17 @@
 package com.tech.app.models;
 
 import com.tech.app.functions.FMaths;
-
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
 public class Marquages {
+
     private String name;
     private double x;
     private double y;
     private int[] M;
     public boolean draggable;
-
+    public Ellipse2D.Float forme;
     private final static int WIDTH = 30, HEIGHT = 30;
 
     public Marquages(String name, double x, double y, int[] M) {
@@ -70,5 +70,4 @@ public class Marquages {
         }
     }
 
-    public Ellipse2D.Float forme;
 }
