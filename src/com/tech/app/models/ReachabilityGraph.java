@@ -61,30 +61,34 @@ public class ReachabilityGraph {
         Vector<Integer> M1 = new Vector<Integer>();
 
         int i = 0;
-        while(!marquagesATraiter.isEmpty()){
-            System.out.println("Size-avant: " + marquagesATraiter.size());
-            M = marquagesATraiter.get(i);
-            marquagesATraiter.remove(i);
-            System.out.println("Size-après: " + marquagesATraiter.size());
-            System.out.println("Depart: " + M);
-            System.out.println("Marquages a traiter: "+ marquagesATraiter);
-            System.out.println("Marquages accessible: "+ marquagesAccessibles);
+        try {
+            while (marquagesATraiter.size() != 0) {
+                System.out.println("Size-avant: " + marquagesATraiter.size());
+                M = marquagesATraiter.get(i);
+                marquagesATraiter.remove(i);
+                System.out.println("Size-après: " + marquagesATraiter.size());
+                System.out.println("Depart: " + M);
+                System.out.println("Marquages a traiter: " + marquagesATraiter);
+                System.out.println("Marquages accessible: " + marquagesAccessibles);
 
-            for(int t=0; t < this.model.transitionVector.size(); t++){
-                if(couvre(M, this.model.w_moins, t)){
-                    M1 = addVector(M, this.model.C, t);
-                    System.out.println("Resultante: "+M1);
-                    System.out.println("MA: " + marquagesAccessibles);
-                    if(!marquagesAccessibles.contains(M1)){
-                        System.out.println("Contains...");
-                        marquagesAccessibles.add(M1);
-                        marquagesATraiter.add(M1);
+                for (int t = 0; t < this.model.transitionVector.size(); t++) {
+                    if (couvre(M, this.model.w_moins, t)) {
+                        M1 = addVector(M, this.model.C, t);
+                        System.out.println("Resultante: " + M1);
+                        System.out.println("MA: " + marquagesAccessibles);
+                        if (!marquagesAccessibles.contains(M1)) {
+                            System.out.println("Contains...");
+                            marquagesAccessibles.add(M1);
+                            marquagesATraiter.add(M1);
 
-                        //arcs.add(new Arc())
+                            //arcs.add(new Arc())
+                        }
                     }
                 }
+                i++;
             }
-            i++;
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("GMA terminé!");
         }
     }
 
@@ -118,7 +122,7 @@ public class ReachabilityGraph {
         t4.addChildren(p2);
         t4.addParent(p3);
 
-        t5.addChildren(p3);
+        t5.addChildren(new Arc(p3, 2));
         t5.addParent(p1);
 
         /* Ajout des places et des transitions au système */
