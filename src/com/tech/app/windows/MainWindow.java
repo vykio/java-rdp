@@ -50,6 +50,7 @@ public class MainWindow extends Window {
         dToolbar.applyModel(model);
         dToolbar.applySaveManager(sm);
         dToolbar.applyDrawPanel(dp);
+        dToolbar.applyMenuBridge(menu);
     }
 
 }

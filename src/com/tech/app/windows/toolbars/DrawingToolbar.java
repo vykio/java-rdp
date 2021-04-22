@@ -26,10 +26,16 @@ public class DrawingToolbar extends Toolbar {
     private SaveManager saveManager;
     private DrawPanel dp;
 
+    private Menu menu;
+
     public DrawingToolbar(JFrame frame,DrawMouse drawMouse) {
         super(frame);
         this.drawMouse = drawMouse;
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    public void applyMenuBridge(Menu menu) {
+        this.menu = menu;
     }
 
     public void applyModel(Model model) { this.model = model; }
@@ -218,41 +224,11 @@ public class DrawingToolbar extends Toolbar {
     }
 
     public void btnOpenListener(ActionEvent event) {
-        FileFilter filtre = new FileNameExtensionFilter("Fichier RDP (*.jrdp)", "jrdp");
-        JFileChooser choix = new JFileChooser();
-        choix.setFileFilter(filtre);
-        int retour = choix.showOpenDialog(this);
-        choix.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        File f= choix.getSelectedFile();
-        if(retour==JFileChooser.APPROVE_OPTION){
-            System.out.println(choix.getSelectedFile().getName());
-            System.out.println(choix.getSelectedFile().getAbsolutePath());
-            model = saveManager.load(f, model);
-            if (model != null) {
-                //System.out.println(model);
-                dp.model = model;
-                dp.printModel();
-                dp.repaint();
-            } else {
-                JOptionPane.showMessageDialog(this, "Version du fichier incompatible", "Erreur!", ERROR_MESSAGE);
-                model = new Model();
-                dp.model = model;
-            }
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Aucun fichier choisi !");
-        }
+        menu.mnuOpenListener(event);
     }
 
     public void btnSaveAsListener(ActionEvent event) {
-        FileFilter filtre = new FileNameExtensionFilter("Fichier RDP (*.jrdp)", "jrdp");
-        JFileChooser save = new JFileChooser();
-        save.setFileFilter(filtre);
-        save.showSaveDialog(this);
-
-        File f = save.getSelectedFile();
-
-        saveManager.save(f, model);
+        menu.mnuSaveAsListener(event);
     }
 
     public void btnClearListener(ActionEvent event){
