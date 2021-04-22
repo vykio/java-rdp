@@ -128,9 +128,9 @@ public class ReachabilityGraph {
 
 
         /* Définition des places et des transitions */
-        Place p1 = new Place("P1", 0, 0, 1);
-        Place p2 = new Place("P2", 0, 0, 0);
-        Place p3 = new Place("P3", 0,0, 0);
+        Place p1 = new Place("P1", 0, 0);
+        Place p2 = new Place("P2", 0, 0);
+        Place p3 = new Place("P3", 0,0);
         Transition t1 = new Transition("t1", 0, 0);
         Transition t2 = new Transition("t2", 0, 0);
         Transition t3 = new Transition("t3", 0, 0);

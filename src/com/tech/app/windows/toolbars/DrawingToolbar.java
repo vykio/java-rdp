@@ -125,12 +125,21 @@ public class DrawingToolbar extends Toolbar {
         btnAttributs.addActionListener( this::btnAttributsListener );
         toolbar.add( btnAttributs );
 
+        JToggleButton btnLabel = new JToggleButton();
+        btnLabel.setToolTipText( "Label" );
+        btnLabel.addActionListener( this::btnLabelListener );
+        toolbar.add( btnLabel );
+
+        toolbar.addSeparator();
+
         JToggleButton btnSelect = new JToggleButton();
         btnSelect.setToolTipText( "Select" );
         btnSelect.addActionListener( this::btnSelectListener );
         toolbar.add( btnSelect );
 
         toolbar.addSeparator();
+
+
 
         /*JToggleButton btnGMA = new JToggleButton();
         btnGMA.setToolTipText("Générer le GMA");
@@ -143,11 +152,6 @@ public class DrawingToolbar extends Toolbar {
         btnStepper.setText("Stepper");
         btnStepper.setEnabled(false);*/
         //btnStepper.addActionListener(this::btnOpenGMAWindow );
-
-        JToggleButton btnLabel = new JToggleButton();
-        btnLabel.setToolTipText( "Select" );
-        btnLabel.addActionListener( this::btnLabelListener );
-        toolbar.add( btnLabel );
 
        // toolbar.add(btnStepper);
 

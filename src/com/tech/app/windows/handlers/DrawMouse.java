@@ -115,9 +115,9 @@ public class DrawMouse extends MouseAdapter {
                         drawPanel.selectObject(objectDragged);
                         break;
                     case LABEL:
-                        objectSelected = drawPanel.getSelectedObject(x / drawPanel.scaleX, y / drawPanel.scaleY);
-                        if (objectSelected != null) {
-                            drawPanel.showOptionsLabel(objectSelected);
+                        objectDragged = drawPanel.getSelectedObject(x / drawPanel.scaleX, y / drawPanel.scaleY);
+                        if (objectDragged != null) {
+                            drawPanel.showOptionsLabel(objectDragged);
                         } else {
                             drawPanel.errorSelect();
                         }
