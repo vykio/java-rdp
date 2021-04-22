@@ -17,6 +17,6 @@ public class CustomEdge extends DefaultEdge {
     @Override
     public String toString()
     {
-        return "(" + getSource() + " : " + getTarget() + " : " + label + ")";
+        return label;
     }
 }

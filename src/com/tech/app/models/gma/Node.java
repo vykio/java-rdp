@@ -10,16 +10,16 @@ import java.util.Vector;
 public class Node {
 
     private Vector<Integer> m;
-    private List<Node> children;
-    private List<Node> parents;
+    private List<NodeStruct> children;
+    private List<NodeStruct> parents;
     private String name;
     private String originTransition;
 
-    public Node(Vector<Integer> m, List<Node> children, List<Node> parents) {
+    public Node(Vector<Integer> m, List<NodeStruct> children, List<NodeStruct> parents) {
         this(m,children,parents,null);
     }
 
-    public Node(Vector<Integer> m, List<Node> children, List<Node> parents, String name){
+    public Node(Vector<Integer> m, List<NodeStruct> children, List<NodeStruct> parents, String name){
         this.m = m;
         this.children = children;
         this.parents = parents;
@@ -28,10 +28,10 @@ public class Node {
     }
 
     public Node(Vector<Integer> m) {
-        this(m, new ArrayList<Node>(), new ArrayList<Node>());
+        this(m, new ArrayList<NodeStruct>(), new ArrayList<NodeStruct>());
     }
     public Node(Vector<Integer> m, String name) {
-        this(m, new ArrayList<Node>(), new ArrayList<Node>(),name);
+        this(m, new ArrayList<NodeStruct>(), new ArrayList<NodeStruct>(),name);
     }
 
     public void setName(String name) {
@@ -46,25 +46,25 @@ public class Node {
 
     public Vector<Integer> getM() { return m; }
     public void setM(Vector<Integer> m) { this.m = m; }
-    public List<Node> getChildren() { return children; }
-    public void setChildren(List<Node> children) { this.children = children; }
-    public List<Node> getParents() { return parents; }
-    public void setParents(List<Node> parents) { this.parents = parents; }
+    public List<NodeStruct> getChildren() { return children; }
+    public void setChildren(List<NodeStruct> children) { this.children = children; }
+    public List<NodeStruct> getParents() { return parents; }
+    public void setParents(List<NodeStruct> parents) { this.parents = parents; }
 
-    public void addParent(Node n) { this.parents.add(n); }
-    public void addChildren(Node n) { this.children.add(n); }
+    public void addParent(NodeStruct n) { this.parents.add(n); }
+    public void addChildren(NodeStruct n) { this.children.add(n); }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("m:\n").append(m).append("\nChildren:\n");
-        for (Node n : this.children) {
+        for (NodeStruct n : this.children) {
             sb.append(this.children.indexOf(n));
-            sb.append("\t").append(n);
+            sb.append("\t").append(n.node);
         }
         sb.append("\nParents:\n");
-        for (Node n : this.parents) {
+        for (NodeStruct n : this.parents) {
             sb.append(this.parents.indexOf(n));
-            sb.append("\t").append(n);
+            sb.append("\t").append(n.node);
         }
         return sb.toString();
     }

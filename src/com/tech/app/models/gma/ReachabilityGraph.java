@@ -96,7 +96,7 @@ public class ReachabilityGraph {
                     if (couvre(M, this.model.getW_moins(), t)) {
                         M1 = addVector(M, this.model.getC(), t);
 
-                        m.addParent(new Node(M1));
+                        m.addParent(new NodeStruct(new Node(M1), this.model.transitionVector.get(t)));
 
                         System.out.println("Resultante: " + M1);
                         System.out.println("MA: " + marquagesAccessibles);

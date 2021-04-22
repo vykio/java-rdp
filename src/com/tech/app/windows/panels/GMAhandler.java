@@ -56,8 +56,8 @@ public class GMAhandler {
 
         for (Node n : liste_nodes) {
             for(int i=0; i< n.getParents().size(); i++){
-                System.out.println(n.getMarquage()+" - "+n.getParents().get(i).getMarquage());
-                g.addEdge(n.getMarquage(),n.getParents().get(i).getMarquage(), new CustomEdge("test"));
+                System.out.println(n.getMarquage()+" - "+n.getParents().get(i).node.getMarquage());
+                g.addEdge(n.getMarquage(),n.getParents().get(i).node.getMarquage(), new CustomEdge(n.getParents().get(i).transition.getName()));
             }
         }
 
@@ -72,8 +72,6 @@ public class GMAhandler {
 
         var layout = new mxHierarchicalLayout(jgxAdapter, SwingConstants.WEST);
         layout.execute(jgxAdapter.getDefaultParent());
-
-
 
 
         /*
