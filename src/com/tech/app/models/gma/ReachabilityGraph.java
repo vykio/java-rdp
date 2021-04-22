@@ -74,12 +74,13 @@ public class ReachabilityGraph {
 
         liste_node = new ArrayList<>();
 
-        int i = 0;
-        try {
+        //int i = 0;
+
             while (marquagesATraiter.size() != 0) {
                 System.out.println("Size-avant: " + marquagesATraiter.size());
-                M = marquagesATraiter.get(i);
-                marquagesATraiter.remove(i);
+                M = marquagesATraiter.get(0);
+                marquagesATraiter.remove(0);
+                //i--;
                 System.out.println("Size-après: " + marquagesATraiter.size());
                 System.out.println("Depart: " + M);
 
@@ -106,11 +107,10 @@ public class ReachabilityGraph {
                         }
                     }
                 }
-                i++;
+                //i++;
             }
-        } catch (IndexOutOfBoundsException e) {
             System.out.println("GMA terminé!");
-        }
+
 
         System.out.println("Liste noeuds: ");
         for (Node n : liste_node) {
