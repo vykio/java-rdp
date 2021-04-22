@@ -85,6 +85,7 @@ public class ReachabilityGraph {
                 System.out.println("Depart: " + M);
 
                 Node m = new Node(M);
+                m.setName("M"+nb_marquages);
                 liste_node.add(m);
                 this.nb_marquages++;
 

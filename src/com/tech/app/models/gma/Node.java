@@ -13,9 +13,22 @@ public class Node {
     private String name;
 
     public Node(Vector<Integer> m, List<Node> children, List<Node> parents) {
+        this(m,children,parents,null);
+    }
+
+    public Node(Vector<Integer> m, List<Node> children, List<Node> parents, String name){
         this.m = m;
         this.children = children;
         this.parents = parents;
+        this.name = name;
+
+    }
+
+    public Node(Vector<Integer> m) {
+        this(m, new ArrayList<Node>(), new ArrayList<Node>());
+    }
+    public Node(Vector<Integer> m, String name) {
+        this(m, new ArrayList<Node>(), new ArrayList<Node>(),name);
     }
 
     public void setName(String name) {
@@ -26,9 +39,7 @@ public class Node {
         return name;
     }
 
-    public Node(Vector<Integer> m) {
-        this(m, new ArrayList<Node>(), new ArrayList<Node>());
-    }
+
 
     public Vector<Integer> getM() { return m; }
     public void setM(Vector<Integer> m) { this.m = m; }

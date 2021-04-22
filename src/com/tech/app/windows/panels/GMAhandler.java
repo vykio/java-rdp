@@ -15,6 +15,7 @@ import org.jgrapht.graph.DefaultListenableGraph;
 
 import javax.swing.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.swing.GroupLayout.DEFAULT_SIZE;
@@ -25,7 +26,8 @@ public class GMAhandler {
     private JGraphXAdapter<String, DefaultEdge> jgxAdapter;
     private ListenableGraph<String, DefaultEdge> g;
     private List<Node> liste_nodes;
-    private int idNode = 0;
+    private List<String> vertex = new ArrayList<String>();
+
 
     public GMAhandler(JFrame frame, List<Node> liste_nodes) {
         this.frame = frame;
@@ -40,49 +42,40 @@ public class GMAhandler {
         System.out.println("======================");
         System.out.println(liste_nodes);
         System.out.println("======================");
-        /*
-        for (Node n : liste_nodes ) {
-            n.setName("M"+ idNode);
-            idNode++;
-        }
 
-         */
 
-        for(int i = 0; i < liste_nodes.size(); i++){
-            System.out.println("Mq : "+liste_nodes.get(i).getMarquage());
-            g.addVertex(liste_nodes.get(i).getMarquage());
-        }
-        System.out.println("======================");
         for (Node n: liste_nodes) {
-            System.out.println("Marquage : "+n.getMarquage());
+            System.out.println(n.getMarquage());
             g.addVertex(n.getMarquage());
+            vertex.add(n.getMarquage());
         }
 
-        var layout = new mxHierarchicalLayout(jgxAdapter, SwingConstants.WEST);
-        layout.execute(jgxAdapter.getDefaultParent());
-        /*
+        System.out.println(vertex);
+
+
+        for (Node n : liste_nodes) {
+            for(int i=0; i< n.getParents().size(); i++){
+                System.out.println(n.getMarquage()+" - "+n.getParents().get(i).getMarquage());
+                g.addEdge(n.getMarquage(),n.getParents().get(i).getMarquage());
+            }
+        }
+
+
+
+
+
         mxGraphComponent component = new mxGraphComponent(jgxAdapter);
         component.setConnectable(false);
         component.getGraph().setAllowDanglingEdges(false);
         this.frame.getContentPane().add(component);
 
-        String v1 = "v1";
-        String v2 = "v2";
-        String v3 = "v3";
-        String v4 = "v4";
+        var layout = new mxHierarchicalLayout(jgxAdapter, SwingConstants.WEST);
+        layout.execute(jgxAdapter.getDefaultParent());
 
-        // add some sample data (graph manipulated via JGraphX)
-        g.addVertex(v1);
-        g.addVertex(v2);
-        g.addVertex(v3);
-        g.addVertex(v4);
 
-        g.addEdge(v1, v2);
-        g.addEdge(v2, v3);
-        g.addEdge(v3, v1);
-        g.addEdge(v4, v3);
 
-        // positioning via jgraphx layouts
+
+        /*
         mxCircleLayout layout = new mxCircleLayout(jgxAdapter);
         mxCompactTreeLayout layout2 = new mxCompactTreeLayout(jgxAdapter);
 
@@ -92,6 +85,7 @@ public class GMAhandler {
         layout2.setLevelDistance((int)(edgeDistance*1.5f));
         layout2.setNodeDistance((int)(0.2f * edgeDistance*edgeDistance*2f));
         layout2.setInvert(true);
+
 
 
         // center the circle
@@ -104,8 +98,8 @@ public class GMAhandler {
 
         layout.execute(jgxAdapter.getDefaultParent());
         // that's all there is to it!...
+        */
 
-         */
     }
 
 }
