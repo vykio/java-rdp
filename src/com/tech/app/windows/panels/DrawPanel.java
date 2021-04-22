@@ -25,7 +25,7 @@ import java.awt.image.BufferedImage;
 public class DrawPanel extends JPanel {
 
     private final JFrame frame;
-    private final Model model;
+    public Model model;
 
     private double arcOriginX = 0, arcOriginY =0, arcDestX=0, arcDestY=0;
     private int indexOfClickArc = 0;
@@ -96,6 +96,10 @@ public class DrawPanel extends JPanel {
                 //}
             }
         }
+    }
+
+    public void printModel(){
+        System.out.println(model);
     }
 
     public double mouseX, mouseY;

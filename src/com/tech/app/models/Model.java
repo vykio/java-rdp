@@ -2,6 +2,7 @@ package com.tech.app.models;
 
 import com.tech.app.functions.FList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -12,7 +13,6 @@ public class Model {
     public int nbTransition;
 
     public List<Place> placeVector;
-
     public List<Transition> transitionVector;
 
     Vector<Integer> M0;
@@ -347,6 +347,14 @@ public class Model {
 
     }
 
+    public void setPlaceVector(List<Place> placeVector) {
+        this.placeVector = placeVector;
+    }
+
+    public void setTransitionVector(List<Transition> transitionVector) {
+        this.transitionVector = transitionVector;
+    }
+  
     public Vector<Integer> getM0() { return M0; }
 
     public Vector<Vector<Integer>> getW_plus() { return w_plus; }
@@ -354,4 +362,5 @@ public class Model {
     public Vector<Vector<Integer>> getW_moins() { return w_moins; }
 
     public Vector<Vector<Integer>> getC() { return C; }
+  
 }

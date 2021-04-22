@@ -5,6 +5,7 @@ import com.tech.app.models.Model;
 import com.tech.app.models.gma.ReachabilityGraph;
 import com.tech.app.windows.handlers.DrawMouse;
 import com.tech.app.windows.handlers.MainWindowHandler;
+import com.tech.app.windows.handlers.SaveManager;
 import com.tech.app.windows.panels.DrawPanel;
 import com.tech.app.windows.toolbars.DrawingToolbar;
 import com.tech.app.windows.toolbars.Menu;
@@ -24,15 +25,20 @@ public class MainWindow extends Window {
 
     protected void build() {
 
+        SaveManager sm = new SaveManager();
+
         Menu menu = new Menu(this);
         menu.applyMenu();
 
         Model model = new Model();
 
         menu.applyModel(model);
+      
+        menu.applySaveManager(sm);
 
         DrawPanel dp = new DrawPanel(this,model);
         dp.applyPanel();
+        menu.applyDrawPanel(dp);
 
         DrawMouse drawMouse = new DrawMouse(this,dp);
 
