@@ -15,6 +15,7 @@ public class GMAWindow extends Window {
 
     public GMAWindow(int width, int height, Model model) throws UnsupportedLookAndFeelException {
         super(true, "GMA - Java_RDP - " + FUtils.OS.getOs(), width, height, true, true);
+
         model.updateMatrices();
         this.reachabilityGraph = new ReachabilityGraph(model);
         reachabilityGraph.calculateReachabilityGraph();

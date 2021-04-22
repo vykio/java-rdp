@@ -112,6 +112,8 @@ public class DrawingToolbar extends Toolbar {
         btnArc.addActionListener( this::btnArcListener );
         toolbar.add( btnArc );
 
+        toolbar.addSeparator();
+
         JToggleButton btnAttributs = new JToggleButton();
         btnAttributs.setToolTipText( "Attributs" );
         btnAttributs.addActionListener( this::btnAttributsListener );
@@ -124,7 +126,7 @@ public class DrawingToolbar extends Toolbar {
 
         toolbar.addSeparator();
 
-        JToggleButton btnGMA = new JToggleButton();
+        /*JToggleButton btnGMA = new JToggleButton();
         btnGMA.setToolTipText("Générer le GMA");
         btnGMA.setText("GMA");
         btnGMA.addActionListener(this::btnOpenGMAWindow );
@@ -135,7 +137,7 @@ public class DrawingToolbar extends Toolbar {
         btnStepper.setText("Stepper");
         btnStepper.setEnabled(false);
         //btnStepper.addActionListener(this::btnOpenGMAWindow );
-        toolbar.add(btnStepper);
+        toolbar.add(btnStepper);*/
 
         // Goupe de boutons pour ne pouvoir sélectionner qu'une seule des 5 fonctionnalités uniques
         // -> place, transition, arc, attributs, select
@@ -233,6 +235,8 @@ public class DrawingToolbar extends Toolbar {
                 dp.repaint();
             } else {
                 JOptionPane.showMessageDialog(this, "Version du fichier incompatible", "Erreur!", ERROR_MESSAGE);
+                model = new Model();
+                dp.model = model;
             }
 
         } else {
@@ -280,21 +284,6 @@ public class DrawingToolbar extends Toolbar {
     public void btnSelectListener(ActionEvent event){
         //System.out.println("Select button clicked");
         drawMouse.action(DrawMouse.MODE.SELECT);
-    }
-
-    private void btnOpenGMAWindow(ActionEvent actionEvent) {
-        EventQueue.invokeLater(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            GMAWindow window = new GMAWindow(900,500, model);
-                        } catch (UnsupportedLookAndFeelException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-        );
     }
 
 }

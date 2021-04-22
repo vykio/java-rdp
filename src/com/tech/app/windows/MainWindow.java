@@ -37,9 +37,11 @@ public class MainWindow extends Window {
         Menu menu = new Menu(this);
         menu.applyMenu();
         menu.applyModel(model);
+        menu.applySaveManager(sm);
 
         DrawPanel dp = new DrawPanel(this,model);
         dp.applyPanel();
+        menu.applyDrawPanel(dp);
 
         DrawMouse drawMouse = new DrawMouse(this,dp);
 

@@ -40,7 +40,7 @@ public class SaveManager {
 
             //System.out.println("Model loaded: " + model);
             return model;
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | ClassCastException e) {
             //e.printStackTrace();
             return null;
         }

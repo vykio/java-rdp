@@ -70,6 +70,7 @@ public class Menu extends  MenuBar {
         //mnuSaveFile.setIcon(new ImageIcon("icons/save.png"));
         mnuSaveFile.setMnemonic('S');
         mnuSaveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+        mnuSaveFile.setEnabled(false);
         mnuFile.add(mnuSaveFile);
 
         JMenuItem mnuSaveFileAs = new JMenuItem("Save File As ...");
@@ -148,6 +149,7 @@ public class Menu extends  MenuBar {
         JMenuItem mnuStepper = new JMenuItem("Simulation pas à pas");
         mnuStepper.setMnemonic('F');
         mnuStepper.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
+        mnuStepper.setEnabled(false);
         mnuTools.add(mnuStepper);
 
         toolbar.add(mnuTools);
@@ -255,7 +257,9 @@ public class Menu extends  MenuBar {
                 dp.printModel();
                 dp.repaint();
             } else {
-                JOptionPane.showMessageDialog(this, "Version du fichier incompatible", "Erreur!", ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Fichier corrompu ou version incompatible...", "Erreur!", ERROR_MESSAGE);
+                model = new Model();
+                dp.model = model;
             }
 
         } else {
@@ -279,41 +283,15 @@ public class Menu extends  MenuBar {
     }
 
     public void mnuExitListener(ActionEvent event){
-        String options[]={"Exit","Save and Exit","Cancel"};
-        int res = JOptionPane.showOptionDialog(null, "Voules vous vraiment quitter l'application ?", "Attention",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        String options[]={"Quitter","Annuler"};
+        int res = JOptionPane.showOptionDialog(null, "Toute modification non enregistrée sera perdue... Voulez-vous quitter l'application ?", "Attention",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
         switch(res){
             //Case EXIT
             case 0:
                 this.frame.dispose();
-                //Pourquoi ça m'affiche la fenêtre de dialogue pour enregistrer ??
-
-                //Case SAVE_EXIT
                 break;
             case 1:
-                //Si le fichier n'a jamais été enregistré (=> Il n'a pas de nom)
-                JFileChooser save = new JFileChooser();
-                save.showSaveDialog(this);
-                File f =save.getSelectedFile();
-                try {
-                    FileWriter fw = new FileWriter(f);
-                    String text = "Le fichier a été sauvegardé, je vais quitter le programme";
-                    fw.write(text);
-                    fw.close();
-                }
-                catch (IOException e) {
-                    System.out.println(e);
-                }
-                //SI le fichier a déja été enregistrer
-                // ????????????
-
-                //Exit
-                this.frame.dispose();
-
-                break;
-
-                //case CANCEL
-            case 2:
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + res);
