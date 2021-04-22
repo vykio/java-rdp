@@ -1,5 +1,7 @@
 package com.tech.app.models.gma;
 
+import com.tech.app.models.Transition;
+
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ public class Node {
     private List<Node> children;
     private List<Node> parents;
     private String name;
+    private String originTransition;
 
     public Node(Vector<Integer> m, List<Node> children, List<Node> parents) {
         this(m,children,parents,null);

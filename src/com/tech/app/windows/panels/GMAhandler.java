@@ -6,6 +6,7 @@ import com.mxgraph.layout.mxCompactTreeLayout;
 import com.mxgraph.layout.mxStackLayout;
 import com.mxgraph.swing.mxGraphComponent;
 import com.tech.app.models.Model;
+import com.tech.app.models.gma.CustomEdge;
 import com.tech.app.models.gma.Node;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
@@ -56,7 +57,7 @@ public class GMAhandler {
         for (Node n : liste_nodes) {
             for(int i=0; i< n.getParents().size(); i++){
                 System.out.println(n.getMarquage()+" - "+n.getParents().get(i).getMarquage());
-                g.addEdge(n.getMarquage(),n.getParents().get(i).getMarquage());
+                g.addEdge(n.getMarquage(),n.getParents().get(i).getMarquage(), new CustomEdge("test"));
             }
         }
 
