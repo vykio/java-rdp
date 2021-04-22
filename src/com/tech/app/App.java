@@ -1,7 +1,16 @@
+
 /**
+ *<b> Implémentation d'un simulateur de réseaux de Pétri en Java <\b>
+ *<p> Dans le cadre du projet technologique intervenant en 2ème année de cycle d'ingénieur,
+ * nous avons développé un outil permetant de faire l'analyse de réseau de Pétri</p>
+ *
+ * @author  Gauthier Leurette, Alexandre Vasseur, Théo Plouvin
+ * @version 1.0
+ * @since   2021-02-01
  * Application : Java 11
  * Point d'entrée de l'application : public static void main()
  */
+
 
 package com.tech.app;
 

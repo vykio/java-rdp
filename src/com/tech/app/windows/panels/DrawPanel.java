@@ -1,10 +1,7 @@
 package com.tech.app.windows.panels;
 
 import com.tech.app.functions.FUtils;
-import com.tech.app.models.Arc;
-import com.tech.app.models.Model;
-import com.tech.app.models.Place;
-import com.tech.app.models.Transition;
+import com.tech.app.models.*;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
@@ -73,6 +70,9 @@ public class DrawPanel extends JPanel {
         }
         for (Transition t : model.transitionVector) {
             t.updatePosition(t.getX() + dx * 1 / scaleX, t.getY() + dy * 1 / scaleY);
+            /*for (Arc a : t.getChildrens()) {
+                a.getPointCtr1().updatePosition();
+            }*/
             repaint();
         }
 
@@ -93,6 +93,10 @@ public class DrawPanel extends JPanel {
                     p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
                     repaint();
                 //}
+            } else if (obj instanceof PointControle) {
+                PointControle pt = (PointControle) obj;
+                pt.updatePosition(pt.getX() + dx * 1 / scaleX, pt.getY() + dy * 1 / scaleY);
+                repaint();
             } else {
                 Transition p = (Transition) obj;
                 //if (p.forme.getBounds2D().contains(x, y)) {
@@ -145,7 +149,7 @@ public class DrawPanel extends JPanel {
 
             if (selectedObject instanceof Place) {
                 ((Place) selectedObject).draw(g);
-            } else {
+            } else if (selectedObject instanceof Transition) {
                 ((Transition) selectedObject).draw(g);
             }
             g.setColor(co);
@@ -262,6 +266,15 @@ public class DrawPanel extends JPanel {
         for (Transition t:model.transitionVector) {
             if (t.forme.contains(x,y)) {
                 return t;
+            }
+        }
+        for (Transition t : model.transitionVector) {
+            for (Arc a : t.getChildrens()) {
+                System.out.println("Pt1 > " + a.getPointCtr1());
+                if(a.containsControlPoint1(x,y)) {
+                    a.getPointCtr1().setMoved(true);
+                    return a.getPointCtr1();
+                }
             }
         }
         return null;
