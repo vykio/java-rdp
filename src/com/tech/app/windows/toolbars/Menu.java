@@ -46,6 +46,7 @@ public class Menu extends  MenuBar {
 
     public JMenuBar getMenu() {
 
+
         JMenu mnuFile = new JMenu("File");
         mnuFile.setMnemonic('F');
 
@@ -53,6 +54,7 @@ public class Menu extends  MenuBar {
         mnuNewFile.setMnemonic('N');
         mnuNewFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
         mnuNewFile.addActionListener(this::mnuNewListener);
+        mnuNewFile.setEnabled(false);
         mnuFile.add(mnuNewFile);
 
         mnuFile.addSeparator();
@@ -87,6 +89,7 @@ public class Menu extends  MenuBar {
 
         toolbar.add(mnuFile);
 
+
         // Définition du menu déroulant "Edit" et de son contenu
         JMenu mnuEdit = new JMenu("Edit");
         mnuEdit.setMnemonic('E');
@@ -95,12 +98,14 @@ public class Menu extends  MenuBar {
         //mnuUndo.setIcon(new ImageIcon("icons/undo.png"));
         mnuUndo.setMnemonic('U');
         mnuUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
+        mnuUndo.setEnabled(false);
         mnuEdit.add(mnuUndo);
 
         JMenuItem mnuRedo = new JMenuItem("Redo");
         //mnuRedo.setIcon(new ImageIcon("icons/redo.png"));
         mnuRedo.setMnemonic('R');
         mnuRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_DOWN_MASK));
+        mnuRedo.setEnabled(false);
         mnuEdit.add(mnuRedo);
 
         mnuEdit.addSeparator();
@@ -109,50 +114,38 @@ public class Menu extends  MenuBar {
         //mnuCopy.setIcon(new ImageIcon("icons/copy.png"));
         mnuCopy.setMnemonic('C');
         mnuCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
+        mnuCopy.setEnabled(false);
         mnuEdit.add(mnuCopy);
 
         JMenuItem mnuCut = new JMenuItem("Cut");
         //mnuCut.setIcon(new ImageIcon("icons/cut.png"));
         mnuCut.setMnemonic('t');
         mnuCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK));
+        mnuCut.setEnabled(false);
         mnuEdit.add(mnuCut);
 
         JMenuItem mnuPaste = new JMenuItem("Paste");
         //mnuPaste.setIcon(new ImageIcon("icons/paste.png"));
         mnuPaste.setMnemonic('P');
         mnuPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
+        mnuPaste.setEnabled(false);
         mnuEdit.add(mnuPaste);
 
         toolbar.add(mnuEdit);
 
-        // Définition du menu déroulant "Mode" et de son contenu
-        JMenu mnuMode = new JMenu("Mode");
-        mnuMode.setMnemonic('M');
-
-        JMenuItem mnuText = new JMenuItem("Mode textuel");
-        mnuText.setMnemonic('T');
-        mnuText.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_DOWN_MASK));
-        mnuMode.add(mnuText);
-
-        JMenuItem mnuGraphic = new JMenuItem("Mode graphique");
-        mnuGraphic.setMnemonic('G');
-        mnuGraphic.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK));
-        mnuMode.add(mnuGraphic);
-
-        toolbar.add(mnuMode);
-
 
         // Définition du menu déroulant "Tools" et de son contenu
+
         JMenu mnuTools = new JMenu("Tools");
         mnuTools.setMnemonic('T');
 
-        JMenuItem mnuGMA = new JMenuItem("GMA");
+        JMenuItem mnuGMA = new JMenuItem("Générer GMA");
         mnuGMA.setMnemonic('G');
         mnuGMA.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK));
         mnuGMA.addActionListener( this::openGMAWindow );
         mnuTools.add(mnuGMA);
 
-        JMenuItem mnuStepper = new JMenuItem("Stepper");
+        JMenuItem mnuStepper = new JMenuItem("Simulation pas à pas");
         mnuStepper.setMnemonic('F');
         mnuStepper.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
         mnuTools.add(mnuStepper);
@@ -160,11 +153,14 @@ public class Menu extends  MenuBar {
         toolbar.add(mnuTools);
 
 
+
         // Définition du menu déroulant "Help" et de son contenu
+        /*
         JMenu mnuHelp = new JMenu("Help");
         mnuHelp.setMnemonic('H');
-
         toolbar.add(mnuHelp);
+        */
+
 
         //Gestion des icônes => améliorable !
         Image imageNew = null;
@@ -177,7 +173,7 @@ public class Menu extends  MenuBar {
         Image imageCopy = null;
         Image imagePaste = null;
         Image imageCut = null;
-        Image imageAbout = null;
+        //Image imageAbout = null;
         try {
             imageNew = ImageIO.read(getClass().getResource("/icons/new.png"));
             imageOpen = ImageIO.read(getClass().getResource("/icons/open.png"));
@@ -189,7 +185,7 @@ public class Menu extends  MenuBar {
             imageCopy = ImageIO.read(getClass().getResource("/icons/copy.png"));
             imagePaste = ImageIO.read(getClass().getResource("/icons/paste.png"));
             imageCut = ImageIO.read(getClass().getResource("/icons/cut.png"));
-            imageAbout = ImageIO.read(getClass().getResource("/icons/about.png"));
+            //imageAbout = ImageIO.read(getClass().getResource("/icons/about.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -204,7 +200,7 @@ public class Menu extends  MenuBar {
         assert imageCopy != null;
         assert imagePaste != null;
         assert imageCut != null;
-        assert imageAbout != null;
+        //assert imageAbout != null;
         mnuNewFile.setIcon(new ImageIcon(imageNew));
         mnuOpenFile.setIcon(new ImageIcon(imageOpen));
         mnuSaveFile.setIcon(new ImageIcon(imageSave));
@@ -215,7 +211,9 @@ public class Menu extends  MenuBar {
         mnuCopy.setIcon(new ImageIcon(imageCopy));
         mnuPaste.setIcon(new ImageIcon(imagePaste));
         mnuCut.setIcon(new ImageIcon(imageCut));
-        mnuHelp.setIcon(new ImageIcon(imageAbout));
+        //mnuHelp.setIcon(new ImageIcon(imageAbout));
+
+
 
         return toolbar;
     }
@@ -252,7 +250,7 @@ public class Menu extends  MenuBar {
             System.out.println(choix.getSelectedFile().getAbsolutePath());
             model = saveManager.load(f, model);
             if (model != null) {
-                System.out.println(model);
+                //System.out.println(model);
                 dp.model = model;
                 dp.printModel();
                 dp.repaint();
@@ -284,17 +282,13 @@ public class Menu extends  MenuBar {
         String options[]={"Exit","Save and Exit","Cancel"};
         int res = JOptionPane.showOptionDialog(null, "Voules vous vraiment quitter l'application ?", "Attention",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
-        System.out.println(res);
-
-        System.out.println("Modelllll: " + model);
-
         switch(res){
             //Case EXIT
             case 0:
                 this.frame.dispose();
                 //Pourquoi ça m'affiche la fenêtre de dialogue pour enregistrer ??
 
-                //Case SAVE_EXITù
+                //Case SAVE_EXIT
                 break;
             case 1:
                 //Si le fichier n'a jamais été enregistré (=> Il n'a pas de nom)

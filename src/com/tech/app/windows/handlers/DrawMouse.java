@@ -90,15 +90,15 @@ public class DrawMouse extends MouseAdapter {
                 switch(mode){
                     case PLACE:
                         drawPanel.addPlace(x/drawPanel.scaleX,y/ drawPanel.scaleY);
-                        System.out.println("Place mise");
+                        //System.out.println("Place mise");
                         break;
                     case ARC:
                         drawPanel.loadCoordinatesArc(x /drawPanel.scaleX, y /drawPanel.scaleY);
-                        System.out.println("Arc test");
+                        //System.out.println("Arc test");
                         break;
                     case TRANSITION:
                         drawPanel.addTransition(x / drawPanel.scaleX,y/ drawPanel.scaleY);
-                        System.out.println("Transition mise");
+                        //System.out.println("Transition mise");
                         break;
                     case ATTRIBUTS:
                         objectDragged = drawPanel.getSelectedObject(x / drawPanel.scaleX, y / drawPanel.scaleY);
@@ -110,7 +110,7 @@ public class DrawMouse extends MouseAdapter {
                         break;
                     case SELECT:
                         objectDragged = drawPanel.getSelectedObject(x/drawPanel.scaleX, y/drawPanel.scaleY);
-                        System.out.println(objectDragged);
+                        //System.out.println(objectDragged);
                         drawPanel.selectObject(objectDragged);
                         break;
                 }

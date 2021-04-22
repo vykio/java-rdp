@@ -20,7 +20,7 @@ public class SaveManager {
             out.writeObject(model);
             out.close();
             fileOut.close();
-            System.out.println("Model Object Serialized saved in " + f.getName());
+            //System.out.println("Model Object Serialized saved in " + f.getName());
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -38,7 +38,7 @@ public class SaveManager {
             in.close();
             fileIn.close();
 
-            System.out.println("Model loaded: " + model);
+            //System.out.println("Model loaded: " + model);
             return model;
         } catch (IOException | ClassNotFoundException e) {
             //e.printStackTrace();

@@ -27,7 +27,6 @@ public class GMAhandler {
     private JGraphXAdapter<String, DefaultEdge> jgxAdapter;
     private ListenableGraph<String, DefaultEdge> g;
     private List<Node> liste_nodes;
-    private List<String> vertex = new ArrayList<String>();
 
 
     public GMAhandler(JFrame frame, List<Node> liste_nodes) {
@@ -40,23 +39,14 @@ public class GMAhandler {
     public void init() {
         // create a visualization using JGraph, via an adapter
 
-        System.out.println("======================");
-        System.out.println(liste_nodes);
-        System.out.println("======================");
-
-
         for (Node n: liste_nodes) {
-            System.out.println(n.getMarquage());
+            //System.out.println(n.getMarquage());
             g.addVertex(n.getMarquage());
-            vertex.add(n.getMarquage());
         }
-
-        System.out.println(vertex);
-
 
         for (Node n : liste_nodes) {
             for(int i=0; i< n.getParents().size(); i++){
-                System.out.println(n.getMarquage()+" - "+n.getParents().get(i).node.getMarquage());
+                //System.out.println(n.getMarquage()+" - "+n.getParents().get(i).node.getMarquage());
                 g.addEdge(n.getMarquage(),n.getParents().get(i).node.getMarquage(), new CustomEdge(n.getParents().get(i).transition.getName()));
             }
         }

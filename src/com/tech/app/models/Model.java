@@ -127,9 +127,9 @@ public class Model implements Serializable {
         Place p = FList.getPlaceByName(this.placeVector, name);
         if (p != null) {
             this.removePlace(p);
-        } else {
-            java.lang.System.out.println("[!] Error - place \""+ name + "\" is null");
-        }
+        } //else {
+            //java.lang.System.out.println("[!] Error - place \""+ name + "\" is null");
+        //}
 
     }
 
@@ -342,7 +342,7 @@ public class Model implements Serializable {
 
         }
         result.append("\\end{pmatrix}\\end{array}");
-        System.out.println(result.toString());
+        //System.out.println(result.toString());
         return (result.toString());
 
     }

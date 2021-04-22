@@ -17,7 +17,13 @@ public class MainWindow extends Window {
 
     public MainWindow(int width, int height) throws UnsupportedLookAndFeelException {
         super(false, "Java_RDP - " + FUtils.OS.getOs(), width, height, true, true);
-        UIManager.setLookAndFeel(new MetalLookAndFeel());
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+            //e.printStackTrace();
+            System.out.println("Thème système non trouvé");
+            UIManager.setLookAndFeel(new MetalLookAndFeel());
+        }
         setWindowHandler(new MainWindowHandler(this));
         build();
     }
@@ -26,25 +32,22 @@ public class MainWindow extends Window {
     protected void build() {
 
         SaveManager sm = new SaveManager();
+        Model model = new Model();
 
         Menu menu = new Menu(this);
         menu.applyMenu();
-
-        Model model = new Model();
-
         menu.applyModel(model);
-      
-        menu.applySaveManager(sm);
 
         DrawPanel dp = new DrawPanel(this,model);
         dp.applyPanel();
-        menu.applyDrawPanel(dp);
 
         DrawMouse drawMouse = new DrawMouse(this,dp);
 
         DrawingToolbar dToolbar = new DrawingToolbar(this,drawMouse);
         dToolbar.applyToolbar();
-
+        dToolbar.applyModel(model);
+        dToolbar.applySaveManager(sm);
+        dToolbar.applyDrawPanel(dp);
     }
 
 }

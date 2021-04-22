@@ -18,8 +18,13 @@ public class GMAWindow extends Window {
         model.updateMatrices();
         this.reachabilityGraph = new ReachabilityGraph(model);
         reachabilityGraph.calculateReachabilityGraph();
-        UIManager.setLookAndFeel(new MetalLookAndFeel());
-        setWindowHandler(new GMAWindowHandler(this));
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+            //e.printStackTrace();
+            System.out.println("Thème système non trouvé");
+            UIManager.setLookAndFeel(new MetalLookAndFeel());
+        }        setWindowHandler(new GMAWindowHandler(this));
         build();
     }
 
