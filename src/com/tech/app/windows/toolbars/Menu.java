@@ -3,6 +3,8 @@ package com.tech.app.windows.toolbars;
 import com.tech.app.models.Model;
 import com.tech.app.windows.handlers.SaveManager;
 import com.tech.app.windows.panels.DrawPanel;
+import com.tech.app.models.gma.Node;
+import com.tech.app.windows.GMAWindow;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,10 +19,14 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import static javax.swing.JOptionPane.*;
+import java.util.ArrayList;
+import java.util.List;
+import static javax.swing.JOptionPane.DEFAULT_OPTION;
 
 
 public class Menu extends  MenuBar {
     /* Construction de l'interface graphique pour tester à part*/
+    private Model model;
 
     private Model model;
     private SaveManager saveManager;
@@ -36,6 +42,7 @@ public class Menu extends  MenuBar {
     }
     public void applySaveManager(SaveManager sm) { this.saveManager = sm; }
     public void applyDrawPanel(DrawPanel dp) { this.dp = dp; }
+  
     // Méthode de construction de la toolbar
 
     public JMenuBar getMenu() {
@@ -143,6 +150,7 @@ public class Menu extends  MenuBar {
         JMenuItem mnuGMA = new JMenuItem("GMA");
         mnuGMA.setMnemonic('G');
         mnuGMA.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK));
+        mnuGMA.addActionListener( this::openGMAWindow );
         mnuTools.add(mnuGMA);
 
         JMenuItem mnuStepper = new JMenuItem("Stepper");
@@ -211,6 +219,21 @@ public class Menu extends  MenuBar {
         mnuHelp.setIcon(new ImageIcon(imageAbout));
 
         return toolbar;
+    }
+
+    private void openGMAWindow(ActionEvent actionEvent) {
+        EventQueue.invokeLater(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            GMAWindow window = new GMAWindow(900,500, model);
+                        } catch (UnsupportedLookAndFeelException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
     }
 
     // Test d'une fenêtre pop-up après une action (ici lors de la création d'un nouveau fichier)

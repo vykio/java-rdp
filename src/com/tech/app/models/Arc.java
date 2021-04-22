@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Arc implements Serializable {
 
-    private Place place;
+    public Place place;
     private int poids;
     private boolean placeToTransition;
     private Transition transition;

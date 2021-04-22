@@ -4,6 +4,7 @@ import com.tech.app.functions.FMaths;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -129,6 +130,18 @@ public class Transition implements Serializable {
         this.forme.y = (float) (this.y-(HEIGHT/2));
         this.forme.width = WIDTH;
         this.forme.height = HEIGHT;
+    }
+
+    public boolean isFranchissable(){
+        boolean franchissable = false;
+        List<Arc> par = getParents();
+
+        for (Arc arc : par) {
+            if(arc.place.getMarquage()>0){
+                franchissable = true;
+            }
+        }
+        return franchissable;
     }
 
 }
