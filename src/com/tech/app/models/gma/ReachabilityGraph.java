@@ -1,6 +1,9 @@
-package com.tech.app.models;
+package com.tech.app.models.gma;
 
-import com.tech.app.models.gma.Node;
+import com.tech.app.models.Arc;
+import com.tech.app.models.Model;
+import com.tech.app.models.Place;
+import com.tech.app.models.Transition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +19,7 @@ public class ReachabilityGraph {
 
     public ReachabilityGraph(Model model){
         this.model = model;
-        this.M0 = model.M0;
+        this.M0 = model.getM0();
         this.marquagesAccessibles = new ArrayList<Vector<Integer>>();
         this.marquagesATraiter = new ArrayList<Vector<Integer>>();
         this.liste_node = new ArrayList<>();
@@ -54,7 +57,7 @@ public class ReachabilityGraph {
 
     public void updateModel(Model model) {
         this.model = model;
-        this.M0 = model.M0;
+        this.M0 = model.getM0();
         this.marquagesAccessibles = new ArrayList<Vector<Integer>>();
         this.marquagesATraiter = new ArrayList<Vector<Integer>>();
         this.liste_node = new ArrayList<>();
@@ -88,8 +91,8 @@ public class ReachabilityGraph {
                 System.out.println("Marquages accessible: " + marquagesAccessibles);
 
                 for (int t = 0; t < this.model.transitionVector.size(); t++) {
-                    if (couvre(M, this.model.w_moins, t)) {
-                        M1 = addVector(M, this.model.C, t);
+                    if (couvre(M, this.model.getW_moins(), t)) {
+                        M1 = addVector(M, this.model.getC(), t);
 
                         m.addParent(new Node(M1));
 

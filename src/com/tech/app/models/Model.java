@@ -347,5 +347,11 @@ public class Model {
 
     }
 
+    public Vector<Integer> getM0() { return M0; }
 
+    public Vector<Vector<Integer>> getW_plus() { return w_plus; }
+
+    public Vector<Vector<Integer>> getW_moins() { return w_moins; }
+
+    public Vector<Vector<Integer>> getC() { return C; }
 }

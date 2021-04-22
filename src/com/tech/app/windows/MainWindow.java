@@ -2,7 +2,7 @@ package com.tech.app.windows;
 
 import com.tech.app.functions.FUtils;
 import com.tech.app.models.Model;
-import com.tech.app.models.ReachabilityGraph;
+import com.tech.app.models.gma.ReachabilityGraph;
 import com.tech.app.windows.handlers.DrawMouse;
 import com.tech.app.windows.handlers.MainWindowHandler;
 import com.tech.app.windows.panels.DrawPanel;
