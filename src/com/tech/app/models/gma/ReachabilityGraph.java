@@ -23,7 +23,6 @@ public class ReachabilityGraph {
         this.marquagesAccessibles = new ArrayList<Vector<Integer>>();
         this.marquagesATraiter = new ArrayList<Vector<Integer>>();
         this.liste_node = new ArrayList<>();
-        System.out.println("ok : " +model);
     }
 
     public List<Node> getListe_node() { return liste_node; }

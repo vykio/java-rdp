@@ -34,8 +34,6 @@ public class MainWindow extends Window {
         DrawPanel dp = new DrawPanel(this,model);
         dp.applyPanel();
 
-        ReachabilityGraph reachabilityGraph = new ReachabilityGraph(model);
-
         DrawMouse drawMouse = new DrawMouse(this,dp);
 
         DrawingToolbar dToolbar = new DrawingToolbar(this,drawMouse);
