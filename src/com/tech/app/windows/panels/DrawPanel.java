@@ -45,7 +45,13 @@ public class DrawPanel extends JPanel {
     public double scaleX;
     public double scaleY;
 
+    /* Conversion string --> int */
+    public int convert;
+
+
     public AffineTransform transform;
+
+    String list[] = new String[30];
 
     public DrawPanel(JFrame frame, Model model) {
         this.scaleFactor = FUtils.Screen.getScaleFactor();
@@ -78,7 +84,6 @@ public class DrawPanel extends JPanel {
     }
 
     /* Bouger un objet donné en paramètre */
-
     public void updatePosition(Object obj, double x, double y, double scaleX, double scaleY, double dx, double dy) {
         selectedObject = obj;
         if (obj != null) {
@@ -283,7 +288,7 @@ public class DrawPanel extends JPanel {
     public void showModel() {
         if(model.placeVector.size() != 0 && model.transitionVector.size() != 0){
             model.updateMatrices();
-            //System.out.println(model);
+            System.out.println(model);
 
             // mise au format latex de la matrice
             TeXFormula formula = new TeXFormula(String.valueOf(model.get_C()));
@@ -321,4 +326,48 @@ public class DrawPanel extends JPanel {
         repaint();
     }
 
+    public void showOptionsLabel(Object obj) {
+        if (obj instanceof Place || obj instanceof Transition ) {
+            try {
+
+             JPanel panel = new JPanel(new BorderLayout(5, 5));
+             JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
+             label.add (new JLabel("Label : ", SwingConstants.RIGHT));
+             label.add (new JLabel("Position :", SwingConstants.LEFT));
+             panel.add(label, BorderLayout.WEST);
+
+             ImageIcon icon = new ImageIcon (getClass().getResource("/icons/position.png"));
+
+            JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
+            JTextField Label = new JTextField();
+            controls.add(Label);
+            JTextField Position = new JTextField("4");
+            controls.add(Position);
+            panel.add(controls, BorderLayout.CENTER);
+
+            JOptionPane.showMessageDialog(frame, panel, "Label / Position", JOptionPane.QUESTION_MESSAGE, icon);
+
+            convert = Integer.parseInt(Position.getText());
+            System.out.println(Label.getText());
+            System.out.println(Position.getText());
+
+                if (obj instanceof Place) {
+                    ((Place) obj).addLabel(Label.getText());
+                    ((Place) obj).addPosition(convert);
+                } else if(obj instanceof Transition){
+                    ((Transition) obj).addLabel(Label.getText());
+                    ((Transition) obj).addPosition(convert);
+                }
+
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only string are allowed");
+            }
+        }
+        repaint();
+    }
+
+    public void errorSelect(){
+        JOptionPane.showMessageDialog(frame.getContentPane(), "Veuillez sélectionner une place ou transition");
+        repaint();
+    }
 }

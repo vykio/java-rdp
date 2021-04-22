@@ -15,21 +15,25 @@ public class Transition implements Serializable {
     private String name;
     private double x, y;
     private List<Arc> childrens, parents;
+    private String label;
+    private int position;
 
     private final int LARGE_SIDE = 40, MIN_SIDE = 10;
     public int WIDTH=LARGE_SIDE, HEIGHT=MIN_SIDE;
 
-    public Transition(String name, double x, double y, ArrayList<Arc> childrens, ArrayList<Arc> parents) {
+    public Transition(String name, double x, double y, ArrayList<Arc> childrens, ArrayList<Arc> parents, String label, int position) {
         this.name = name;
         this.x = x;
         this.y = y;
         this.childrens = childrens;
         this.parents = parents;
+        this.label = label;
+        this.position = position;
         this.forme = new Rectangle2D.Float((float) (this.x-(WIDTH/2)), (float) (this.y-(HEIGHT/2)), WIDTH ,HEIGHT );
     }
 
-    public Transition(String name, double x, double y, ArrayList<Arc> childrens) { this(name, x, y, childrens, new ArrayList<Arc>()); }
-    public Transition(String name, double x, double y) { this(name, x, y, new ArrayList<Arc>(), new ArrayList<Arc>()); }
+    public Transition(String name, double x, double y, ArrayList<Arc> childrens) { this(name, x, y, childrens, new ArrayList<Arc>(),"",0); }
+    public Transition(String name, double x, double y) { this(name, x, y, new ArrayList<Arc>(), new ArrayList<Arc>(),"",0); }
     public Transition(String name) { this(name, 0, 0); }
 
     public String getName() { return name; }
@@ -47,6 +51,12 @@ public class Transition implements Serializable {
     public void addParent(Arc a) { this.parents.add(a); }
     public void addParents(ArrayList<Arc> arcs) { this.parents.addAll(arcs); }
     public void removeParent(Arc a) { this.parents.remove(a); }
+
+    public void addLabel(String label) { this.label = label; }
+    public void resetlabel() { this.label = " "; }
+
+    public void addPosition(int convert) { this.position = convert; }
+    public void resetPosition() { this.position = 1; }
 
     public String toString() {
 
@@ -89,7 +99,7 @@ public class Transition implements Serializable {
         }
 
         /* Afficher le carré de transition au dessus de l'arc */
-        String label = this.name;
+        String labelName = this.name;
         Graphics2D g2 = (Graphics2D) g;
         g.setFont(new Font("Console", Font.PLAIN, 15));
 
@@ -99,8 +109,45 @@ public class Transition implements Serializable {
         g2.fill(new Rectangle2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
         g2.setColor(color);
         g2.draw(new Rectangle2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
-        g.drawString(label, (int)(x-(forme.width)/4) ,(int)(y+5));
+        g.drawString(labelName, (int)(x-(forme.width)/4) ,(int)(y+5));
 
+        FontMetrics fontMetrics = g2.getFontMetrics();
+
+        if (label != null) {
+            Font police = new Font("TimesRoman", Font.PLAIN, 20);
+            Color tempColor = g.getColor();
+            Color myColor = new Color(47, 101, 202);
+            g.setFont(police);
+            g.setColor(myColor);
+
+            switch (position) {
+                case 1:
+                    g.drawString("" + label, (int) (x - 35) - fontMetrics.stringWidth(label), (int) (y - 15));
+                    break;
+                case 2:
+                    g.drawString("" + label, (int) (x) - (fontMetrics.stringWidth(label)/2), (int) (y - 30));
+                    break;
+                case 3:
+                    g.drawString("" + label, (int) (x+30), (int) (y - 15));
+                    break;
+                case 4:
+                    g.drawString("" + label, (int) (x + 30), (int) (y + 5));
+                    break;
+                case 5:
+                    g.drawString("" + label, (int) (x + 30), (int) (y + 25));
+                    break;
+                case 6:
+                    g.drawString("" + label, (int) (x) - (fontMetrics.stringWidth(label)/2), (int) (y + 40));
+                    break;
+                case 7:
+                    g.drawString("" + label, (int) (x - 35) - fontMetrics.stringWidth(label), (int) (y + 25));
+                    break;
+                case 8:
+                    g.drawString("" + label, (int) (x - 35) - fontMetrics.stringWidth(label), (int) (y + 5));
+                    break;
+            }
+            g.setColor(tempColor);
+        }
     }
 
     public void updatePosition(double x, double y) {
