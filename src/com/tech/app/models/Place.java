@@ -4,8 +4,9 @@ import com.tech.app.functions.FMaths;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.io.Serializable;
 
-public class Place {
+public class Place implements Serializable {
 
     private String name;
     private double x;
@@ -69,5 +70,6 @@ public class Place {
         this.x = x;
         this.y = y;
     }
+
 
 }

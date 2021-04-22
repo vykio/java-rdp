@@ -1,5 +1,11 @@
 package com.tech.app.windows.toolbars;
 
+import com.tech.app.models.Model;
+import com.tech.app.windows.handlers.SaveManager;
+import com.tech.app.windows.panels.DrawPanel;
+import com.tech.app.models.gma.Node;
+import com.tech.app.windows.GMAWindow;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -9,17 +15,33 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import static javax.swing.JOptionPane.*;
+import java.util.ArrayList;
+import java.util.List;
 import static javax.swing.JOptionPane.DEFAULT_OPTION;
 
 
 public class Menu extends  MenuBar {
     /* Construction de l'interface graphique pour tester à part*/
+    private Model model;
+
+    private SaveManager saveManager;
+    private DrawPanel dp;
 
     public Menu(JFrame frame) {
         super(frame);
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    public void applyModel(Model model) {
+        this.model = model;
+    }
+    public void applySaveManager(SaveManager sm) { this.saveManager = sm; }
+    public void applyDrawPanel(DrawPanel dp) { this.dp = dp; }
+  
     // Méthode de construction de la toolbar
 
     public JMenuBar getMenu() {
@@ -127,6 +149,7 @@ public class Menu extends  MenuBar {
         JMenuItem mnuGMA = new JMenuItem("GMA");
         mnuGMA.setMnemonic('G');
         mnuGMA.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK));
+        mnuGMA.addActionListener( this::openGMAWindow );
         mnuTools.add(mnuGMA);
 
         JMenuItem mnuStepper = new JMenuItem("Stepper");
@@ -197,36 +220,64 @@ public class Menu extends  MenuBar {
         return toolbar;
     }
 
+    private void openGMAWindow(ActionEvent actionEvent) {
+        EventQueue.invokeLater(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            GMAWindow window = new GMAWindow(900,500, model);
+                        } catch (UnsupportedLookAndFeelException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+    }
+
     // Test d'une fenêtre pop-up après une action (ici lors de la création d'un nouveau fichier)
     public void mnuNewListener(ActionEvent event) {
         JOptionPane.showMessageDialog(this, "Button clicked !");
     }
 
     public void mnuOpenListener(ActionEvent event) {
+        FileFilter filtre = new FileNameExtensionFilter("Fichier RDP (*.jrdp)", "jrdp");
         JFileChooser choix = new JFileChooser();
+        choix.setFileFilter(filtre);
         int retour = choix.showOpenDialog(this);
         choix.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        File f= choix.getSelectedFile();
         if(retour==JFileChooser.APPROVE_OPTION){
-            choix.getSelectedFile().getName();
-            choix.getSelectedFile().getAbsolutePath();
+            System.out.println(choix.getSelectedFile().getName());
+            System.out.println(choix.getSelectedFile().getAbsolutePath());
+            model = saveManager.load(f, model);
+            if (model != null) {
+                System.out.println(model);
+                dp.model = model;
+                dp.printModel();
+                dp.repaint();
+            } else {
+                JOptionPane.showMessageDialog(this, "Version du fichier incompatible", "Erreur!", ERROR_MESSAGE);
+            }
+
         } else {
             JOptionPane.showMessageDialog(this, "Aucun fichier choisi !");
         }
     }
 
     public void mnuSaveAsListener(ActionEvent event) {
+        FileFilter filtre = new FileNameExtensionFilter("Fichier RDP (*.jrdp)", "jrdp");
         JFileChooser save = new JFileChooser();
+        save.setFileFilter(filtre);
         save.showSaveDialog(this);
-        File f =save.getSelectedFile();
-        try {
-            FileWriter fw = new FileWriter(f);
-            String text = "Le fichier a été sauvegardé";
-            fw.write(text);
-            fw.close();
-        }
-        catch (IOException e) {
-            System.out.println(e);
-        }
+
+        File f = save.getSelectedFile();
+
+        /*FileWriter fw = new FileWriter(f);
+        String text = "Le fichier a été sauvegardé";
+        fw.write(text);
+        fw.close();*/
+        saveManager.save(f, model);
     }
 
     public void mnuExitListener(ActionEvent event){
@@ -234,6 +285,8 @@ public class Menu extends  MenuBar {
         int res = JOptionPane.showOptionDialog(null, "Voules vous vraiment quitter l'application ?", "Attention",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
         System.out.println(res);
+
+        System.out.println("Modelllll: " + model);
 
         switch(res){
             //Case EXIT
