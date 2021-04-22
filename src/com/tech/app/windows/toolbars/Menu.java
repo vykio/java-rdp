@@ -28,7 +28,6 @@ public class Menu extends  MenuBar {
     /* Construction de l'interface graphique pour tester à part*/
     private Model model;
 
-    private Model model;
     private SaveManager saveManager;
     private DrawPanel dp;
 

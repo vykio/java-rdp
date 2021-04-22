@@ -14,10 +14,10 @@ public class SaveManager {
         }
 
         try {
-            SaveObject so = new SaveObject(model.placeVector, model.transitionVector);
+            //SaveObject so = new SaveObject(model.placeVector, model.transitionVector);
             FileOutputStream fileOut = new FileOutputStream(f);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(so);
+            out.writeObject(model);
             out.close();
             fileOut.close();
             System.out.println("Model Object Serialized saved in " + f.getName());
@@ -29,13 +29,12 @@ public class SaveManager {
     }
 
     public Model load(File f, Model model) {
-        SaveObject so = null;
+        Model mo = null;
         try {
             FileInputStream fileIn = new FileInputStream(f);
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            so = (SaveObject) in.readObject();
-            model.setPlaceVector(so.getPlaceVector());
-            model.setTransitionVector(so.getTransitionVector());
+            mo = (Model) in.readObject();
+            model = mo;
             in.close();
             fileIn.close();
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class Model {
+public class Model implements Serializable {
 
     public int nbPlace;
     public int nbTransition;
