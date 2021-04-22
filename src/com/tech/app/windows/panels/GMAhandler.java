@@ -37,6 +37,7 @@ public class GMAhandler {
 
         System.out.println(liste_nodes);
 
+        /*
         mxGraphComponent component = new mxGraphComponent(jgxAdapter);
         component.setConnectable(false);
         component.getGraph().setAllowDanglingEdges(false);
@@ -80,6 +81,8 @@ public class GMAhandler {
 
         layout.execute(jgxAdapter.getDefaultParent());
         // that's all there is to it!...
+
+         */
     }
 
 }

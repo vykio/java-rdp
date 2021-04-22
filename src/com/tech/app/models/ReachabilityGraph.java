@@ -8,12 +8,10 @@ import java.util.Vector;
 
 public class ReachabilityGraph {
 
-    Model model;
+    private Model model;
     Vector<Integer> M0;
-    Vector<Integer> nextM;
     public List<Vector<Integer>> marquagesAccessibles;
     public List<Vector<Integer>> marquagesATraiter;
-    List<Arc> arcs = new ArrayList<Arc>();
     public List<Node> liste_node;
 
     public ReachabilityGraph(Model model){
@@ -22,16 +20,13 @@ public class ReachabilityGraph {
         this.marquagesAccessibles = new ArrayList<Vector<Integer>>();
         this.marquagesATraiter = new ArrayList<Vector<Integer>>();
         this.liste_node = new ArrayList<>();
+        System.out.println("ok : " +model);
     }
+
+    public List<Node> getListe_node() { return liste_node; }
 
     private Vector<Integer> getM0(){
         return this.M0;
-    }
-
-    private Vector<Integer> getNextM(){
-        nextM = new Vector<Integer>();
-
-        return nextM;
     }
 
     private boolean couvre(Vector<Integer> m, Vector<Vector<Integer>> pre, int t){

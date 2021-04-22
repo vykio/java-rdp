@@ -29,6 +29,8 @@ public class MainWindow extends Window {
 
         Model model = new Model();
 
+        menu.applyModel(model);
+
         DrawPanel dp = new DrawPanel(this,model);
         dp.applyPanel();
 

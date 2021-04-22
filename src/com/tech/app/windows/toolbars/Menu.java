@@ -1,5 +1,6 @@
 package com.tech.app.windows.toolbars;
 
+import com.tech.app.models.Model;
 import com.tech.app.models.gma.Node;
 import com.tech.app.windows.GMAWindow;
 
@@ -19,11 +20,14 @@ import static javax.swing.JOptionPane.DEFAULT_OPTION;
 
 public class Menu extends  MenuBar {
     /* Construction de l'interface graphique pour tester à part*/
+    private Model model;
 
     public Menu(JFrame frame) {
         super(frame);
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
+
+    public void applyModel(Model model){ this.model = model; }
 
     // Méthode de construction de la toolbar
 
@@ -209,7 +213,7 @@ public class Menu extends  MenuBar {
                     @Override
                     public void run() {
                         try {
-                            GMAWindow window = new GMAWindow(900,500);
+                            GMAWindow window = new GMAWindow(900,500, model);
                         } catch (UnsupportedLookAndFeelException e) {
                             e.printStackTrace();
                         }
