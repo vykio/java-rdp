@@ -16,6 +16,7 @@ public class ReachabilityGraph {
     public List<Vector<Integer>> marquagesAccessibles;
     public List<Vector<Integer>> marquagesATraiter;
     public List<Node> liste_node;
+    public int nb_marquages;
 
     public ReachabilityGraph(Model model){
         this.model = model;
@@ -84,7 +85,7 @@ public class ReachabilityGraph {
 
                 Node m = new Node(M);
                 liste_node.add(m);
-
+                this.nb_marquages++;
 
                 System.out.println("Marquages a traiter: " + marquagesATraiter);
                 System.out.println("Marquages accessible: " + marquagesAccessibles);
@@ -102,7 +103,6 @@ public class ReachabilityGraph {
                             marquagesAccessibles.add(M1);
                             marquagesATraiter.add(M1);
 
-                            //arcs.add(new Arc())
                         }
                     }
                 }
@@ -178,7 +178,6 @@ public class ReachabilityGraph {
         for (Vector<Integer> m : reachabilityGraph.marquagesAccessibles) {
             System.out.println(m);
         }
-
 
 
 

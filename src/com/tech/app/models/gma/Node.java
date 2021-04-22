@@ -10,11 +10,20 @@ public class Node {
     private Vector<Integer> m;
     private List<Node> children;
     private List<Node> parents;
+    private String name;
 
     public Node(Vector<Integer> m, List<Node> children, List<Node> parents) {
         this.m = m;
         this.children = children;
         this.parents = parents;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Node(Vector<Integer> m) {
@@ -44,6 +53,12 @@ public class Node {
             sb.append("\t").append(n);
         }
         return sb.toString();
+    }
+
+    public String getMarquage(){
+        StringBuilder s = new StringBuilder();
+        s.append(this.getM());
+        return s.toString();
     }
 
 }

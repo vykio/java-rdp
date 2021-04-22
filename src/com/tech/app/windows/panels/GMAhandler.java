@@ -1,5 +1,6 @@
 package com.tech.app.windows.panels;
 
+import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.layout.mxCompactTreeLayout;
 import com.mxgraph.layout.mxStackLayout;
@@ -24,6 +25,7 @@ public class GMAhandler {
     private JGraphXAdapter<String, DefaultEdge> jgxAdapter;
     private ListenableGraph<String, DefaultEdge> g;
     private List<Node> liste_nodes;
+    private int idNode = 0;
 
     public GMAhandler(JFrame frame, List<Node> liste_nodes) {
         this.frame = frame;
@@ -35,8 +37,29 @@ public class GMAhandler {
     public void init() {
         // create a visualization using JGraph, via an adapter
 
+        System.out.println("======================");
         System.out.println(liste_nodes);
+        System.out.println("======================");
+        /*
+        for (Node n : liste_nodes ) {
+            n.setName("M"+ idNode);
+            idNode++;
+        }
 
+         */
+
+        for(int i = 0; i < liste_nodes.size(); i++){
+            System.out.println("Mq : "+liste_nodes.get(i).getMarquage());
+            g.addVertex(liste_nodes.get(i).getMarquage());
+        }
+        System.out.println("======================");
+        for (Node n: liste_nodes) {
+            System.out.println("Marquage : "+n.getMarquage());
+            g.addVertex(n.getMarquage());
+        }
+
+        var layout = new mxHierarchicalLayout(jgxAdapter, SwingConstants.WEST);
+        layout.execute(jgxAdapter.getDefaultParent());
         /*
         mxGraphComponent component = new mxGraphComponent(jgxAdapter);
         component.setConnectable(false);
