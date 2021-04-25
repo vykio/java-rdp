@@ -1,8 +1,5 @@
 package com.tech.app.models.gma;
 
-import com.tech.app.models.Transition;
-
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;

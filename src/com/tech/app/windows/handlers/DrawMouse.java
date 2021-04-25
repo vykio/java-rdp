@@ -1,6 +1,5 @@
 package com.tech.app.windows.handlers;
 
-import com.tech.app.models.Place;
 import com.tech.app.windows.panels.DrawPanel;
 
 import javax.swing.*;

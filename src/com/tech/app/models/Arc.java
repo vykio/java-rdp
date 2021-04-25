@@ -1,7 +1,10 @@
 package com.tech.app.models;
 
 import java.awt.*;
-import java.awt.geom.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.io.Serializable;
 
 public class Arc implements Serializable {

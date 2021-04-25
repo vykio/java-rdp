@@ -1,7 +1,6 @@
 package com.tech.app.windows.handlers;
 
 import com.tech.app.models.Model;
-import com.tech.app.models.SaveObject;
 
 import java.io.*;
 

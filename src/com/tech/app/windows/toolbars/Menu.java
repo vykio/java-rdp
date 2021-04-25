@@ -1,27 +1,21 @@
 package com.tech.app.windows.toolbars;
 
 import com.tech.app.models.Model;
+import com.tech.app.windows.GMAWindow;
 import com.tech.app.windows.handlers.SaveManager;
 import com.tech.app.windows.panels.DrawPanel;
-import com.tech.app.models.gma.Node;
-import com.tech.app.windows.GMAWindow;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 
-import static javax.swing.JOptionPane.*;
-import java.util.ArrayList;
-import java.util.List;
-import static javax.swing.JOptionPane.DEFAULT_OPTION;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
 
 public class Menu extends  MenuBar {

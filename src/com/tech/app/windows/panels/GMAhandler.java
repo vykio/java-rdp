@@ -1,11 +1,7 @@
 package com.tech.app.windows.panels;
 
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
-import com.mxgraph.layout.mxCircleLayout;
-import com.mxgraph.layout.mxCompactTreeLayout;
-import com.mxgraph.layout.mxStackLayout;
 import com.mxgraph.swing.mxGraphComponent;
-import com.tech.app.models.Model;
 import com.tech.app.models.gma.CustomEdge;
 import com.tech.app.models.gma.Node;
 import org.jgrapht.ListenableGraph;
@@ -15,11 +11,7 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultListenableGraph;
 
 import javax.swing.*;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import static javax.swing.GroupLayout.DEFAULT_SIZE;
 
 public class GMAhandler {
 

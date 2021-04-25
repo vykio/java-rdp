@@ -3,8 +3,6 @@ package com.tech.app.models;
 import com.tech.app.functions.FMaths;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
