@@ -33,7 +33,7 @@ public final class FUtils {
         public static double getScaleFactor() {
             double hundredPercent = 96.0;
 
-            double hundredPercentLinux = 90.0;
+            double hundredPercentLinux = 96.0;
 
             if (OS.isMacOs()) {
                 if (isMacRetinaDisplay()) {
