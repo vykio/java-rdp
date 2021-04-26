@@ -10,10 +10,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="jgrapht-core-1.5.1" level="project" />
-    <orderEntry type="library" name="jgrapht-ext-1.5.1" level="project" />
-    <orderEntry type="library" name="jgrapht-io-1.5.1" level="project" />
-    <orderEntry type="library" name="jgraphx-4.1.0" level="project" />
+    <orderEntry type="library" name="used_library" level="project" />
   </component>
 </module>
