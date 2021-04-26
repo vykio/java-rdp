@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
@@ -54,21 +55,18 @@ public class Menu extends  MenuBar {
         mnuFile.addSeparator();
 
         JMenuItem mnuOpenFile = new JMenuItem("Open File ...");
-        //mnuOpenFile.setIcon(new ImageIcon("icons/open.png"));
         mnuOpenFile.setMnemonic('O');
         mnuOpenFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
         mnuOpenFile.addActionListener(this::mnuOpenListener);
         mnuFile.add(mnuOpenFile);
 
         JMenuItem mnuSaveFile = new JMenuItem("Save File ...");
-        //mnuSaveFile.setIcon(new ImageIcon("icons/save.png"));
         mnuSaveFile.setMnemonic('S');
         mnuSaveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
         mnuSaveFile.setEnabled(false);
         mnuFile.add(mnuSaveFile);
 
         JMenuItem mnuSaveFileAs = new JMenuItem("Save File As ...");
-        //mnuSaveFileAs.setIcon(new ImageIcon("icons/save_as.png"));
         mnuSaveFileAs.setMnemonic('A');
         mnuSaveFileAs.addActionListener(this::mnuSaveAsListener);
         mnuFile.add(mnuSaveFileAs);
@@ -76,7 +74,6 @@ public class Menu extends  MenuBar {
         mnuFile.addSeparator();
 
         JMenuItem mnuExit = new JMenuItem("Exit");
-        //mnuExit.setIcon(new ImageIcon("icons/exit.png"));
         mnuExit.setMnemonic('x');
         mnuExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_DOWN_MASK));
         mnuExit.addActionListener(this::mnuExitListener);
@@ -90,14 +87,12 @@ public class Menu extends  MenuBar {
         mnuEdit.setMnemonic('E');
 
         JMenuItem mnuUndo = new JMenuItem("Undo");
-        //mnuUndo.setIcon(new ImageIcon("icons/undo.png"));
         mnuUndo.setMnemonic('U');
         mnuUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
         mnuUndo.setEnabled(false);
         mnuEdit.add(mnuUndo);
 
         JMenuItem mnuRedo = new JMenuItem("Redo");
-        //mnuRedo.setIcon(new ImageIcon("icons/redo.png"));
         mnuRedo.setMnemonic('R');
         mnuRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_DOWN_MASK));
         mnuRedo.setEnabled(false);
@@ -106,21 +101,18 @@ public class Menu extends  MenuBar {
         mnuEdit.addSeparator();
 
         JMenuItem mnuCopy = new JMenuItem("Copy");
-        //mnuCopy.setIcon(new ImageIcon("icons/copy.png"));
         mnuCopy.setMnemonic('C');
         mnuCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
         mnuCopy.setEnabled(false);
         mnuEdit.add(mnuCopy);
 
         JMenuItem mnuCut = new JMenuItem("Cut");
-        //mnuCut.setIcon(new ImageIcon("icons/cut.png"));
         mnuCut.setMnemonic('t');
         mnuCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK));
         mnuCut.setEnabled(false);
         mnuEdit.add(mnuCut);
 
         JMenuItem mnuPaste = new JMenuItem("Paste");
-        //mnuPaste.setIcon(new ImageIcon("icons/paste.png"));
         mnuPaste.setMnemonic('P');
         mnuPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
         mnuPaste.setEnabled(false);
@@ -148,16 +140,6 @@ public class Menu extends  MenuBar {
 
         toolbar.add(mnuTools);
 
-
-
-        // Définition du menu déroulant "Help" et de son contenu
-        /*
-        JMenu mnuHelp = new JMenu("Help");
-        mnuHelp.setMnemonic('H');
-        toolbar.add(mnuHelp);
-        */
-
-
         //Gestion des icônes => améliorable !
         Image imageNew = null;
         Image imageOpen = null;
@@ -169,19 +151,18 @@ public class Menu extends  MenuBar {
         Image imageCopy = null;
         Image imagePaste = null;
         Image imageCut = null;
-        //Image imageAbout = null;
+
         try {
-            imageNew = ImageIO.read(getClass().getResource("/icons/new.png"));
-            imageOpen = ImageIO.read(getClass().getResource("/icons/open.png"));
-            imageSave = ImageIO.read(getClass().getResource("/icons/save.png"));
-            imageSaveAs = ImageIO.read(getClass().getResource("/icons/save_as.png"));
-            imageExit = ImageIO.read(getClass().getResource("/icons/exit.png"));
-            imageUndo = ImageIO.read(getClass().getResource("/icons/undo.png"));
-            imageRedo = ImageIO.read(getClass().getResource("/icons/redo.png"));
-            imageCopy = ImageIO.read(getClass().getResource("/icons/copy.png"));
-            imagePaste = ImageIO.read(getClass().getResource("/icons/paste.png"));
-            imageCut = ImageIO.read(getClass().getResource("/icons/cut.png"));
-            //imageAbout = ImageIO.read(getClass().getResource("/icons/about.png"));
+            imageNew = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/new.png")));
+            imageOpen = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/open.png")));
+            imageSave = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/save.png")));
+            imageSaveAs = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/save_as.png")));
+            imageExit = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/exit.png")));
+            imageUndo = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/undo.png")));
+            imageRedo = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/redo.png")));
+            imageCopy = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/copy.png")));
+            imagePaste = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/paste.png")));
+            imageCut = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/cut.png")));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -196,7 +177,7 @@ public class Menu extends  MenuBar {
         assert imageCopy != null;
         assert imagePaste != null;
         assert imageCut != null;
-        //assert imageAbout != null;
+
         mnuNewFile.setIcon(new ImageIcon(imageNew));
         mnuOpenFile.setIcon(new ImageIcon(imageOpen));
         mnuSaveFile.setIcon(new ImageIcon(imageSave));
@@ -207,23 +188,17 @@ public class Menu extends  MenuBar {
         mnuCopy.setIcon(new ImageIcon(imageCopy));
         mnuPaste.setIcon(new ImageIcon(imagePaste));
         mnuCut.setIcon(new ImageIcon(imageCut));
-        //mnuHelp.setIcon(new ImageIcon(imageAbout));
-
-
 
         return toolbar;
     }
 
     private void openGMAWindow(ActionEvent actionEvent) {
         EventQueue.invokeLater(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            GMAWindow window = new GMAWindow(900,500, model);
-                        } catch (UnsupportedLookAndFeelException e) {
-                            e.printStackTrace();
-                        }
+                () -> {
+                    try {
+                        new GMAWindow(900,500, model);
+                    } catch (UnsupportedLookAndFeelException e) {
+                        e.printStackTrace();
                     }
                 }
         );
@@ -246,7 +221,6 @@ public class Menu extends  MenuBar {
             System.out.println(choix.getSelectedFile().getAbsolutePath());
             model = saveManager.load(f, model);
             if (model != null) {
-                //System.out.println(model);
                 dp.model = model;
                 dp.printModel();
                 dp.repaint();
@@ -269,21 +243,18 @@ public class Menu extends  MenuBar {
 
         File f = save.getSelectedFile();
 
-        /*FileWriter fw = new FileWriter(f);
-        String text = "Le fichier a été sauvegardé";
-        fw.write(text);
-        fw.close();*/
         saveManager.save(f, model);
     }
 
     public void mnuExitListener(ActionEvent event){
-        String options[]={"Quitter","Annuler"};
+        String[] options ={"Quitter","Annuler"};
         int res = JOptionPane.showOptionDialog(null, "Toute modification non enregistrée sera perdue... Voulez-vous quitter l'application ?", "Attention",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
         switch(res){
             //Case EXIT
             case 0:
                 this.frame.dispose();
+                System.exit(0);
                 break;
             case 1:
                 break;

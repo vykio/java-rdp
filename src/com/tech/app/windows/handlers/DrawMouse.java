@@ -3,7 +3,6 @@ package com.tech.app.windows.handlers;
 import com.tech.app.windows.panels.DrawPanel;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -14,10 +13,8 @@ import java.awt.geom.AffineTransform;
 public class DrawMouse extends MouseAdapter {
 
     public boolean mousePressed = false;
-    public boolean mouseReleased = true;
     public boolean mouseClicked = false;
     public boolean mouseEntered = false;
-    public boolean mouseExited = true;
 
     private double x;
     private double y;
@@ -33,11 +30,10 @@ public class DrawMouse extends MouseAdapter {
 
     public MODE mode;
     public DrawPanel drawPanel;
-    public Graphics g;
 
     private Object objectDragged = null;
 
-    public DrawMouse(JFrame frame, DrawPanel drawPanel){
+    public DrawMouse(DrawPanel drawPanel){
         this.drawPanel = drawPanel;
         drawPanel.addMouseListener(this);
         drawPanel.addMouseMotionListener(this);
@@ -76,8 +72,8 @@ public class DrawMouse extends MouseAdapter {
     @Override
     public void mousePressed(java.awt.event.MouseEvent mouseEvent) {
         //System.out.println("Mouse pressed");
-        x = mouseEvent.getX() * (double)drawPanel.scaleFactor;
-        y = mouseEvent.getY() * (double)drawPanel.scaleFactor;
+        x = mouseEvent.getX() * drawPanel.scaleFactor;
+        y = mouseEvent.getY() * drawPanel.scaleFactor;
         System.out.println(drawPanel.scaleFactor);
 
         drawPanel.mouseX = x;
@@ -156,7 +152,7 @@ public class DrawMouse extends MouseAdapter {
         } else if (SwingUtilities.isLeftMouseButton(e)) {
             if (mode == MODE.SELECT) {
 
-                drawPanel.updatePosition(objectDragged ,x/drawPanel.scaleX,y/drawPanel.scaleY, drawPanel.scaleX, drawPanel.scaleY, dx, dy);
+                drawPanel.updatePosition(objectDragged ,drawPanel.scaleX, drawPanel.scaleY, dx, dy);
             }
         }
 

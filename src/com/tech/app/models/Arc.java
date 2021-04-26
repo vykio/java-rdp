@@ -11,8 +11,8 @@ public class Arc implements Serializable {
 
     public Place place;
     private int poids;
-    private boolean placeToTransition;
-    private Transition transition;
+    private final boolean placeToTransition;
+    private final Transition transition;
 
     public Arc(Place place, int poids, double xOrigin, double yOrigin, boolean placeToTransition, Transition transition){
         this.place = place;
@@ -72,8 +72,8 @@ public class Arc implements Serializable {
 
         /* Fléche */
         Path2D path = new Path2D.Double();
-        double xval[] = {len, len-ARR_SIZE, len-ARR_SIZE, len};
-        double yval[] = {0, -ARR_SIZE, ARR_SIZE, 0};
+        double[] xval = {len, len-ARR_SIZE, len-ARR_SIZE, len};
+        double[] yval = {0, -ARR_SIZE, ARR_SIZE, 0};
         path.moveTo(xval[0], yval[0]);
         for(int i = 1; i < xval.length; ++i) {
             path.lineTo(xval[i], yval[i]);

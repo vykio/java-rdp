@@ -18,22 +18,17 @@ public class Model implements Serializable {
     Vector<Integer> M0;
     Vector<Vector<Integer>> w_plus, w_moins, C;
 
-    //int[] M0;
-    //int[][] w_plus;
-    //int[][] w_moins;
-    //int[][] C;
-
     public Model() {
         this.nbPlace = 0;
         this.nbTransition = 0;
 
-        this.placeVector = new ArrayList<Place>();
-        this.transitionVector = new ArrayList<Transition>();
+        this.placeVector = new ArrayList<>();
+        this.transitionVector = new ArrayList<>();
 
-        this.M0 = new Vector<Integer>();
-        this.w_plus = new Vector<Vector<Integer>>();
-        this.w_moins = new Vector<Vector<Integer>>();
-        this.C = new Vector<Vector<Integer>>(); //new int[nbPlace][nbTransition];
+        this.M0 = new Vector<>();
+        this.w_plus = new Vector<>();
+        this.w_moins = new Vector<>();
+        this.C = new Vector<>();
     }
 
     /**
@@ -93,7 +88,7 @@ public class Model implements Serializable {
             for (int j = 0; j < this.C.get(i).size(); j++) {
 
                 /* C_ij = W+_ij - W-_ij */
-                this.C.get(i).set(j, (int)(this.w_plus.get(i).get(j) - this.w_moins.get(i).get(j)));
+                this.C.get(i).set(j, (this.w_plus.get(i).get(j) - this.w_moins.get(i).get(j)));
 
             }
         }
@@ -178,18 +173,18 @@ public class Model implements Serializable {
      * Vider complétement les matrices : utiliser initialize() ensuite
      */
     private void clearMatrices() {
-        this.M0 = new Vector<Integer>();
-        this.w_plus = new Vector<Vector<Integer>>();
-        this.w_moins = new Vector<Vector<Integer>>();
-        this.C = new Vector<Vector<Integer>>();
+        this.M0 = new Vector<>();
+        this.w_plus = new Vector<>();
+        this.w_moins = new Vector<>();
+        this.C = new Vector<>();
     }
 
     public void clearAll() {
         clearMatrices();
         this.nbPlace = 0;
         this.nbTransition = 0;
-        this.placeVector = new ArrayList<Place>();
-        this.transitionVector = new ArrayList<Transition>();
+        this.placeVector = new ArrayList<>();
+        this.transitionVector = new ArrayList<>();
     }
 
     /**
@@ -253,13 +248,13 @@ public class Model implements Serializable {
         }
 
         result.append("\nPlaces:\n");
-        for (int i = 0; i < placeVector.size(); i++ ) {
-            result.append(placeVector.get(i)).append("\n");
+        for (Place place : placeVector) {
+            result.append(place).append("\n");
         }
 
         result.append("\nTransitions:\n");
-        for (int i = 0; i < transitionVector.size(); i++ ) {
-            result.append(transitionVector.get(i)).append("\n");
+        for (Transition transition : transitionVector) {
+            result.append(transition).append("\n");
         }
 
 
@@ -276,7 +271,7 @@ public class Model implements Serializable {
             }
             result.append("\n");
         }
-        java.lang.System.out.println(result.toString());
+        java.lang.System.out.println(result);
     }
 
     public void print_W_moins() {
@@ -289,7 +284,7 @@ public class Model implements Serializable {
             }
             result.append("\n");
         }
-        java.lang.System.out.println(result.toString());
+        java.lang.System.out.println(result);
     }
 
     public String get_C() {
@@ -311,10 +306,8 @@ public class Model implements Serializable {
 
 
         // centrer les éléments en fonction du nombre de colonnes
-        for(int k = 0; k < this.transitionVector.size();k++){
-            result.append("c");
-        }
-            result.append("}");
+        result.append("c".repeat(this.transitionVector.size()));
+        result.append("}");
 
         //boucle pour créer la première ligne -> liste de tous les noms des transitions
         for(int k = 0; k < this.transitionVector.size();k++){
@@ -325,8 +318,8 @@ public class Model implements Serializable {
         result.append("\\end{array}\\\\\\begin{matrix}");
 
         //boucle pour mettre les noms des places
-        for(int k = 0; k < this.placeVector.size();k++){
-            result.append(this.placeVector.get(k).getName()).append("\\\\");
+        for (Place place : this.placeVector) {
+            result.append(place.getName()).append("\\\\");
         }
 
         result.append("\\end{matrix}&\\begin{pmatrix}");

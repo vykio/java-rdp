@@ -1,8 +1,3 @@
-/**
- * Application : Java 11
- * Point d'entrée de l'application : public static void main()
- */
-
 package com.tech.app;
 
 import com.tech.app.functions.CheckThreadViolationRepaintManager;
@@ -14,7 +9,7 @@ public class App implements Runnable {
     @Override
     public void run() {
         try {
-            MainWindow mainWindow = new MainWindow(900,500);
+            new MainWindow(900,500);
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }

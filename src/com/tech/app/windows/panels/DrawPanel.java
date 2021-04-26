@@ -79,22 +79,17 @@ public class DrawPanel extends JPanel {
 
     /* Bouger un objet donné en paramètre */
 
-    public void updatePosition(Object obj, double x, double y, double scaleX, double scaleY, double dx, double dy) {
+    public void updatePosition(Object obj, double scaleX, double scaleY, double dx, double dy) {
         selectedObject = obj;
         if (obj != null) {
             if (obj instanceof Place) {
                 Place p = (Place) obj;
-                //if (p.forme.getBounds2D().contains(x, y)) {
-                    p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
-                    repaint();
-                //}
+                p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
             } else {
                 Transition p = (Transition) obj;
-                //if (p.forme.getBounds2D().contains(x, y)) {
-                    p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
-                    repaint();
-                //}
+                p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
             }
+            repaint();
         }
     }
 

@@ -8,11 +8,10 @@ import java.io.Serializable;
 
 public class Place implements Serializable {
 
-    private String name;
+    private final String name;
     private double x;
     private double y;
     private int marquage;
-    public boolean draggable;
 
     private final static int WIDTH = 40, HEIGHT = 40;
 
@@ -45,7 +44,6 @@ public class Place implements Serializable {
     public Ellipse2D.Float forme;
 
     public void draw(Graphics g) {
-        String label = this.name;
         Graphics2D g2 = (Graphics2D) g;
         g.setFont(new Font("Console", Font.PLAIN, 15));
 
@@ -56,7 +54,7 @@ public class Place implements Serializable {
         g2.setColor(color);
         g2.draw(new Ellipse2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
 
-        g.drawString(label, (int)(x-(forme.width)/4) ,(int)(y-25));
+        g.drawString(this.name, (int)(x-(forme.width)/4) ,(int)(y-25));
 
         if (marquage > 0) {
             g.drawString("" + marquage, (int)(x-(forme.width)/4) ,(int)(y+5));

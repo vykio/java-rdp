@@ -10,9 +10,9 @@ import java.util.List;
 
 public class Transition implements Serializable {
 
-    private String name;
+    private final String name;
     private double x, y;
-    private List<Arc> childrens, parents;
+    private final List<Arc> childrens, parents;
 
     private final int LARGE_SIDE = 40, MIN_SIDE = 10;
     public int WIDTH=LARGE_SIDE, HEIGHT=MIN_SIDE;
@@ -26,8 +26,8 @@ public class Transition implements Serializable {
         this.forme = new Rectangle2D.Float((float) (this.x-(WIDTH/2)), (float) (this.y-(HEIGHT/2)), WIDTH ,HEIGHT );
     }
 
-    public Transition(String name, double x, double y, ArrayList<Arc> childrens) { this(name, x, y, childrens, new ArrayList<Arc>()); }
-    public Transition(String name, double x, double y) { this(name, x, y, new ArrayList<Arc>(), new ArrayList<Arc>()); }
+    public Transition(String name, double x, double y, ArrayList<Arc> childrens) { this(name, x, y, childrens, new ArrayList<>()); }
+    public Transition(String name, double x, double y) { this(name, x, y, new ArrayList<>(), new ArrayList<>()); }
     public Transition(String name) { this(name, 0, 0); }
 
     public String getName() { return name; }
@@ -87,7 +87,6 @@ public class Transition implements Serializable {
         }
 
         /* Afficher le carré de transition au dessus de l'arc */
-        String label = this.name;
         Graphics2D g2 = (Graphics2D) g;
         g.setFont(new Font("Console", Font.PLAIN, 15));
 
@@ -97,7 +96,7 @@ public class Transition implements Serializable {
         g2.fill(new Rectangle2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
         g2.setColor(color);
         g2.draw(new Rectangle2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
-        g.drawString(label, (int)(x-(forme.width)/4) ,(int)(y+5));
+        g.drawString(this.name, (int)(x-(forme.width)/4) ,(int)(y+5));
 
     }
 
@@ -130,16 +129,5 @@ public class Transition implements Serializable {
         this.forme.height = HEIGHT;
     }
 
-    public boolean isFranchissable(){
-        boolean franchissable = false;
-        List<Arc> par = getParents();
-
-        for (Arc arc : par) {
-            if(arc.place.getMarquage()>0){
-                franchissable = true;
-            }
-        }
-        return franchissable;
-    }
 
 }

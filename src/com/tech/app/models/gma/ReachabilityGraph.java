@@ -21,8 +21,8 @@ public class ReachabilityGraph {
     public ReachabilityGraph(Model model){
         this.model = model;
         this.M0 = model.getM0();
-        this.marquagesAccessibles = new ArrayList<Vector<Integer>>();
-        this.marquagesATraiter = new ArrayList<Vector<Integer>>();
+        this.marquagesAccessibles = new ArrayList<>();
+        this.marquagesATraiter = new ArrayList<>();
         this.liste_node = new ArrayList<>();
     }
 
@@ -34,15 +34,12 @@ public class ReachabilityGraph {
 
     private boolean couvre(Vector<Integer> m, Vector<Vector<Integer>> pre, int t){
 
-        //colonne
+        for (int i = 0; i < pre.size(); i++) {
 
-            //ligne
-            for (int i = 0; i < pre.size(); i++) {
-
-                if (m.get(i) < pre.get(i).get(t)) {
-                    return false;
-                }
+            if (m.get(i) < pre.get(i).get(t)) {
+                return false;
             }
+        }
 
         return true;
     }
@@ -58,8 +55,8 @@ public class ReachabilityGraph {
     public void updateModel(Model model) {
         this.model = model;
         this.M0 = model.getM0();
-        this.marquagesAccessibles = new ArrayList<Vector<Integer>>();
-        this.marquagesATraiter = new ArrayList<Vector<Integer>>();
+        this.marquagesAccessibles = new ArrayList<>();
+        this.marquagesATraiter = new ArrayList<>();
         this.liste_node = new ArrayList<>();
     }
 
@@ -67,8 +64,8 @@ public class ReachabilityGraph {
 
         marquagesAccessibles.add(M0);
         marquagesATraiter.add(M0);
-        Vector<Integer> M = new Vector<Integer>();
-        Vector<Integer> M1 = new Vector<Integer>();
+        Vector<Integer> M;
+        Vector<Integer> M1;
 
         liste_node = new ArrayList<>();
 
@@ -121,7 +118,7 @@ public class ReachabilityGraph {
 
     }
 
-    public static void main(String args[]){
+    public static void main(String[] args){
 
         /* Instanciation du système */
         Model model = new Model();

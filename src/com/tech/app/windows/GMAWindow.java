@@ -11,7 +11,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 public class GMAWindow extends Window {
 
-    private ReachabilityGraph reachabilityGraph;
+    private final ReachabilityGraph reachabilityGraph;
 
     public GMAWindow(int width, int height, Model model) throws UnsupportedLookAndFeelException {
         super(true, "GMA - Java_RDP - " + FUtils.OS.getOs(), width, height, true, true);

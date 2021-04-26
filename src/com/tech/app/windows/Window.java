@@ -1,7 +1,3 @@
-/**
- * Classe Window générique, voir MainWindow.java pour voir comment l'utiliser
- */
-
 package com.tech.app.windows;
 
 import com.tech.app.windows.handlers.WindowHandler;

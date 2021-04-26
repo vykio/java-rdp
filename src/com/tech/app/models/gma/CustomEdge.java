@@ -4,7 +4,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 public class CustomEdge extends DefaultEdge {
 
-    private String label;
+    private final String label;
 
     public CustomEdge(String label){
         this.label = label;

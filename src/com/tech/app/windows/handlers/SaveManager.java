@@ -28,7 +28,7 @@ public class SaveManager {
     }
 
     public Model load(File f, Model model) {
-        Model mo = null;
+        Model mo;
         try {
             FileInputStream fileIn = new FileInputStream(f);
             ObjectInputStream in = new ObjectInputStream(fileIn);

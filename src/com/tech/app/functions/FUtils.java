@@ -9,24 +9,23 @@ public final class FUtils {
     public static class OS {
 
         /**
-         * Retourne le nom de l'OS
-         * @return
+         * @return Retourne le nom de l'OS
          */
         public static String getOs() {
             return System.getProperty("os.name");
         }
 
         /**
-         * True si nous sommes sur MacOS
-         * @return
+         *
+         * @return True si nous sommes sur MacOS
          */
         public static boolean isMacOs() {
             return (getOs().toLowerCase(Locale.ROOT).contains("mac"));
         }
 
         /**
-         * True si nous sommes sur Linux
-         * @return
+         *
+         * @return True si nous sommes sur Linux
          */
         public static boolean isLinux() {
             return (getOs().toLowerCase(Locale.ROOT).contains("linux"));
@@ -37,8 +36,8 @@ public final class FUtils {
     public static class Screen {
 
         /**
-         * True si le Mac a un écran Retina
-         * @return
+         *
+         * @return True si le Mac a un écran Retina
          */
         public static boolean isMacRetinaDisplay() {
             final GraphicsConfiguration gfxConfig = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
@@ -47,8 +46,8 @@ public final class FUtils {
         }
 
         /**
-         * Retourne le facteur d'agrandissement
-         * @return
+         *
+         * @return Retourne le facteur d'agrandissement
          */
         public static double getScaleFactor() {
             double hundredPercent = 96.0;

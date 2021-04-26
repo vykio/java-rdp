@@ -10,7 +10,6 @@ public class Node {
     private List<NodeStruct> children;
     private List<NodeStruct> parents;
     private String name;
-    private String originTransition;
 
     public Node(Vector<Integer> m, List<NodeStruct> children, List<NodeStruct> parents) {
         this(m,children,parents,null);
@@ -25,10 +24,10 @@ public class Node {
     }
 
     public Node(Vector<Integer> m) {
-        this(m, new ArrayList<NodeStruct>(), new ArrayList<NodeStruct>());
+        this(m, new ArrayList<>(), new ArrayList<>());
     }
     public Node(Vector<Integer> m, String name) {
-        this(m, new ArrayList<NodeStruct>(), new ArrayList<NodeStruct>(),name);
+        this(m, new ArrayList<>(), new ArrayList<>(),name);
     }
 
     public void setName(String name) {
@@ -67,9 +66,7 @@ public class Node {
     }
 
     public String getMarquage(){
-        StringBuilder s = new StringBuilder();
-        s.append(this.getM());
-        return s.toString();
+        return String.valueOf(this.getM());
     }
 
 }

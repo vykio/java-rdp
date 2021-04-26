@@ -42,13 +42,10 @@ public class MainWindow extends Window {
         dp.applyPanel();
         menu.applyDrawPanel(dp);
 
-        DrawMouse drawMouse = new DrawMouse(this,dp);
+        DrawMouse drawMouse = new DrawMouse(dp);
 
         DrawingToolbar dToolbar = new DrawingToolbar(this,drawMouse);
         dToolbar.applyToolbar();
-        dToolbar.applyModel(model);
-        dToolbar.applySaveManager(sm);
-        dToolbar.applyDrawPanel(dp);
         dToolbar.applyMenuBridge(menu);
     }
 
