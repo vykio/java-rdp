@@ -16,6 +16,7 @@ import org.jgrapht.graph.DefaultListenableGraph;
 
 import javax.swing.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,6 @@ public class GMAhandler {
     private JGraphXAdapter<String, DefaultEdge> jgxAdapter;
     private ListenableGraph<String, DefaultEdge> g;
     private List<Node> liste_nodes;
-
 
     public GMAhandler(JFrame frame, List<Node> liste_nodes) {
         this.frame = frame;
@@ -51,18 +51,14 @@ public class GMAhandler {
             }
         }
 
-
-
-
-
         mxGraphComponent component = new mxGraphComponent(jgxAdapter);
         component.setConnectable(false);
         component.getGraph().setAllowDanglingEdges(false);
         this.frame.getContentPane().add(component);
+        this.frame.setTitle(this.frame.getTitle() + " | Marquages accessibles : " + g.vertexSet().size());
 
         var layout = new mxHierarchicalLayout(jgxAdapter, SwingConstants.WEST);
         layout.execute(jgxAdapter.getDefaultParent());
-
 
         /*
         mxCircleLayout layout = new mxCircleLayout(jgxAdapter);
