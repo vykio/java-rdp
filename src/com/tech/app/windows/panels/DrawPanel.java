@@ -48,18 +48,15 @@ public class DrawPanel extends JPanel {
 
     public AffineTransform transform;
 
-    String list[] = new String[30];
-
     public DrawPanel(JFrame frame, Model model) {
         this.scaleFactor = FUtils.Screen.getScaleFactor();
-        //System.out.println("Scale Factor: " + this.scaleFactor);
+
         this.scaleX = this.scaleFactor;
         this.scaleY = this.scaleFactor;
 
         this.frame = frame;
         this.model = model;
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
-        //this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
     }
 
     /* Utilisé pour déplacer tous les objets (click-molette) */
@@ -196,12 +193,8 @@ public class DrawPanel extends JPanel {
             if (obj1.getClass() != obj2.getClass()) {
                 this.clickError = false;
                 if (obj1 instanceof Transition) {
-                    //System.out.println(obj1);
-                    //System.out.println(obj2);
                     ((Transition) obj1).addParent(new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1));
                 } else {
-                    //System.out.println(obj1);
-                    //System.out.println(obj2);
                     ((Transition) obj2).addChildren(new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2));
                 }
 
@@ -210,7 +203,6 @@ public class DrawPanel extends JPanel {
             }
 
         }
-        //System.out.println("ce : " + clickError);
         repaint();
 
     }
