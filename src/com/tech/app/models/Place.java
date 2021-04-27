@@ -1,6 +1,7 @@
 package com.tech.app.models;
 
 import com.tech.app.functions.FMaths;
+import com.tech.app.functions.FUtils;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -54,7 +55,6 @@ public class Place implements Serializable {
     public Ellipse2D.Float forme;
 
     public void draw(Graphics g) {
-        String labelName = this.name;
         Graphics2D g2 = (Graphics2D) g;
         g.setFont(new Font("Console", Font.PLAIN, 15));
 
@@ -67,30 +67,33 @@ public class Place implements Serializable {
         g2.setColor(color);
         g2.draw(new Ellipse2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
 
-        g.drawString(labelName, (int)(x-(forme.width)/4) ,(int)(y-25));
+        g.drawString(this.name, (int)(x-(forme.width)/4) ,(int)(y-25));
 
         if (marquage == 1) {
-            g2.setColor(color.black);
-            g2.fill(new Ellipse2D.Float((float)this.x-(forme.width)/6, (float)this.y-(forme.height)/6, (int)forme.width/3, (int)forme.height/3));
+            g2.setColor(Color.black);
+            g2.fill(new Ellipse2D.Float((float)this.x-(forme.width)/6, (float)this.y-(forme.height)/6, forme.width/3, forme.height/3));
         } else if( marquage == 2) {
-            g2.setColor(color.black);
-            g2.fill(new Ellipse2D.Float((float)this.x+2, (float)this.y-(forme.height)/6, (int)forme.width/3, (int)forme.height/3));
-            g2.fill(new Ellipse2D.Float((float)this.x-15, (float)this.y-(forme.height)/6, (int)forme.width/3, (int)forme.height/3));
+            g2.setColor(Color.black);
+            g2.fill(new Ellipse2D.Float((float)this.x+2, (float)this.y-(forme.height)/6, forme.width/3, forme.height/3));
+            g2.fill(new Ellipse2D.Float((float)this.x-15, (float)this.y-(forme.height)/6, forme.width/3, forme.height/3));
         } else if( marquage == 3) {
-            g2.setColor(color.black);
-            g2.fill(new Ellipse2D.Float((float)this.x+2, (float)this.y, (int)forme.width/3, (int)forme.height/3));
-            g2.fill(new Ellipse2D.Float((float)this.x-15, (float)this.y, (int)forme.width/3, (int)forme.height/3));
-            g2.fill(new Ellipse2D.Float((float)this.x-7, (float)this.y-15, (int)forme.width/3, (int)forme.height/3));
+            g2.setColor(Color.black);
+            g2.fill(new Ellipse2D.Float((float)this.x+2, (float)this.y, forme.width/3, forme.height/3));
+            g2.fill(new Ellipse2D.Float((float)this.x-15, (float)this.y, forme.width/3, forme.height/3));
+            g2.fill(new Ellipse2D.Float((float)this.x-7, (float)this.y-15, forme.width/3, forme.height/3));
         }else if( marquage == 4) {
-            g2.setColor(color.black);
-            g2.fill(new Ellipse2D.Float((float)this.x+3, (float)this.y, (int)forme.width/3, (int)forme.height/3));
-            g2.fill(new Ellipse2D.Float((float)this.x-14, (float)this.y, (int)forme.width/3, (int)forme.height/3));
-            g2.fill(new Ellipse2D.Float((float)this.x+3, (float)this.y-14, (int)forme.width/3, (int)forme.height/3));
-            g2.fill(new Ellipse2D.Float((float)this.x-14, (float)this.y-14, (int)forme.width/3, (int)forme.height/3));
-        }else if( marquage >4) {
+            g2.setColor(Color.black);
+            g2.fill(new Ellipse2D.Float((float)this.x+3, (float)this.y, forme.width/3, forme.height/3));
+            g2.fill(new Ellipse2D.Float((float)this.x-14, (float)this.y, forme.width/3, forme.height/3));
+            g2.fill(new Ellipse2D.Float((float)this.x+3, (float)this.y-14, forme.width/3, forme.height/3));
+            g2.fill(new Ellipse2D.Float((float)this.x-14, (float)this.y-14, forme.width/3, forme.height/3));
+        }else if( marquage > 4) {
             Font police = new Font ("TimesRoman", Font.BOLD, 20);
             g.setFont(police);
-            g.drawString("" + marquage, (int) (x-12), (int) (y + 5));
+
+            int xStart = (int)x-WIDTH/2;
+            int yStart = (int)y-HEIGHT/2;
+            FUtils.Graphics.drawCenteredString(g, String.valueOf(marquage), new Rectangle(xStart,yStart,WIDTH,HEIGHT), police);
         }
 
         if (label != null) {

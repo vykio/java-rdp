@@ -10,8 +10,7 @@ public class Arc implements Serializable {
     private int poids;
     private final boolean placeToTransition;
     private final Transition transition;
-    private QuadCurve2D.Double courbe;
-    private PointControle pointCtr1;
+    private final PointControle pointCtr1;
 
     public Arc(Place place, int poids, double xOrigin, double yOrigin, boolean placeToTransition, Transition transition){
         this.place = place;
@@ -19,7 +18,7 @@ public class Arc implements Serializable {
         this.placeToTransition = placeToTransition;
         this.transition = transition;
         this.forme = new Line2D.Double(xOrigin, yOrigin, this.place.getX(), this.place.getY());
-        this.pointCtr1 = new PointControle(this);
+        this.pointCtr1 = new PointControle();
     }
 
     public Arc(Place place, int poids){
@@ -83,7 +82,7 @@ public class Arc implements Serializable {
         pointCtr1.draw(g2);
 
 
-        courbe = new QuadCurve2D.Double(start, 0, this.pointCtr1.getX(), this.pointCtr1.getY(), len, 0);
+        QuadCurve2D.Double courbe = new QuadCurve2D.Double(start, 0, this.pointCtr1.getX(), this.pointCtr1.getY(), len, 0);
         /* Référentiel */
 
         //courbe = new CubicCurve2D.Double(start, 0, (start+len)/3, 0 ,2*(start+len)/3, 0 , len, 0);
