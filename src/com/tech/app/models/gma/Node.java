@@ -66,7 +66,12 @@ public class Node {
     }
 
     public String getMarquage(){
-        return String.valueOf(this.getM());
+        StringBuilder s = new StringBuilder();
+        for(int i = 0; i < m.size(); i++){
+            s.append(this.getM().get(i));
+            s.append("\n");
+        }
+        return s.toString();
     }
 
 }

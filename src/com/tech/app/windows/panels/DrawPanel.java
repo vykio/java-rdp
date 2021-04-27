@@ -1,10 +1,7 @@
 package com.tech.app.windows.panels;
 
 import com.tech.app.functions.FUtils;
-import com.tech.app.models.Arc;
-import com.tech.app.models.Model;
-import com.tech.app.models.Place;
-import com.tech.app.models.Transition;
+import com.tech.app.models.*;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
@@ -45,7 +42,13 @@ public class DrawPanel extends JPanel {
     public double scaleX;
     public double scaleY;
 
+    /* Conversion string --> int */
+    public int convert;
+
+
     public AffineTransform transform;
+
+    String list[] = new String[30];
 
     public DrawPanel(JFrame frame, Model model) {
         this.scaleFactor = FUtils.Screen.getScaleFactor();
@@ -85,9 +88,12 @@ public class DrawPanel extends JPanel {
             if (obj instanceof Place) {
                 Place p = (Place) obj;
                 p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
+            } else if (obj instanceof PointControle) {
+                PointControle pt = (PointControle) obj;
+                pt.updatePosition(pt.getX() + dx * 1 / scaleX, pt.getY() + dy * 1 / scaleY);
             } else {
                 Transition p = (Transition) obj;
-                p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
+                    p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
             }
             repaint();
         }
@@ -135,7 +141,7 @@ public class DrawPanel extends JPanel {
 
             if (selectedObject instanceof Place) {
                 ((Place) selectedObject).draw(g);
-            } else {
+            } else if (selectedObject instanceof Transition) {
                 ((Transition) selectedObject).draw(g);
             }
             g.setColor(co);
@@ -254,6 +260,15 @@ public class DrawPanel extends JPanel {
                 return t;
             }
         }
+        for (Transition t : model.transitionVector) {
+            for (Arc a : t.getChildrens()) {
+                System.out.println("Pt1 > " + a.getPointCtr1());
+                if(a.containsControlPoint1(x,y)) {
+                    a.getPointCtr1().setMoved(true);
+                    return a.getPointCtr1();
+                }
+            }
+        }
         return null;
     }
 
@@ -316,4 +331,48 @@ public class DrawPanel extends JPanel {
         repaint();
     }
 
+    public void showOptionsLabel(Object obj) {
+        if (obj instanceof Place || obj instanceof Transition ) {
+            try {
+
+             JPanel panel = new JPanel(new BorderLayout(5, 5));
+             JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
+             label.add (new JLabel("Label : ", SwingConstants.RIGHT));
+             label.add (new JLabel("Position :", SwingConstants.LEFT));
+             panel.add(label, BorderLayout.WEST);
+
+             ImageIcon icon = new ImageIcon (getClass().getResource("/icons/position.png"));
+
+            JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
+            JTextField Label = new JTextField();
+            controls.add(Label);
+            JTextField Position = new JTextField("4");
+            controls.add(Position);
+            panel.add(controls, BorderLayout.CENTER);
+
+            JOptionPane.showMessageDialog(frame, panel, "Label / Position", JOptionPane.QUESTION_MESSAGE, icon);
+
+            convert = Integer.parseInt(Position.getText());
+            System.out.println(Label.getText());
+            System.out.println(Position.getText());
+
+                if (obj instanceof Place) {
+                    ((Place) obj).addLabel(Label.getText());
+                    ((Place) obj).addPosition(convert);
+                } else if(obj instanceof Transition){
+                    ((Transition) obj).addLabel(Label.getText());
+                    ((Transition) obj).addPosition(convert);
+                }
+
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only string are allowed");
+            }
+        }
+        repaint();
+    }
+
+    public void errorSelect(){
+        JOptionPane.showMessageDialog(frame.getContentPane(), "Veuillez sélectionner une place ou transition");
+        repaint();
+    }
 }
