@@ -106,7 +106,7 @@ public class Transition implements Serializable {
         g2.fill(new Rectangle2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
         g2.setColor(color);
         g2.draw(new Rectangle2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
-        g.drawString(this.name, (int)(x-(forme.width)/4) ,(int)(y+5));
+        g.drawString(this.name, (int) (x - (LARGE_SIDE)), (int) (y + 10));
 
         FontMetrics fontMetrics = g2.getFontMetrics();
 
