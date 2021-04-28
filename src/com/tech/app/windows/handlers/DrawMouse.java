@@ -25,7 +25,8 @@ public class DrawMouse extends MouseAdapter {
         TRANSITION,
         ARC,
         ATTRIBUTS,
-        SELECT
+        SELECT,
+        LABEL
     }
 
     public MODE mode;
@@ -107,6 +108,14 @@ public class DrawMouse extends MouseAdapter {
                         objectDragged = drawPanel.getSelectedObject(x/drawPanel.scaleX, y/drawPanel.scaleY);
                         //System.out.println(objectDragged);
                         drawPanel.selectObject(objectDragged);
+                        break;
+                    case LABEL:
+                        objectDragged = drawPanel.getSelectedObject(x / drawPanel.scaleX, y / drawPanel.scaleY);
+                        if (objectDragged != null) {
+                            drawPanel.showOptionsLabel(objectDragged);
+                        } else {
+                            drawPanel.errorSelect();
+                        }
                         break;
                 }
             }

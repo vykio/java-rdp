@@ -40,14 +40,11 @@ public class GMAhandler {
             }
         }
 
-
-
-
-
         mxGraphComponent component = new mxGraphComponent(jgxAdapter);
         component.setConnectable(false);
         component.getGraph().setAllowDanglingEdges(false);
         this.frame.getContentPane().add(component);
+        this.frame.setTitle(this.frame.getTitle() + " | Marquages accessibles : " + g.vertexSet().size());
 
         var layout = new mxHierarchicalLayout(jgxAdapter, SwingConstants.WEST);
         layout.execute(jgxAdapter.getDefaultParent());

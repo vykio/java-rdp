@@ -73,6 +73,13 @@ public class DrawingToolbar extends Toolbar {
         btnAttributs.addActionListener( this::btnAttributsListener );
         toolbar.add( btnAttributs );
 
+        JToggleButton btnLabel = new JToggleButton();
+        btnLabel.setToolTipText( "Label" );
+        btnLabel.addActionListener( this::btnLabelListener );
+        toolbar.add( btnLabel );
+
+        toolbar.addSeparator();
+
         JToggleButton btnSelect = new JToggleButton();
         btnSelect.setToolTipText( "Select" );
         btnSelect.addActionListener( this::btnSelectListener );
@@ -88,6 +95,7 @@ public class DrawingToolbar extends Toolbar {
         btnGroup.add(btnArc);
         btnGroup.add(btnAttributs);
         btnGroup.add(btnSelect);
+        btnGroup.add(btnLabel);
 
         //Gestion des icônes => améliorable !
         Image imageOpen = null;
@@ -98,7 +106,7 @@ public class DrawingToolbar extends Toolbar {
         Image imageArc = null;
         Image imageAttributs = null;
         Image imageSelect = null;
-
+        Image imageLabel = null;
 
         try {
             imageOpen = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/open.png")));
@@ -109,7 +117,7 @@ public class DrawingToolbar extends Toolbar {
             imageArc = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/arc.png")));
             imageAttributs = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/attributs.png")));
             imageSelect = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/select.png")));
-
+            imageLabel = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/label.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -121,6 +129,7 @@ public class DrawingToolbar extends Toolbar {
         assert imageArc != null;
         assert imageAttributs != null;
         assert imageSelect != null;
+        assert imageLabel != null;
 
         btnOpen.setIcon(new ImageIcon(imageOpen));
         btnSaveAs.setIcon(new ImageIcon(imageSaveAs));
@@ -130,7 +139,7 @@ public class DrawingToolbar extends Toolbar {
         btnArc.setIcon(new ImageIcon(imageArc));
         btnAttributs.setIcon(new ImageIcon(imageAttributs));
         btnSelect.setIcon(new ImageIcon(imageSelect));
-
+        btnLabel.setIcon(new ImageIcon(imageLabel));
 
         return toolbar;
     }
@@ -166,6 +175,10 @@ public class DrawingToolbar extends Toolbar {
 
     public void btnSelectListener(ActionEvent event){
         drawMouse.action(DrawMouse.MODE.SELECT);
+    }
+
+    public void btnLabelListener(ActionEvent event){
+        drawMouse.action(DrawMouse.MODE.LABEL);
     }
 
 }
