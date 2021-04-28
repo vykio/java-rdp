@@ -291,7 +291,7 @@ public class Menu extends  MenuBar {
         String message =
                 "<html><strong>A Propos de JRDP</strong><br>Version: <strong>2021.04-1</strong><br>Github: <a href='https://github.com/vykio/java-rdp'>github.com/vykio/java-rdp</a><br><hr><br>" +
 
-                "Créé par :<ul><li>Alexandre VASSEUR</li><li>Gauthier LEURETTE</li><li>Théo PLOUVIN</li><li>Emeric BOULAY</li></ul><br>" +
+                "Créé par :<ul><li>Alexandre V.</li><li>Gauthier L.</li><li>Théo P.</li><li>Emeric B.</li></ul><br>" +
                 "</html>";
         JOptionPane.showMessageDialog(null, message, "A Propos de JRDP", JOptionPane.QUESTION_MESSAGE);
     }

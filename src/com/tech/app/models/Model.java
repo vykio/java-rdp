@@ -47,8 +47,8 @@ public class Model implements Serializable {
      */
     public void fill_W() {
         /*
-        * Iterate through each transition
-        */
+         * Iterate through each transition
+         */
 
         // For each transition
         for (int i = 0; i < this.transitionVector.size(); i++) {
@@ -123,7 +123,7 @@ public class Model implements Serializable {
         if (p != null) {
             this.removePlace(p);
         } //else {
-            //java.lang.System.out.println("[!] Error - place \""+ name + "\" is null");
+        //java.lang.System.out.println("[!] Error - place \""+ name + "\" is null");
         //}
 
     }
@@ -347,7 +347,7 @@ public class Model implements Serializable {
     public void setTransitionVector(List<Transition> transitionVector) {
         this.transitionVector = transitionVector;
     }
-  
+
     public Vector<Integer> getM0() { return M0; }
 
     public Vector<Vector<Integer>> getW_plus() { return w_plus; }
@@ -355,5 +355,5 @@ public class Model implements Serializable {
     public Vector<Vector<Integer>> getW_moins() { return w_moins; }
 
     public Vector<Vector<Integer>> getC() { return C; }
-  
+
 }
