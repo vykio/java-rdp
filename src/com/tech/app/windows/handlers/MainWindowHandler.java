@@ -11,12 +11,12 @@ public class MainWindowHandler extends WindowHandler {
 
     @Override
     public void windowOpened(WindowEvent e) {
-
     }
 
     @Override
     public void windowClosing(WindowEvent e) {
         System.out.println("I'm out!");
+        System.exit(0);
     }
 
     @Override

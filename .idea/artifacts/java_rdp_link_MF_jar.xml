@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact name="java-rdp-link-MF:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/java_rdp_link_MF_jar</output-path>
+    <root id="root">
+      <element id="archive" name="java-rdp.jar">
+        <element id="module-output" name="java-rdp" />
+      </element>
+      <element id="directory" name="lib">
+        <element id="library" level="project" name="used_library" />
+      </element>
+    </root>
+  </artifact>
+</component>
