@@ -30,7 +30,7 @@ public class Transition implements Serializable {
         this.forme = new Rectangle2D.Float((float) (this.x-(WIDTH/2)), (float) (this.y-(HEIGHT/2)), WIDTH ,HEIGHT );
     }
 
-    public Transition(String name, double x, double y, ArrayList<Arc> childrens) { this(name, x, y, childrens, new ArrayList<Arc>(),"",0); }
+    public Transition(String name, double x, double y, ArrayList<Arc> childrens) { this(name, x, y, childrens, new ArrayList<>(),"",0); }
     public Transition(String name, double x, double y) { this(name, x, y, new ArrayList<>(), new ArrayList<>(),"",0); }
     public Transition(String name) { this(name, 0, 0); }
 

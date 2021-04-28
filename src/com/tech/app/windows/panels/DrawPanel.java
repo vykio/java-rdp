@@ -351,7 +351,7 @@ public class DrawPanel extends JPanel {
                 if (obj instanceof Place) {
                     ((Place) obj).addLabel(Label.getText());
                     ((Place) obj).addPosition(convert);
-                } else if(obj instanceof Transition){
+                } else {
                     ((Transition) obj).addLabel(Label.getText());
                     ((Transition) obj).addPosition(convert);
                 }

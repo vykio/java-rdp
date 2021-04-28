@@ -44,7 +44,6 @@ public class Arc implements Serializable {
     /* Partie Graphique */
     public Line2D.Double forme;
 
-    private double oX, oY, angle;
     public AffineTransform at;
 
     private void drawArrow(Graphics2D g2, double oX, double oY, double dX, double dY) {
@@ -62,9 +61,6 @@ public class Arc implements Serializable {
             len = len - this.place.forme.width/2;
             start = 0;
         }
-        this.oX = oX;
-        this.oY = oY;
-        this.angle = angle;
 
         at = AffineTransform.getTranslateInstance(oX, oY);
         at.concatenate(AffineTransform.getRotateInstance(angle));
