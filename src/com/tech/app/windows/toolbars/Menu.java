@@ -42,10 +42,10 @@ public class Menu extends  MenuBar {
     public JMenuBar getMenu() {
 
 
-        JMenu mnuFile = new JMenu("File");
+        JMenu mnuFile = new JMenu("Fichier");
         mnuFile.setMnemonic('F');
 
-        JMenuItem mnuNewFile = new JMenuItem("New File");
+        JMenuItem mnuNewFile = new JMenuItem("Nouveau fichier");
         mnuNewFile.setMnemonic('N');
         mnuNewFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
         mnuNewFile.addActionListener(this::mnuNewListener);
@@ -54,26 +54,26 @@ public class Menu extends  MenuBar {
 
         mnuFile.addSeparator();
 
-        JMenuItem mnuOpenFile = new JMenuItem("Open File ...");
+        JMenuItem mnuOpenFile = new JMenuItem("Ouvrir un fichier...");
         mnuOpenFile.setMnemonic('O');
         mnuOpenFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
         mnuOpenFile.addActionListener(this::mnuOpenListener);
         mnuFile.add(mnuOpenFile);
 
-        JMenuItem mnuSaveFile = new JMenuItem("Save File ...");
-        mnuSaveFile.setMnemonic('S');
-        mnuSaveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+        JMenuItem mnuSaveFile = new JMenuItem("Sauvegarder");
+        mnuSaveFile.setMnemonic('A');
         mnuSaveFile.setEnabled(false);
         mnuFile.add(mnuSaveFile);
 
-        JMenuItem mnuSaveFileAs = new JMenuItem("Save File As ...");
-        mnuSaveFileAs.setMnemonic('A');
+        JMenuItem mnuSaveFileAs = new JMenuItem("Sauvegarder en tant que...");
+        mnuSaveFileAs.setMnemonic('S');
+        mnuSaveFileAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
         mnuSaveFileAs.addActionListener(this::mnuSaveAsListener);
         mnuFile.add(mnuSaveFileAs);
 
         mnuFile.addSeparator();
 
-        JMenuItem mnuExit = new JMenuItem("Exit");
+        JMenuItem mnuExit = new JMenuItem("Quitter");
         mnuExit.setMnemonic('x');
         mnuExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_DOWN_MASK));
         mnuExit.addActionListener(this::mnuExitListener);
@@ -83,16 +83,16 @@ public class Menu extends  MenuBar {
 
 
         // Définition du menu déroulant "Edit" et de son contenu
-        JMenu mnuEdit = new JMenu("Edit");
+        JMenu mnuEdit = new JMenu("Editer");
         mnuEdit.setMnemonic('E');
 
-        JMenuItem mnuUndo = new JMenuItem("Undo");
+        JMenuItem mnuUndo = new JMenuItem("Annuler");
         mnuUndo.setMnemonic('U');
         mnuUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
         mnuUndo.setEnabled(false);
         mnuEdit.add(mnuUndo);
 
-        JMenuItem mnuRedo = new JMenuItem("Redo");
+        JMenuItem mnuRedo = new JMenuItem("Refaire");
         mnuRedo.setMnemonic('R');
         mnuRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_DOWN_MASK));
         mnuRedo.setEnabled(false);
@@ -100,19 +100,19 @@ public class Menu extends  MenuBar {
 
         mnuEdit.addSeparator();
 
-        JMenuItem mnuCopy = new JMenuItem("Copy");
+        JMenuItem mnuCopy = new JMenuItem("Copier");
         mnuCopy.setMnemonic('C');
         mnuCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
         mnuCopy.setEnabled(false);
         mnuEdit.add(mnuCopy);
 
-        JMenuItem mnuCut = new JMenuItem("Cut");
+        JMenuItem mnuCut = new JMenuItem("Couper");
         mnuCut.setMnemonic('t');
         mnuCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK));
         mnuCut.setEnabled(false);
         mnuEdit.add(mnuCut);
 
-        JMenuItem mnuPaste = new JMenuItem("Paste");
+        JMenuItem mnuPaste = new JMenuItem("Coller");
         mnuPaste.setMnemonic('P');
         mnuPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
         mnuPaste.setEnabled(false);
@@ -123,7 +123,7 @@ public class Menu extends  MenuBar {
 
         // Définition du menu déroulant "Tools" et de son contenu
 
-        JMenu mnuTools = new JMenu("Tools");
+        JMenu mnuTools = new JMenu("Outils");
         mnuTools.setMnemonic('T');
 
         JMenuItem mnuGMA = new JMenuItem("Générer GMA");
@@ -139,6 +139,19 @@ public class Menu extends  MenuBar {
         mnuTools.add(mnuStepper);
 
         toolbar.add(mnuTools);
+
+        JMenu mnuHelp = new JMenu("Aide");
+        mnuHelp.setMnemonic('A');
+
+        JMenuItem mnuAbout = new JMenuItem("A Propos");
+        mnuAbout.addActionListener(this::openAboutPopup);
+        mnuHelp.add(mnuAbout);
+
+        JMenuItem mnuBug = new JMenuItem("Vous avez trouvé un bug ?");
+        mnuBug.addActionListener(this::openIssuePage);
+        mnuHelp.add(mnuBug);
+
+        toolbar.add(mnuHelp);
 
         //Gestion des icônes => améliorable !
         Image imageNew = null;
@@ -262,6 +275,25 @@ public class Menu extends  MenuBar {
                 throw new IllegalStateException("Unexpected value: " + res);
         }
 
+    }
+
+    public void openIssuePage(ActionEvent event) {
+        try {
+            String url = "https://github.com/vykio/java-rdp/issues/new/choose";
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+        } catch (java.io.IOException e) {
+            JOptionPane.showMessageDialog(null, "<html>Impossible d'ouvrir le lien...<br>Vous pouvez vous rendre manuellement sur<br><a href='#'>github.com/vykio/java-rdp/issues/new/choose</a><br>afin de créer un rapport de bug!</html>", "Oops!", ERROR_MESSAGE);
+        }
+    }
+
+    public void openAboutPopup(ActionEvent event) {
+
+        String message =
+                "<html><strong>A Propos de JRDP</strong><br>Version: <strong>2021.04-1</strong><br>Github: <a href='https://github.com/vykio/java-rdp'>github.com/vykio/java-rdp</a><br><hr><br>" +
+
+                "Créé par :<ul><li>Alexandre VASSEUR</li><li>Gauthier LEURETTE</li><li>Théo PLOUVIN</li><li>Emeric BOULAY</li></ul><br>" +
+                "</html>";
+        JOptionPane.showMessageDialog(null, message, "A Propos de JRDP", JOptionPane.QUESTION_MESSAGE);
     }
 
 }

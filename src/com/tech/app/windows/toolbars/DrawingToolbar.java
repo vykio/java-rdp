@@ -33,19 +33,19 @@ public class DrawingToolbar extends Toolbar {
         toolbar.setFloatable(false);
 
         JButton btnOpen = new JButton();
-        btnOpen.setToolTipText( "Open File (CTRL+O)" );
+        btnOpen.setToolTipText( "Ouvrir un fichier (CTRL+O)" );
         btnOpen.addActionListener( this::btnOpenListener );
         toolbar.add( btnOpen );
 
         JButton btnSaveAs = new JButton();
-        btnSaveAs.setToolTipText( "Save As..." );
+        btnSaveAs.setToolTipText( "Sauvegarder en tant que..." );
         btnSaveAs.addActionListener( this::btnSaveAsListener);
         toolbar.add( btnSaveAs );
 
         toolbar.addSeparator();
 
         JButton btnClear = new JButton();
-        btnClear.setToolTipText( "Clear board" );
+        btnClear.setToolTipText( "Nettoyer l'espace de travail" );
         btnClear.addActionListener( this::btnClearListener );
         toolbar.add( btnClear );
 
@@ -81,7 +81,7 @@ public class DrawingToolbar extends Toolbar {
         toolbar.addSeparator();
 
         JToggleButton btnSelect = new JToggleButton();
-        btnSelect.setToolTipText( "Select" );
+        btnSelect.setToolTipText( "Sélectionner" );
         btnSelect.addActionListener( this::btnSelectListener );
         toolbar.add( btnSelect );
 
