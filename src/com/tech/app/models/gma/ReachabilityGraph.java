@@ -95,47 +95,47 @@ public class ReachabilityGraph {
      */
     public void calculateReachabilityGraph(){
 
-        /** On ajoute le marquage initial aux deux listes */
+        /* On ajoute le marquage initial aux deux listes */
         marquagesAccessibles.add(M0);
         marquagesATraiter.add(M0);
         Vector<Integer> M;
         Vector<Integer> M1;
 
-        /** On initialise la liste des noeuds */
+        /* On initialise la liste des noeuds */
         liste_node = new ArrayList<>();
 
-        /** Tant qu'il y a des marquages à traiter */
+        /* Tant qu'il y a des marquages à traiter */
         while (marquagesATraiter.size() != 0) {
 
-            /** On charge dans M le premier élément de la liste des marquages à traiter, puis retire cet élément de la liste. */
+            /* On charge dans M le premier élément de la liste des marquages à traiter, puis retire cet élément de la liste. */
             M = marquagesATraiter.get(0);
             marquagesATraiter.remove(0);
 
 
-            /** On créé un noeud avec le marquage que l'on vient de charger. On donne un nom au noeud.*/
+            /* On créé un noeud avec le marquage que l'on vient de charger. On donne un nom au noeud.*/
             Node m = new Node(M);
             m.setName("M"+nb_marquages);
 
-            /** On ajoute ce noeud à la liste des noeuds. On incrémente le compteur de marquages */
+            /* On ajoute ce noeud à la liste des noeuds. On incrémente le compteur de marquages */
             liste_node.add(m);
             this.nb_marquages++;
 
 
-            /** Pour toutes les transitions du RdP */
+            /* Pour toutes les transitions du RdP */
             for (int t = 0; t < this.model.transitionVector.size(); t++) {
 
-                /** Si le marquage M couvre la colonne t de la matrice pré alors : */
+                /* Si le marquage M couvre la colonne t de la matrice pré alors : */
                 if (couvre(M, this.model.getW_moins(), t)) {
 
-                    /** On calcule le prochain marquage accessible à partir de la transition t. */
+                    /* On calcule le prochain marquage accessible à partir de la transition t. */
                     M1 = addVector(M, this.model.getC(), t);
 
-                    /** On ajoute ce nouveau marquage à la liste des enfants du noeud m. */
+                    /* On ajoute ce nouveau marquage à la liste des enfants du noeud m. */
                     m.addChildren(new NodeStruct(new Node(M1), this.model.transitionVector.get(t)));
 
-                    /** Si le marquage M1 n'est pas déjà dans la liste des marquages accessibles alors : */
+                    /* Si le marquage M1 n'est pas déjà dans la liste des marquages accessibles alors : */
                     if (!marquagesAccessibles.contains(M1)) {
-                        /** On ajoute le marquage M1 aux deux listes : marquages accessibles et marquages à traiter. */
+                        /* On ajoute le marquage M1 aux deux listes : marquages accessibles et marquages à traiter. */
                         marquagesAccessibles.add(M1);
                         marquagesATraiter.add(M1);
                     }
