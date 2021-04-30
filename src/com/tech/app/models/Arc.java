@@ -127,6 +127,14 @@ public class Arc implements Serializable {
 
     }
 
+    /**
+     * Retourne true lorsque la différence absolue entre les coordonnées du point
+     * d'origine et du point à comparer (toCompare) est inférieur à la valeur size
+     * @param origin Point.Double d'origine
+     * @param size Valeur maximale de la différence des coordonnées lors de la comparaison
+     * @param toCompare Point.Double de comparaison
+     * @return Booléen
+     */
     public boolean containing(Point.Double origin, int size, Point.Double toCompare) {
         double a1 = Math.abs(origin.getX() - toCompare.getX());
         double a2 = Math.abs(origin.getY() - toCompare.getY());
@@ -134,6 +142,14 @@ public class Arc implements Serializable {
         return (a1 < size) && (a2 < size);
     }
 
+    /**
+     * Retourne true lorsque les coordonnées de la souris sont à peu près égales aux
+     * coordonnées transformées par la transformation affine de l'arc du point de contrôle
+     * <p style="font-weight: bold; color: red">Ne fonctionne pas vraiment pour l'instant</p>
+     * @param x Coordonnée X de la souris
+     * @param y Coordonnée Y de la souris
+     * @return
+     */
     public boolean containsControlPoint1(double x, double y) {
 
         Point.Double point = new Point.Double(pointCtr1.getX(),pointCtr1.getY());
