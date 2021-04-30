@@ -5,6 +5,9 @@ import com.tech.app.models.Place;
 
 import java.util.List;
 
+/**
+ * Classe avec quelques fonctions pour des listes
+ */
 public class FList {
 
     /**

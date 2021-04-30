@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.Locale;
 
+/**
+ * Classe avec des fonctions utiles. Notamment pour la gestion du zoom pour différents OS
+ */
 public final class FUtils {
 
     public static class OS {
