@@ -35,8 +35,8 @@ public class GMAhandler {
         }
 
         for (Node n : liste_nodes) {
-            for(int i=0; i< n.getParents().size(); i++){
-                g.addEdge(n.getMarquage(),n.getParents().get(i).node.getMarquage(), new CustomEdge(n.getParents().get(i).transition.getName()));
+            for(int i=0; i< n.getChildren().size(); i++){
+                g.addEdge(n.getMarquage(),n.getChildren().get(i).node.getMarquage(), new CustomEdge(n.getChildren().get(i).transition.getName()));
             }
         }
 
@@ -51,8 +51,8 @@ public class GMAhandler {
 
 
         /*
-        mxCircleLayout layout = new mxCircleLayout(jgxAdapter);
-        mxCompactTreeLayout layout2 = new mxCompactTreeLayout(jgxAdapter);
+        // pour affichage circulaire
+        mxCircleLayout layout2 = new mxCircleLayout(jgxAdapter);
 
         float edgeDistance = 10;
         layout2.setUseBoundingBox(true);
@@ -72,7 +72,6 @@ public class GMAhandler {
         layout.setMoveCircle(true);
 
         layout.execute(jgxAdapter.getDefaultParent());
-        // that's all there is to it!...
         */
 
     }
