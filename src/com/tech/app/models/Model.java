@@ -59,7 +59,7 @@ public class Model implements Serializable {
         // For each transition
         for (int i = 0; i < this.transitionVector.size(); i++) {
             List<Arc> listParents = this.transitionVector.get(i).getParents();
-            List<Arc> listChildrens = this.transitionVector.get(i).getChildrens();
+            List<Arc> listChildren = this.transitionVector.get(i).getChildren();
 
             // For each place of each transition
             for (int k = 0; k < this.placeVector.size(); k++) {
@@ -74,8 +74,8 @@ public class Model implements Serializable {
                     this.w_plus.get(k).set(i, 0);
                 }
 
-                if (FList.contains(listChildrens, this.placeVector.get(k))) {
-                    this.w_moins.get(k).set(i, FList.poids_arc(listChildrens, this.placeVector.get(k)));
+                if (FList.contains(listChildren, this.placeVector.get(k))) {
+                    this.w_moins.get(k).set(i, FList.poids_arc(listChildren, this.placeVector.get(k)));
                 } else {
                     this.w_moins.get(k).set(i, 0);
                 }
