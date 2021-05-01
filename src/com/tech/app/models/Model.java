@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * Cette classe est le coeur du RdP. C'est dans cette classe que l'on va stocker les places, transitions et arcs du RdP et que l'on va calculer les matrices du RdP.
+ */
 public class Model implements Serializable {
 
     public int nbPlace;
@@ -18,6 +21,9 @@ public class Model implements Serializable {
     Vector<Integer> M0;
     Vector<Vector<Integer>> w_plus, w_moins, C;
 
+    /**
+     * Constructeur du modèle.
+     */
     public Model() {
         this.nbPlace = 0;
         this.nbTransition = 0;
@@ -33,6 +39,7 @@ public class Model implements Serializable {
 
     /**
      * Remplir M0
+     * @return Vecteur d'entiers
      */
     public Vector<Integer> fill_M0() {
 
@@ -53,7 +60,7 @@ public class Model implements Serializable {
         // For each transition
         for (int i = 0; i < this.transitionVector.size(); i++) {
             List<Arc> listParents = this.transitionVector.get(i).getParents();
-            List<Arc> listChildrens = this.transitionVector.get(i).getChildrens();
+            List<Arc> listChildren = this.transitionVector.get(i).getChildren();
 
             // For each place of each transition
             for (int k = 0; k < this.placeVector.size(); k++) {
@@ -68,8 +75,8 @@ public class Model implements Serializable {
                     this.w_plus.get(k).set(i, 0);
                 }
 
-                if (FList.contains(listChildrens, this.placeVector.get(k))) {
-                    this.w_moins.get(k).set(i, FList.poids_arc(listChildrens, this.placeVector.get(k)));
+                if (FList.contains(listChildren, this.placeVector.get(k))) {
+                    this.w_moins.get(k).set(i, FList.poids_arc(listChildren, this.placeVector.get(k)));
                 } else {
                     this.w_moins.get(k).set(i, 0);
                 }
@@ -179,6 +186,9 @@ public class Model implements Serializable {
         this.C = new Vector<>();
     }
 
+    /**
+     * Vider les listes de places et de transition. Utilisée pour nettoyer la zone de dessin.
+     */
     public void clearAll() {
         clearMatrices();
         this.nbPlace = 0;
@@ -212,6 +222,16 @@ public class Model implements Serializable {
         }
     }
 
+    /**
+     * Méthode qui permet d'afficher dans la console les caractéristiques du modèle de cette façon :
+     * - marquage initial,
+     * - matrice W+,
+     * - matrice W-,
+     * - matrice d'incidence C,
+     * - Places du modèle,
+     * - Transitions du modèle.
+     * @return Résultat String
+     */
     public String toString() {
         StringBuilder result;
 
@@ -261,6 +281,9 @@ public class Model implements Serializable {
         return result.toString();
     }
 
+    /**
+     * Méthode qui permet d'afficher la matrice W+ dans la console.
+     */
     public void print_W_plus() {
         StringBuilder result = new StringBuilder();
         result.append("\nW+:\n");
@@ -274,6 +297,9 @@ public class Model implements Serializable {
         java.lang.System.out.println(result);
     }
 
+    /**
+     * Méthode qui permet d'afficher W- dans la console.
+     */
     public void print_W_moins() {
         StringBuilder result = new StringBuilder();
         result.append("\nW-:\n");
@@ -287,6 +313,10 @@ public class Model implements Serializable {
         java.lang.System.out.println(result);
     }
 
+    /**
+     * Méthode qui permet d'écrire la matrice C au format LaTeX dans un String.
+     * @return String contenant la matrice C sous format LaTeX.
+     */
     public String get_C() {
 
         //Code pour un matrice LaTeX avec labels pour lignes et colonnes
@@ -302,8 +332,6 @@ public class Model implements Serializable {
 
         // déclaration du tableau principal, on remplit la premiere case par du vide, et on commence à creer la deuxieme case
         result.append("C =\\begin{array}{c  c}\\phantom{}&\\begin{array}{");
-
-
 
         // centrer les éléments en fonction du nombre de colonnes
         result.append("c".repeat(this.transitionVector.size()));
@@ -337,23 +365,46 @@ public class Model implements Serializable {
         result.append("\\end{pmatrix}\\end{array}");
         //System.out.println(result.toString());
         return (result.toString());
-
     }
 
+    /**
+     * Méthode qui permet de donner/modifier la liste des Places.
+     * @param placeVector : Liste de places.
+     */
     public void setPlaceVector(List<Place> placeVector) {
         this.placeVector = placeVector;
     }
 
+    /**
+     * Méthode qui permet de donner/modifier la liste des Transitions.
+     * @param transitionVector : Liste de Transistions.
+     */
     public void setTransitionVector(List<Transition> transitionVector) {
         this.transitionVector = transitionVector;
     }
 
+    /**
+     * Méthode qui permet de récupérer le marquage initial
+     * @return M0 : marquage initial
+     */
     public Vector<Integer> getM0() { return M0; }
 
+    /**
+     * Méthode qui permet de récupérer la matrice W+.
+     * @return W+.
+     */
     public Vector<Vector<Integer>> getW_plus() { return w_plus; }
 
+    /**
+     * Méthode qui permet de récupérer la matrice W-.
+     * @return W-.
+     */
     public Vector<Vector<Integer>> getW_moins() { return w_moins; }
 
+    /**
+     * Méthode qui permet de récupérer la matrice d'incidence C.
+     * @return C.
+     */
     public Vector<Vector<Integer>> getC() { return C; }
 
 }

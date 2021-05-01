@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.Locale;
 
+/**
+ * Classe avec des fonctions utiles. Notamment pour la gestion du zoom pour différents OS
+ */
 public final class FUtils {
 
     public static class OS {
@@ -76,6 +79,7 @@ public final class FUtils {
          * @param g The Graphics instance.
          * @param text The String to draw.
          * @param rect The Rectangle to center the text in.
+         * @param font Police utilisée
          */
         public static void drawCenteredString(java.awt.Graphics g, String text, Rectangle rect, Font font) {
             // Get the FontMetrics

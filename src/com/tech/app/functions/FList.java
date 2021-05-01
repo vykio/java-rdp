@@ -5,6 +5,9 @@ import com.tech.app.models.Place;
 
 import java.util.List;
 
+/**
+ * Classe avec quelques fonctions pour des listes
+ */
 public class FList {
 
     /**
@@ -14,8 +17,8 @@ public class FList {
      * @return : True ou False
      */
     public static boolean contains(List<Arc> arcs, Place place) {
-        for (int i = 0; i < arcs.size(); i++) {
-            if (arcs.get(i).getPlace() == place) {
+        for (Arc arc : arcs) {
+            if (arc.getPlace() == place) {
                 return true;
             }
         }
@@ -24,14 +27,14 @@ public class FList {
 
     /**
      * Retourne le poids de l'arc qui contient la place en deuxième argument
-     * @param arcs
-     * @param place
-     * @return
+     * @param arcs Liste des arcs
+     * @param place Place à checker
+     * @return Poids de l'arc
      */
     public static int poids_arc(List<Arc> arcs, Place place) {
-        for (int i = 0; i < arcs.size(); i++) {
-            if (arcs.get(i).getPlace() == place) {
-                return arcs.get(i).getPoids();
+        for (Arc arc : arcs) {
+            if (arc.getPlace() == place) {
+                return arc.getPoids();
             }
         }
         return -1;
@@ -44,9 +47,9 @@ public class FList {
      * @return : Objet de type place, et de nom :name:
      */
     public static Place getPlaceByName(List<Place> places, String name) {
-        for (int i = 0; i < places.size(); i++) {
-            if (places.get(i).getName().equals(name)) {
-                return places.get(i);
+        for (Place place : places) {
+            if (place.getName().equals(name)) {
+                return place;
             }
         }
         return null;

@@ -1,5 +1,6 @@
 package com.tech.app.functions;
 
+/** Classe avec des fonctions mathématiques */
 public class FMaths {
 
     /**

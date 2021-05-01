@@ -26,7 +26,6 @@ import java.lang.ref.WeakReference;
  * href="http://java.sun.com/docs/books/tutorial/uiswing/misc/threads.html">How
  * to Use Threads</a> for more info
  * </p>
- * <p/>
  * <p>
  * This is a modification of original idea of Scott Delap<br>
  * Initial version of ThreadCheckingRepaintManager can be found here<br>

@@ -13,6 +13,9 @@ import org.jgrapht.graph.DefaultListenableGraph;
 import javax.swing.*;
 import java.util.List;
 
+/**
+ * Classe qui gère l'affichage du GMA
+ */
 public class GMAhandler {
 
     private final JFrame frame;
@@ -20,6 +23,13 @@ public class GMAhandler {
     private final ListenableGraph<String, DefaultEdge> g;
     private final List<Node> liste_nodes;
 
+    /**
+     * Constructeur du GMAhandler, qui nous permet
+     * d'afficher le GMA dans la fenêtre dans laquelle
+     * il est appelé
+     * @param frame Fenêtre d'appel
+     * @param liste_nodes Liste des noeuds du GMA
+     */
     public GMAhandler(JFrame frame, List<Node> liste_nodes) {
         this.frame = frame;
         this.liste_nodes = liste_nodes;
@@ -27,6 +37,9 @@ public class GMAhandler {
         this.jgxAdapter = new JGraphXAdapter<>(g);
     }
 
+    /**
+     * Visualiser le GMA
+     */
     public void init() {
         // create a visualization using JGraph, via an adapter
 
@@ -35,8 +48,8 @@ public class GMAhandler {
         }
 
         for (Node n : liste_nodes) {
-            for(int i=0; i< n.getParents().size(); i++){
-                g.addEdge(n.getMarquage(),n.getParents().get(i).node.getMarquage(), new CustomEdge(n.getParents().get(i).transition.getName()));
+            for(int i=0; i< n.getChildren().size(); i++){
+                g.addEdge(n.getMarquage(),n.getChildren().get(i).node.getMarquage(), new CustomEdge(n.getChildren().get(i).transition.getName()));
             }
         }
 
@@ -51,8 +64,8 @@ public class GMAhandler {
 
 
         /*
-        mxCircleLayout layout = new mxCircleLayout(jgxAdapter);
-        mxCompactTreeLayout layout2 = new mxCompactTreeLayout(jgxAdapter);
+        // pour affichage circulaire
+        mxCircleLayout layout2 = new mxCircleLayout(jgxAdapter);
 
         float edgeDistance = 10;
         layout2.setUseBoundingBox(true);
@@ -72,7 +85,6 @@ public class GMAhandler {
         layout.setMoveCircle(true);
 
         layout.execute(jgxAdapter.getDefaultParent());
-        // that's all there is to it!...
         */
 
     }

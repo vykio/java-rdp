@@ -3,8 +3,15 @@ package com.tech.app.windows.handlers;
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 
+/**
+ * Classe qui permet de gérer la fenêtre de l'application. Elle hérite de la classe abstraite WindowHandler.
+ */
 public class MainWindowHandler extends WindowHandler {
 
+    /**
+     * Constructeur de la fenêtre de l'application.
+     * @param frame : JFrame.
+     */
     public MainWindowHandler(JFrame frame) {
         super(frame);
     }

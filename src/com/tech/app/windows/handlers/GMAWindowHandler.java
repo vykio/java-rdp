@@ -3,7 +3,14 @@ package com.tech.app.windows.handlers;
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 
+/**
+ * Classe qui permet de gérer la fenêtre du GMA. Elle hérite de la classe abstraite WindowHandler.
+ */
 public class GMAWindowHandler extends WindowHandler {
+    /**
+     * Constructeur de la fenêtre du GMA.
+     * @param frame : JFrame.
+     */
     public GMAWindowHandler(JFrame frame) {
         super(frame);
     }

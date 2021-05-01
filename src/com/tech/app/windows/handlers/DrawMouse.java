@@ -9,7 +9,10 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 
-
+/**
+ * Cette classe permet de récupérer les actions de la souris sur l'application, plus particulièrement dans la zone de dessin.
+ * Cette classe hérite de l'interface MouseAdapter de Java Event.
+ */
 public class DrawMouse extends MouseAdapter {
 
     public boolean mousePressed = false;
@@ -19,6 +22,9 @@ public class DrawMouse extends MouseAdapter {
     private double x;
     private double y;
 
+    /**
+     * Modes : NONE, PLACE, TRANSITION, ARC, ATTRIBUTS, SELECT, LABEL.
+     */
     public enum MODE {
         NONE,
         PLACE,
@@ -31,9 +37,12 @@ public class DrawMouse extends MouseAdapter {
 
     public MODE mode;
     public DrawPanel drawPanel;
-
     private Object objectDragged = null;
 
+    /**
+     * Constructeur de la souris
+     * @param drawPanel : drawPanel
+     */
     public DrawMouse(DrawPanel drawPanel){
         this.drawPanel = drawPanel;
         drawPanel.addMouseListener(this);
@@ -42,7 +51,14 @@ public class DrawMouse extends MouseAdapter {
         this.mode = MODE.NONE;
     }
 
+    /**
+     * Classe qui permet de gérer l'échelle en fonction du zoom.
+     */
     class ScaleHandler implements MouseWheelListener {
+        /**
+         * Méthode qui permet de savoir si l'utilisateur utilise la molette de la souris
+         * @param e : évenement de mouvement de la molette.
+         */
         public void mouseWheelMoved(MouseWheelEvent e) {
             final double factor = (e.getWheelRotation() < 0) ? 1.1 : 0.9;
             double scale = drawPanel.scaleX * factor;
@@ -56,20 +72,35 @@ public class DrawMouse extends MouseAdapter {
         }
     }
 
+    /**
+     * Classe qui permet de modifier le mode de la souris en fonction de l'action voulue par l'utilisateur.
+     * @param mode : MODE
+     */
     public void action(MODE mode){
         this.mode=mode;
     }
 
+    /**
+     * Méthode qui appelle la fonction clearAll de la classe DrawPanel.
+     */
     public void clearPanel() {
         this.drawPanel.clearAll();
     }
 
+    /**
+     * Méthode qui permet de savoir si l'utilisateur à cliquer.
+     * @param mouseEvent : évènement de la souris.
+     */
     @Override
     public void mouseClicked(java.awt.event.MouseEvent mouseEvent) {
         //System.out.println("Mouse clicked");
         mouseClicked = true;
     }
 
+    /**
+     * Méthode qui permet de savoir si l'utilisateur a un bouton de la souris enfoncé.
+     * @param mouseEvent : évènement de la souris.
+     */
     @Override
     public void mousePressed(java.awt.event.MouseEvent mouseEvent) {
         //System.out.println("Mouse pressed");
@@ -80,9 +111,11 @@ public class DrawMouse extends MouseAdapter {
         drawPanel.mouseX = x;
         drawPanel.mouseY = y;
 
+        // Si la souris est sur l'application
         if(mouseEntered){
-
+            // Si c'est un clic gauche
             if (SwingUtilities.isLeftMouseButton(mouseEvent)){
+                // En fonction du mode sélectionné :
                 switch(mode){
                     case PLACE:
                         drawPanel.addPlace(x/drawPanel.scaleX,y/ drawPanel.scaleY);
@@ -119,13 +152,14 @@ public class DrawMouse extends MouseAdapter {
                         break;
                 }
             }
-
-
         }
-
         mousePressed = true;
     }
 
+    /**
+     * Méthode qui permet de savoir si l'utilisateur a relaché un bouton de la souris qui était enfoncé.
+     * @param mouseEvent : évènement de la souris.
+     */
     @Override
     public void mouseReleased(java.awt.event.MouseEvent mouseEvent) {
         //System.out.println("Mouse released");
@@ -137,6 +171,10 @@ public class DrawMouse extends MouseAdapter {
 
     }
 
+    /**
+     * Méthode qui permet de savoir si la souris est sur la fenêtre de l'application.
+     * @param mouseEvent : évènement de la souris.
+     */
     @Override
     public void mouseEntered(java.awt.event.MouseEvent mouseEvent) {
         //System.out.println("Mouse in");
@@ -144,12 +182,20 @@ public class DrawMouse extends MouseAdapter {
 
     }
 
+    /**
+     * Méthode qui permet de savoir si la souris quitte la fenêtre de l'application.
+     * @param mouseEvent : évènement de la souris.
+     */
     @Override
     public void mouseExited(java.awt.event.MouseEvent mouseEvent) {
         //System.out.println("Mouse out");
         mouseEntered = false;
     }
 
+    /**
+     * Méthode qui permet de savoir si l'utilisateur est en train d'essayer de déplacer un objet.
+     * @param e : évènement de la souris.
+     */
     public void mouseDragged(MouseEvent e) {
         double dx = e.getX()*drawPanel.scaleFactor - x;
         double dy = e.getY()*drawPanel.scaleFactor - y;
