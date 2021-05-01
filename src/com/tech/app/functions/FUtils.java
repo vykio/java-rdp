@@ -9,6 +9,15 @@ import java.util.Locale;
  */
 public final class FUtils {
 
+    public static class Program {
+
+        /**
+         * @return Retourne la version du logiciel
+         */
+        public static String getVersion() { return "2021.05-1"; }
+
+    }
+
     public static class OS {
 
         /**

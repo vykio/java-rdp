@@ -24,7 +24,7 @@ public class MainWindow extends Window {
      * @throws UnsupportedLookAndFeelException : dans le cas où on ne peut pas récupérer le look du système de l'utilisateur.
      */
     public MainWindow(int width, int height) throws UnsupportedLookAndFeelException {
-        super(false, "Java_RDP - " + FUtils.OS.getOs(), width, height, true, true);
+        super(false, "Java_RDP - " + FUtils.OS.getOs() + " - v" + FUtils.Program.getVersion(), width, height, true, true);
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {

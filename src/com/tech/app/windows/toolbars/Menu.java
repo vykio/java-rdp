@@ -1,5 +1,6 @@
 package com.tech.app.windows.toolbars;
 
+import com.tech.app.functions.FUtils;
 import com.tech.app.models.Model;
 import com.tech.app.windows.GMAWindow;
 import com.tech.app.windows.handlers.SaveManager;
@@ -340,7 +341,7 @@ public class Menu extends MenuBar {
     public void openAboutPopup(ActionEvent event) {
 
         String message =
-                "<html><strong>A Propos de JRDP</strong><br>Version: <strong>2021.04-1</strong><br>Github: <a href='https://github.com/vykio/java-rdp'>github.com/vykio/java-rdp</a><br><hr><br>" +
+                "<html><strong>A Propos de JRDP</strong><br>Version: <strong>"+ FUtils.Program.getVersion() + "</strong><br>Github: <a href='https://github.com/vykio/java-rdp'>github.com/vykio/java-rdp</a><br><hr><br>" +
 
                 "Créé par :<ul><li>Alexandre V.</li><li>Gauthier L.</li><li>Théo P.</li><li>Emeric B.</li></ul><br>" +
                 "</html>";
