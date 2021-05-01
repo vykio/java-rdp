@@ -32,14 +32,14 @@ public class ReachabilityGraph {
 
     /**
      * Méthode qui nous permet de récupérer la liste des noeuds
-     * @return
+     * @return List de Node
      */
     public List<Node> getListe_node() { return liste_node; }
 
     /**
      * Méthode qui permet de récupérer le marquage initial M0 du modèle.
      * C'est-à-dire l'état dans lequel il a été dessiné.
-     * @return
+     * @return Vecteur d'entiers
      */
     private Vector<Integer> getM0(){ return this.M0; }
 
@@ -49,7 +49,7 @@ public class ReachabilityGraph {
      * @param m : marquage du noeud.
      * @param pre : matrice Pre du modèle.
      * @param t : indice de la transition.
-     * @return
+     * @return Vrai ou Faux
      */
     private boolean couvre(Vector<Integer> m, Vector<Vector<Integer>> pre, int t){
 

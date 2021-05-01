@@ -76,7 +76,7 @@ public class PointControle implements Serializable {
 
     /**
      * Méthode qui permet de savoir si le point de controle est en déplacement.
-     * @return
+     * @return Vrai ou Faux
      */
     public boolean getMoved() { return moved; }
 

@@ -91,7 +91,7 @@ public class Place implements Serializable {
 
     /**
      * Méthode qui permet de donner/modifier le marquage de la place.
-     * @param marquage
+     * @param marquage Marquage de la place
      */
     public void setMarquage(int marquage) { this.marquage = Math.max(marquage, 0); }
 

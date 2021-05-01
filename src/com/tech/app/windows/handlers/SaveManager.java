@@ -14,7 +14,7 @@ public class SaveManager {
      * On enregistre directement l'objet model. De ce fait à chaque changement dans le code source, les sauvegardes ne sont plus utilisables.
      * @param f : Fichier.
      * @param model : modèle à sauvegarder.
-     * @return
+     * @return Vrai ou Faux
      */
     public boolean save(File f, Model model) {
 

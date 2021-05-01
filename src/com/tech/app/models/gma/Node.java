@@ -119,7 +119,7 @@ public class Node {
 
     /**
      * Méthode qui permet d'afficher les différents paramètres d'un noeud.
-     * @return affichage des paramètres du noeuds dans l'ordre suivant : marquage du noeud -> Liste des enfants -> Liste des parents.
+     * @return affichage des paramètres du noeuds dans l'ordre suivant : marquage du noeud ► Liste des enfants ► Liste des parents.
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();

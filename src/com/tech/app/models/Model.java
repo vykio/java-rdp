@@ -39,6 +39,7 @@ public class Model implements Serializable {
 
     /**
      * Remplir M0
+     * @return Vecteur d'entiers
      */
     public Vector<Integer> fill_M0() {
 
@@ -229,7 +230,7 @@ public class Model implements Serializable {
      * - matrice d'incidence C,
      * - Places du modèle,
      * - Transitions du modèle.
-     * @return
+     * @return Résultat String
      */
     public String toString() {
         StringBuilder result;

@@ -21,7 +21,7 @@ public class Arc implements Serializable {
      * @param poids : poids de l'arc, par défaut 1.
      * @param xOrigin : coordonnée x de l'origine de l'arc.
      * @param yOrigin : coordonnée y de l'origine de l'arc.
-     * @param placeToTransition : booléen qui indique si l'arc est dans le sens place -> transition.
+     * @param placeToTransition : booléen qui indique si l'arc est dans le sens place ► transition.
      * @param transition : Transition.
      */
     public Arc(Place place, int poids, double xOrigin, double yOrigin, boolean placeToTransition, Transition transition){
@@ -68,7 +68,7 @@ public class Arc implements Serializable {
 
     /**
      * Méthode qui permet de donner/modifier le poids d'un arc.
-     * @param poids
+     * @param poids Poids de l'arc
      */
     public void setPoids(int poids) { this.poids = poids; }
 
@@ -194,7 +194,7 @@ public class Arc implements Serializable {
      * <p style="font-weight: bold; color: red">Ne fonctionne pas vraiment pour l'instant</p>
      * @param x Coordonnée X de la souris
      * @param y Coordonnée Y de la souris
-     * @return
+     * @return Vrai ou Faux
      */
     public boolean containsControlPoint1(double x, double y) {
 
