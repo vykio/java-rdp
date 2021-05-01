@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Classe pour créer la barre de dessin (où l'on sélectionne les outils)
+ */
 public class DrawingToolbar extends Toolbar {
 
     /* Construction de l'interface graphique pour tester à part*/
@@ -16,17 +19,31 @@ public class DrawingToolbar extends Toolbar {
 
     private Menu menu;
 
+    /**
+     * Constructeur de la DrawingToolbar.
+     * @param frame Fenêtre d'appel
+     * @param drawMouse Handler de la souris pour récupérer les events
+     */
     public DrawingToolbar(JFrame frame,DrawMouse drawMouse) {
         super(frame);
         this.drawMouse = drawMouse;
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Permet d'utiliser les fonctions/méthodes publiques du menu
+     * passé en paramètre directement dans cette classe.
+     * @param menu Menu
+     */
     public void applyMenuBridge(Menu menu) {
         this.menu = menu;
     }
 
 
+    /**
+     * Retourne l'objet Toolbar avec nos paramètres
+     * @return JToolBar
+     */
     @Override
     public JToolBar getToolbar() {
         JToolBar toolbar = new JToolBar();
@@ -144,39 +161,75 @@ public class DrawingToolbar extends Toolbar {
         return toolbar;
     }
 
+    /**
+     * Listener exécuté quand on fait l'action d'ouvrir un fichier
+     * @param event ActionEvent
+     */
     public void btnOpenListener(ActionEvent event) {
         menu.mnuOpenListener(event);
     }
 
+    /**
+     * Listener exécuté quand on fait l'action de sauvegarder sous, un fichier
+     * @param event ActionEvent
+     */
     public void btnSaveAsListener(ActionEvent event) {
         menu.mnuSaveAsListener(event);
     }
 
+    /**
+     * Listener exécuté quand on fait l'action de nettoyer la zone de dessin
+     * @param event ActionEvent
+     */
     public void btnClearListener(ActionEvent event){
         drawMouse.clearPanel();
     }
 
+    /**
+     * Listener exécuté quand on fait choisit le mode Création de Place
+     * @param event ActionEvent
+     */
     public void btnPlaceListener(ActionEvent event){
         drawMouse.action(DrawMouse.MODE.PLACE);
         MouseInfo.getPointerInfo().getLocation().getX();
     }
 
+    /**
+     * Listener exécuté quand on fait choisit le mode Création de Transition
+     * @param event ActionEvent
+     */
     public void btnTransitionListener(ActionEvent event){
         drawMouse.action(DrawMouse.MODE.TRANSITION);
     }
 
+    /**
+     * Listener exécuté quand on fait choisit le mode Création d'Arc
+     * @param event ActionEvent
+     */
     public void btnArcListener(ActionEvent event){
         drawMouse.action(DrawMouse.MODE.ARC);
     }
 
+    /**
+     * Listener exécuté quand on fait choisit le mode Sélection d'attributs
+     * @param event ActionEvent
+     */
     public void btnAttributsListener(ActionEvent event){
         drawMouse.action(DrawMouse.MODE.ATTRIBUTS);
     }
 
+    /**
+     * Listener exécuté quand on fait choisit le mode Sélection d'objet sur la zone de dessin
+     * @param event ActionEvent
+     */
     public void btnSelectListener(ActionEvent event){
         drawMouse.action(DrawMouse.MODE.SELECT);
     }
 
+    /**
+     * Listener exécuté quand on fait choisit le mode Modification du Label
+     * @param event ActionEvent
+     */
     public void btnLabelListener(ActionEvent event){
         drawMouse.action(DrawMouse.MODE.LABEL);
     }

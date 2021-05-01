@@ -11,14 +11,17 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-/**
+/*
  * Ordre d'affichage :
  *  1. Places
  *  2. Transitions
  *  3. Objet tenu dans la souris (pour qu'il soit placé au dessus des autres)
  *
- * */
+ */
 
+/**
+ * Classe qui gère la zone de dessin
+ */
 public class DrawPanel extends JPanel {
 
     private final JFrame frame;
@@ -33,8 +36,14 @@ public class DrawPanel extends JPanel {
     private int idPlace=0;
     private int idTransition = 0;
 
-    /* Zoom du canvas */
+
+    /**
+     * Zoom maximal de la zone dessin
+     */
     public final double MAX_ZOOM = 3;
+    /**
+     * Zoom minimal de la zone dessin
+     */
     public final double MIN_ZOOM = 0.5;
 
     /* Variables d'agrandissement et zoom */
@@ -48,6 +57,11 @@ public class DrawPanel extends JPanel {
 
     public AffineTransform transform;
 
+    /**
+     * Constructeur du Panel de dessin
+     * @param frame Frame de la fenêtre
+     * @param model Modèle du système
+     */
     public DrawPanel(JFrame frame, Model model) {
         this.scaleFactor = FUtils.Screen.getScaleFactor();
 
@@ -59,7 +73,18 @@ public class DrawPanel extends JPanel {
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
     }
 
-    /* Utilisé pour déplacer tous les objets (click-molette) */
+    /**
+     * Méthode qui déplace tous les objets du panel de dessin, appelée
+     * lors de l'appui clic-molette. Elle met à jour les positions de
+     * tous les objets en fonction du facteur d'agrandissement (lié au
+     * zoom et au facteur d'agrandissement de l'OS) ainsi que du
+     * déplacement (dx, dy). Nous utilisons (dx,dy) car cette fonction est
+     * appelée à chaque tick.
+     * @param scaleX Facteur d'agrandissement sur X
+     * @param scaleY Facteur d'agrandissement sur Y
+     * @param dx Plus petit déplacement sur X
+     * @param dy Plus petit déplacement sur Y
+     */
     public void updatePositions(double scaleX, double scaleY, double dx, double dy) {
         for (Place p : model.placeVector) {
             p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
@@ -77,8 +102,18 @@ public class DrawPanel extends JPanel {
         arcDestY += dy / scaleY*scaleFactor;
     }
 
-    /* Bouger un objet donné en paramètre */
-
+    /**
+     * Méthode qui déplace l'objet donné en paramètre
+     * en fonction des paramètres de facteur d'agrandissement
+     * et de déplacement (dx,dy) de la souris. C'est le même
+     * fonctionnement que la méthode updatePositions(), mais
+     * pour un seul objet. Utilisé par l'outil de sélection.
+     * @param obj
+     * @param scaleX
+     * @param scaleY
+     * @param dx
+     * @param dy
+     */
     public void updatePosition(Object obj, double scaleX, double scaleY, double dx, double dy) {
         selectedObject = obj;
         if (obj != null) {
@@ -96,13 +131,19 @@ public class DrawPanel extends JPanel {
         }
     }
 
+    /**
+     * Afficher le modèle dans la console
+     */
     public void printModel(){
         System.out.println(model);
     }
 
     public double mouseX, mouseY;
 
-    /* Méthode pour afficher à l'écran */
+    /**
+     * Afficher tous les objets dans la zone de dessin
+     * @param g Objet graphique (Graphics)
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // clear
@@ -152,6 +193,12 @@ public class DrawPanel extends JPanel {
 
     }
 
+    /**
+     * Utilisé pour afficher du texte dans la zone de dessin.
+     * Notamment pour afficher l'information à l'utilisateur
+     * que l'arc a bien été défini.
+     * @param g Objet Graphics
+     */
     private void drawTooltips(Graphics g) {
         Color color = g.getColor();
         g.setColor(Color.BLUE);
@@ -166,7 +213,9 @@ public class DrawPanel extends JPanel {
         g.setColor(color);
     }
 
-    /* Nettoyer tout ! (model et canvas) */
+    /**
+     * Nettoyer le modèle, et la zone de dessin.
+     */
     public void clearAll() {
         model.clearAll();
         selectedObject = null;
@@ -175,14 +224,27 @@ public class DrawPanel extends JPanel {
         repaint();
     }
 
-    /* Ajouter une place au système */
+    /**
+     * Ajouter une place au système et dans la zone de dessin
+     * @param x Coordonnée X du nouvel objet
+     * @param y Coordonnée Y du nouvel objet
+     */
     public void addPlace(double x, double y){
         model.addPlace(new Place("P" + idPlace, x, y));
         this.idPlace++;
         repaint();
     }
 
-    /* Ajouter un arc au système */
+    /**
+     * Ajouter une arc au système d'un point d'origine
+     * (x1, y1) au point d'arrivée (x2, y2). Ne fonctionne
+     * pas si au moins un des deux couples de coordonnées
+     * ne correspond pas à un objet déjà existant.
+     * @param x1 Coordonnée X de l'objet 1
+     * @param y1 Coordonnée Y de l'objet 1
+     * @param x2 Coordonnée X de l'objet 2
+     * @param y2 Coordonnée Y de l'objet 2
+     */
     public void addArc(double x1,double y1, double x2, double y2){
         Object obj1 = getSelectedObject(x1, y1);
         Object obj2 = getSelectedObject(x2, y2);
@@ -207,31 +269,41 @@ public class DrawPanel extends JPanel {
 
     }
 
-    /* Ajouter l'objet transition au système */
+    /**
+     * Ajouter une transition au système et à la zone de dessin
+     * @param x Coordonnée X de l'objet transition
+     * @param y Coordonnée Y de l'objet transition
+     */
     public void addTransition(double x, double y){
         model.addTransition(new Transition("t" + idTransition,x,y));
         idTransition++;
         repaint();
     }
 
-    /* Rendre le JPanel visible sur la fenêtre */
+    /**
+     * Rendre la zone de dessin visible dans la fenêtre
+     */
     public void applyPanel() {
         this.frame.add(this);
         this.frame.setVisible(true);
         repaint();
     }
 
-    /* Déterminer les deux couples de coordonnées pour créer un arc */
+    /**
+     * Déterminer les deux couples de coordonnées pour créer un arc
+     * @param x Coordonnée X
+     * @param y Coordonnée Y
+     */
     public void loadCoordinatesArc(double x, double y) {
-        /* Si il n'y a pas eu de 1er click en mode Arc */
         if (indexOfClickArc == 0 && getSelectedObject(x,y) != null) {
+            /* Si il n'y a pas eu de 1er click en mode Arc */
             this.arcOriginX = x;
             this.arcOriginY = y;
             this.arcDestX = 0;
             this.arcDestY = 0;
             this.indexOfClickArc = 1;
         } else {
-            // Si nous cliquons pour la deuxieme fois en mode Arc
+            /* Si nous cliquons pour la deuxieme fois en mode Arc */
             this.arcDestX = x;
             this.arcDestY = y;
             this.addArc(this.arcOriginX, this.arcOriginY, this.arcDestX, this.arcDestY);
@@ -240,7 +312,12 @@ public class DrawPanel extends JPanel {
         repaint();
     }
 
-    /* Retourner l'objet sur lequel on a cliqué */
+    /**
+     * Retourne l'objet sur lequel on a cliqué
+     * @param x Coordonnée X du click
+     * @param y Coordonnée Y du click
+     * @return Objet
+     */
     public Object getSelectedObject(double x, double y) {
         for (Place p:model.placeVector) {
             if (p.forme.contains(x,y)) {
@@ -264,16 +341,23 @@ public class DrawPanel extends JPanel {
         return null;
     }
 
+    /**
+     * Définir la variable selectedObject à l'objet passé en paramètre
+     * @param obj Transition, Arc ou Place
+     */
     public void selectObject(Object obj) {
         selectedObject = obj;
         this.clickError = false;
         repaint();
     }
 
+    /**
+     * Non utilisé: Supprimer l'objet sélectionné
+     */
     public void deleteSelectedObject() {
         if (selectedObject != null) {
             if (selectedObject instanceof Place) {
-                this.model.removePlace((Place)selectedObject);
+                this.model.removePlace((Place) selectedObject);
             } else {
                 this.model.removeTransition((Transition) selectedObject);
             }
@@ -281,7 +365,9 @@ public class DrawPanel extends JPanel {
         }
     }
 
-    /* Afficher dans la console le système */
+    /**
+     * Afficher le modèle dans une popup en utilisant LaTeX
+     */
     public void showModel() {
         if(model.placeVector.size() != 0 && model.transitionVector.size() != 0){
             model.updateMatrices();
@@ -300,6 +386,13 @@ public class DrawPanel extends JPanel {
 
     }
 
+    /**
+     * Afficher les options de l'objet passé en paramètre.
+     * Permet à l'utilisateur de définir le marquage d'une place
+     * ainsi que l'orientation d'une transition via l'affichage
+     * d'une boite de dialogue.
+     * @param obj Transition ou Place
+     */
     public void showOptions(Object obj) {
         if (obj instanceof Place) {
             try {
@@ -323,6 +416,13 @@ public class DrawPanel extends JPanel {
         repaint();
     }
 
+    /**
+     * Afficher une popup de sélection du Label ainsi que de
+     * la position du label pour une place ou une transition.
+     * Une fois les valeurs remplies, un label est créé à la
+     * position souhaitée par l'utilisateur.
+     * @param obj Place ou Transition
+     */
     public void showOptionsLabel(Object obj) {
         if (obj instanceof Place || obj instanceof Transition ) {
             try {
@@ -363,6 +463,10 @@ public class DrawPanel extends JPanel {
         repaint();
     }
 
+    /**
+     * Lorsque l'utilisateur sélectionne ni un place, ni une transition
+     * lors de la modification du Label
+     */
     public void errorSelect(){
         JOptionPane.showMessageDialog(frame.getContentPane(), "Veuillez sélectionner une place ou transition");
         repaint();
