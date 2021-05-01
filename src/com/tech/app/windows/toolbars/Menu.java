@@ -18,27 +18,53 @@ import java.util.Objects;
 
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
-
-public class Menu extends  MenuBar {
+/**
+ * Classe pour créer le Menu (en haut de la fenêtre)
+ */
+public class Menu extends MenuBar {
     /* Construction de l'interface graphique pour tester à part*/
     private Model model;
 
     private SaveManager saveManager;
     private DrawPanel dp;
 
+    /**
+     * Constructeur du Menu (barre affichée en haut de la fenêtre)
+     * @param frame Fenêtre d'appel
+     */
     public Menu(JFrame frame) {
         super(frame);
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Permet d'utiliser les fonctions/méthodes publiques du Modèle
+     * passé en paramètre directement dans cette classe.
+     * @param model Modèle
+     */
     public void applyModel(Model model) {
         this.model = model;
     }
-    public void applySaveManager(SaveManager sm) { this.saveManager = sm; }
-    public void applyDrawPanel(DrawPanel dp) { this.dp = dp; }
-  
-    // Méthode de construction de la toolbar
 
+    /**
+     * Permet d'utiliser les fonctions publiques du SaveManager
+     * directement dans cette classe
+     * @param sm SaveManager
+     */
+    public void applySaveManager(SaveManager sm) { this.saveManager = sm; }
+
+    /**
+     * Permet d'utiliser les fonctions publiques du DrawPanel
+     * directement dans cette classe
+     * @param dp DrawPanel
+     */
+    public void applyDrawPanel(DrawPanel dp) { this.dp = dp; }
+
+    /**
+     * Construction du JMenuBar, retourne un objet Menu (JMenuBar)
+     * utilisé par la Frame
+     * @return JMenuBar
+     */
     public JMenuBar getMenu() {
 
 
@@ -218,10 +244,19 @@ public class Menu extends  MenuBar {
     }
 
     // Test d'une fenêtre pop-up après une action (ici lors de la création d'un nouveau fichier)
+
+    /**
+     * Non utilisé : Nouveau fichier
+     * @param event ActionEvent
+     */
     public void mnuNewListener(ActionEvent event) {
         JOptionPane.showMessageDialog(this, "Button clicked !");
     }
 
+    /**
+     * Listener exécuté quand on fait l'action d'ouvrir un fichier. Appelé par DrawingToolbar aussi.
+     * @param event ActionEvent
+     */
     public void mnuOpenListener(ActionEvent event) {
         FileFilter filtre = new FileNameExtensionFilter("Fichier RDP (*.jrdp)", "jrdp");
         JFileChooser choix = new JFileChooser();
@@ -248,6 +283,10 @@ public class Menu extends  MenuBar {
         }
     }
 
+    /**
+     * Listener exécuté quand on fait l'action de sauvegarde sous, un fichier. Appelé par DrawingToolbar aussi.
+     * @param event ActionEvent
+     */
     public void mnuSaveAsListener(ActionEvent event) {
         FileFilter filtre = new FileNameExtensionFilter("Fichier RDP (*.jrdp)", "jrdp");
         JFileChooser save = new JFileChooser();
@@ -259,6 +298,10 @@ public class Menu extends  MenuBar {
         saveManager.save(f, model);
     }
 
+    /**
+     * Listener exécuté quand on fait l'action de quitter l'application.
+     * @param event ActionEvent
+     */
     public void mnuExitListener(ActionEvent event){
         String[] options ={"Quitter","Annuler"};
         int res = JOptionPane.showOptionDialog(null, "Toute modification non enregistrée sera perdue... Voulez-vous quitter l'application ?", "Attention",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
@@ -277,6 +320,10 @@ public class Menu extends  MenuBar {
 
     }
 
+    /**
+     * Listener exécuté quand on clique sur "Vous avez trouvé un bug?"
+     * @param event ActionEvent
+     */
     public void openIssuePage(ActionEvent event) {
         try {
             String url = "https://github.com/vykio/java-rdp/issues/new/choose";
@@ -286,6 +333,10 @@ public class Menu extends  MenuBar {
         }
     }
 
+    /**
+     * Listener exécuté quand on clique sur "A Propos"
+     * @param event ActionEvent
+     */
     public void openAboutPopup(ActionEvent event) {
 
         String message =

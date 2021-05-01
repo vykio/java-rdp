@@ -13,6 +13,9 @@ import org.jgrapht.graph.DefaultListenableGraph;
 import javax.swing.*;
 import java.util.List;
 
+/**
+ * Classe qui gère l'affichage du GMA
+ */
 public class GMAhandler {
 
     private final JFrame frame;
@@ -20,6 +23,13 @@ public class GMAhandler {
     private final ListenableGraph<String, DefaultEdge> g;
     private final List<Node> liste_nodes;
 
+    /**
+     * Constructeur du GMAhandler, qui nous permet
+     * d'afficher le GMA dans la fenêtre dans laquelle
+     * il est appelé
+     * @param frame Fenêtre d'appel
+     * @param liste_nodes Liste des noeuds du GMA
+     */
     public GMAhandler(JFrame frame, List<Node> liste_nodes) {
         this.frame = frame;
         this.liste_nodes = liste_nodes;
@@ -27,6 +37,9 @@ public class GMAhandler {
         this.jgxAdapter = new JGraphXAdapter<>(g);
     }
 
+    /**
+     * Visualiser le GMA
+     */
     public void init() {
         // create a visualization using JGraph, via an adapter
 
