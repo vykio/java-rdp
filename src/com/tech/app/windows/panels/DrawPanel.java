@@ -108,11 +108,11 @@ public class DrawPanel extends JPanel {
      * et de déplacement (dx,dy) de la souris. C'est le même
      * fonctionnement que la méthode updatePositions(), mais
      * pour un seul objet. Utilisé par l'outil de sélection.
-     * @param obj
-     * @param scaleX
-     * @param scaleY
-     * @param dx
-     * @param dy
+     * @param obj : Objet.
+     * @param scaleX : Facteur d'agrandissement sur X
+     * @param scaleY : Facteur d'agrandissement sur Y
+     * @param dx : Plus petit déplacement sur X
+     * @param dy : Plus petit déplacement sur Y
      */
     public void updatePosition(Object obj, double scaleX, double scaleY, double dx, double dy) {
         selectedObject = obj;
