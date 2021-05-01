@@ -5,6 +5,9 @@ import com.tech.app.windows.handlers.WindowHandler;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Classe abstraite qui permet d'avoir la base d'une fenêtre.
+ */
 public abstract class Window extends JFrame {
 
     protected String title;
@@ -14,6 +17,16 @@ public abstract class Window extends JFrame {
     protected boolean resizable;
     protected boolean visible;
 
+    /**
+     * Constructeur qui permet de créer une fenêtre.
+     * @param subWindow : booléen pour savoir si la fenêtre est une sous-fenêtre.
+     * @param title : titre de la fenêtre.
+     * @param width : largeur.
+     * @param height : hauteur.
+     * @param windowHandler : gestionnaire de fenêtre.
+     * @param resizable : booléen pour savoir si la fenêtre peut être redimensionner par l'utilisateur.
+     * @param visible : booléen pour savoir si la fenêtre est visible.
+     */
     public Window(boolean subWindow, String title, int width, int height, WindowHandler windowHandler, boolean resizable, boolean visible) {
         this.title = title;
         this.width = width;
@@ -49,10 +62,15 @@ public abstract class Window extends JFrame {
 
     public Window() { this(true, "DEBUG - TEST WINDOW", 500, 500, null, true, true); }
 
-
-
+    /**
+     * Méthode qui permet d'initialiser la fenêtre.
+     */
     protected abstract void build();
 
+    /**
+     * Méthode qui permet d'attribuer un gestionnaire de fenêtre à une fenêtre.
+     * @param windowHandler : gestionnaire de fenêtre.
+     */
     protected void setWindowHandler(WindowHandler windowHandler) {
         this.windowHandler = windowHandler;
     }
