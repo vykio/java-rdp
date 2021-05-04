@@ -6,6 +6,20 @@
   <img src="https://i.imgur.com/Sbbn9KK.png">
 </p>
 
+
+<p align="center">
+	Matrice d'incidence C
+<br><br>
+  <img src="https://i.imgur.com/jvKQJbE.png">
+</p>
+
+<p align="center">
+	Graphique des marquages accessibles
+<br><br>
+  <img src="https://i.imgur.com/DvQsmTA.png">
+</p>
+
+
 ## Comment on organise les branches ?
 
 <p align="center">
