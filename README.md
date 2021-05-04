@@ -1,5 +1,10 @@
 # java-rdp
-Implémentation d'un simulateur de réseaux de Pétri en Java en utilisant Swing principalement
+
+<p align="center">
+	Implémentation d'un simulateur de réseaux de Pétri en Java en utilisant Swing principalement
+	<br><br>
+  <img src="https://i.imgur.com/Sbbn9KK.png">
+</p>
 
 ## Comment on organise les branches ?
 
