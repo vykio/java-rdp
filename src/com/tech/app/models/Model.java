@@ -14,9 +14,11 @@ public class Model implements Serializable {
 
     public int nbPlace;
     public int nbTransition;
+    public int nbArc;
 
     public List<Place> placeVector;
     public List<Transition> transitionVector;
+    public List<Arc> arcVector;
 
     Vector<Integer> M0;
     Vector<Vector<Integer>> w_plus, w_moins, C;
@@ -27,9 +29,11 @@ public class Model implements Serializable {
     public Model() {
         this.nbPlace = 0;
         this.nbTransition = 0;
+        this.nbArc=0;
 
         this.placeVector = new ArrayList<>();
         this.transitionVector = new ArrayList<>();
+        this.arcVector = new ArrayList<>();
 
         this.M0 = new Vector<>();
         this.w_plus = new Vector<>();
@@ -118,6 +122,12 @@ public class Model implements Serializable {
     public void addTransition(Transition t) {
         this.transitionVector.add(t);
         this.nbTransition++;
+        this.updateMatrices();
+    }
+
+    public void addArc(Arc a){
+        this.arcVector.add(a);
+        this.nbArc++;
         this.updateMatrices();
     }
 

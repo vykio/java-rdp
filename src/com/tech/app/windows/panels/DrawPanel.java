@@ -35,6 +35,7 @@ public class DrawPanel extends JPanel {
     /* Variables de départ pour indexation P et T */
     private int idPlace=0;
     private int idTransition = 0;
+    private int idArc = 0;
 
 
     /**
@@ -255,9 +256,15 @@ public class DrawPanel extends JPanel {
             if (obj1.getClass() != obj2.getClass()) {
                 this.clickError = false;
                 if (obj1 instanceof Transition) {
-                    ((Transition) obj1).addParent(new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1));
+                    Arc a = new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1);
+                    ((Transition) obj1).addParent(a);
+                    model.addArc(a);
+                    idArc++;
                 } else {
-                    ((Transition) obj2).addChildren(new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2));
+                    Arc b = new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2);
+                    ((Transition) obj2).addChildren(b);
+                    model.addArc(b);
+                    idArc++;
                 }
 
             } else {
@@ -329,15 +336,21 @@ public class DrawPanel extends JPanel {
                 return t;
             }
         }
+        for (Arc a : model.arcVector){
+            if(a.forme.contains(x,y)){
+                return a;
+            }
+        }
         for (Transition t : model.transitionVector) {
             for (Arc a : t.getChildren()) {
                 System.out.println("Pt1 > " + a.getPointCtr1());
-                if(a.containsControlPoint1(x,y)) {
+                if (a.containsControlPoint1(x, y)) {
                     a.getPointCtr1().setMoved(true);
                     return a.getPointCtr1();
                 }
             }
         }
+
         return null;
     }
 
