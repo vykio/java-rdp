@@ -8,6 +8,7 @@ import org.scilab.forge.jlatexmath.TeXIcon;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -26,6 +27,9 @@ public class DrawPanel extends JPanel {
 
     private final JFrame frame;
     public Model model;
+
+    private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
+    private static final String DELETE = "delete";
 
     private double arcOriginX = 0, arcOriginY =0, arcDestX=0, arcDestY=0;
     private int indexOfClickArc = 0;
@@ -71,6 +75,14 @@ public class DrawPanel extends JPanel {
         this.frame = frame;
         this.model = model;
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
+
+        this.getInputMap(IFW).put(KeyStroke.getKeyStroke("DELETE"), DELETE);
+        this.getActionMap().put(DELETE, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteSelectedObject();
+            }
+        });
     }
 
     /**
@@ -358,9 +370,11 @@ public class DrawPanel extends JPanel {
         if (selectedObject != null) {
             if (selectedObject instanceof Place) {
                 this.model.removePlace((Place) selectedObject);
-            } else {
+            }
+            if (selectedObject instanceof Transition){
                 this.model.removeTransition((Transition) selectedObject);
             }
+            selectedObject = null;
             repaint();
         }
     }
