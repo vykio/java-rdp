@@ -4,6 +4,7 @@ import com.tech.app.functions.FList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -14,9 +15,11 @@ public class Model implements Serializable {
 
     public int nbPlace;
     public int nbTransition;
+    public int nbArc;
 
     public List<Place> placeVector;
     public List<Transition> transitionVector;
+    public List<Arc> arcVector;
 
     Vector<Integer> M0;
     Vector<Vector<Integer>> w_plus, w_moins, C;
@@ -27,9 +30,11 @@ public class Model implements Serializable {
     public Model() {
         this.nbPlace = 0;
         this.nbTransition = 0;
+        this.nbArc = 0;
 
         this.placeVector = new ArrayList<>();
         this.transitionVector = new ArrayList<>();
+        this.arcVector = new ArrayList<>();
 
         this.M0 = new Vector<>();
         this.w_plus = new Vector<>();
@@ -121,6 +126,11 @@ public class Model implements Serializable {
         this.updateMatrices();
     }
 
+    public void addArc(Arc a){
+        this.arcVector.add(a);
+        this.nbArc++;
+    }
+
     /**
      * Supprimer une place
      * @param name : Nom de la place
@@ -152,6 +162,50 @@ public class Model implements Serializable {
     public void removeTransition(Transition transition){
         this.transitionVector.remove(transition);
         this.nbTransition--;
+        this.updateMatrices();
+    }
+
+    public void removeArc(Arc a){
+
+        List<Arc> toRemove = new ArrayList<>();
+        this.arcVector.remove(a);
+        /*
+        for(Transition t : transitionVector){
+            if(t.getChildren().contains(a)){
+                int indexToRemove = t.getChildren().indexOf(a);
+                System.out.println(t.getChildren());
+                toRemove.add(t.getChildren().get(indexToRemove));
+                System.out.println("Child arc removed : "+ t);
+                break;
+
+            } else if (t.getParents().contains(a)){
+                int indexToRemove = t.getParents().indexOf(a);
+                System.out.println(t.getParents());
+                toRemove.add(t.getParents().get(indexToRemove));
+                System.out.println("Parent arc removed : " + t);
+                break;
+            }
+            /*
+            try{
+                t.getChildren().remove(a);
+                t.getParents().remove(a);
+            } catch (Exception e){
+                System.out.println("Erreur : " + e);
+            }
+             */
+        //}*/
+
+        for(Iterator<Transition> iterator = transitionVector.iterator(); iterator.hasNext();){
+            Transition t = iterator.next();
+            if(t.getChildren().contains(a)){
+                t.getChildren().remove(a);
+            }
+            if(t.getParents().contains(a)){
+                t.getParents().remove(a);
+            }
+        }
+
+        this.nbArc--;
         this.updateMatrices();
     }
 

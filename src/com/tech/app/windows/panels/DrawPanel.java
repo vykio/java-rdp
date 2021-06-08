@@ -267,9 +267,13 @@ public class DrawPanel extends JPanel {
             if (obj1.getClass() != obj2.getClass()) {
                 this.clickError = false;
                 if (obj1 instanceof Transition) {
-                    ((Transition) obj1).addParent(new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1));
+                    Arc a = new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1);
+                    ((Transition) obj1).addParent(a);
+                    model.addArc(a);
                 } else {
-                    ((Transition) obj2).addChildren(new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2));
+                    Arc b = new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2);
+                    ((Transition) obj2).addChildren(b);
+                    model.addArc(b);
                 }
 
             } else {
@@ -370,6 +374,12 @@ public class DrawPanel extends JPanel {
         if (selectedObject != null) {
             if (selectedObject instanceof Place) {
                 this.model.removePlace((Place) selectedObject);
+                // Suppression des arcs liés à la place supprimée
+                for(Arc a : this.model.arcVector){
+                    if(((Place) selectedObject) == a.getPlace()){
+                        this.model.removeArc(a);
+                    }
+                }
             }
             if (selectedObject instanceof Transition){
                 this.model.removeTransition((Transition) selectedObject);
