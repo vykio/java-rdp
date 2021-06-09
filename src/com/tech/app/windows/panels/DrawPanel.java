@@ -377,7 +377,9 @@ public class DrawPanel extends JPanel {
                 // Suppression des arcs liés à la place supprimée
                 for(Arc a : this.model.arcVector){
                     if(((Place) selectedObject) == a.getPlace()){
+                        selectedObject = null;
                         this.model.removeArc(a);
+                        repaint();
                     }
                 }
             }

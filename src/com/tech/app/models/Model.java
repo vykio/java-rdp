@@ -3,10 +3,7 @@ package com.tech.app.models;
 import com.tech.app.functions.FList;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Cette classe est le coeur du RdP. C'est dans cette classe que l'on va stocker les places, transitions et arcs du RdP et que l'on va calculer les matrices du RdP.
@@ -167,44 +164,49 @@ public class Model implements Serializable {
 
     public void removeArc(Arc a){
 
-        List<Arc> toRemove = new ArrayList<>();
-        this.arcVector.remove(a);
-        /*
-        for(Transition t : transitionVector){
-            if(t.getChildren().contains(a)){
-                int indexToRemove = t.getChildren().indexOf(a);
-                System.out.println(t.getChildren());
-                toRemove.add(t.getChildren().get(indexToRemove));
-                System.out.println("Child arc removed : "+ t);
-                break;
+        // Test pour éviter l'exception ConcurrentModificationException (n'enlève pas l'exception)
 
-            } else if (t.getParents().contains(a)){
-                int indexToRemove = t.getParents().indexOf(a);
-                System.out.println(t.getParents());
-                toRemove.add(t.getParents().get(indexToRemove));
-                System.out.println("Parent arc removed : " + t);
-                break;
+        /*for(Iterator<Transition> transitionIterator = transitionVector.iterator(); transitionIterator.hasNext();) {
+            Transition t = transitionIterator.next();
+            if (t.getChildren().contains(a)) {
+                for (Iterator<Arc> arcIterator = t.getChildren().iterator(); arcIterator.hasNext(); ) {
+                    Arc arc = arcIterator.next();
+                    if (arc.equals(a)) {
+                        arcIterator.remove();
+                    }
+                }
             }
-            /*
-            try{
-                t.getChildren().remove(a);
-                t.getParents().remove(a);
-            } catch (Exception e){
-                System.out.println("Erreur : " + e);
+            if (t.getParents().contains(a)) {
+                for (Iterator<Arc> arcIterator = t.getParents().iterator(); arcIterator.hasNext(); ) {
+                    Arc arc = arcIterator.next();
+                    if (arc.equals(a)) {
+                        arcIterator.remove();
+                    }
+                }
             }
-             */
-        //}*/
+        }*/
 
-        for(Iterator<Transition> iterator = transitionVector.iterator(); iterator.hasNext();){
-            Transition t = iterator.next();
-            if(t.getChildren().contains(a)){
-                t.getChildren().remove(a);
+        try {
+            for (Transition t : transitionVector) {
+                if (t.getChildren().contains(a)) {
+                    System.out.println(t.getChildren());
+                    t.removeChildren(a);
+                    System.out.println("Child arc removed : " + t);
+                    break;
+                }
+
+                if (t.getParents().contains(a)) {
+                    System.out.println(t.getParents());
+                    t.removeParent(a);
+                    System.out.println("Parent arc removed : " + t);
+                    break;
+                }
             }
-            if(t.getParents().contains(a)){
-                t.getParents().remove(a);
-            }
+        } catch (ConcurrentModificationException e){
+            e.printStackTrace();
         }
 
+        this.arcVector.remove(a);
         this.nbArc--;
         this.updateMatrices();
     }
