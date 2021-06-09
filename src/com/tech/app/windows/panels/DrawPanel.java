@@ -268,11 +268,11 @@ public class DrawPanel extends JPanel {
                 this.clickError = false;
                 if (obj1 instanceof Transition) {
                     Arc a = new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1);
-                    ((Transition) obj1).addParent(a);
+                    ((Transition) obj1).addChildren(a);
                     model.addArc(a);
                 } else {
                     Arc b = new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2);
-                    ((Transition) obj2).addChildren(b);
+                    ((Transition) obj2).addParent(b);
                     model.addArc(b);
                 }
 
