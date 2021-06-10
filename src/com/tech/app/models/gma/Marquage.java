@@ -28,16 +28,16 @@ public class Marquage {
         return dead_end;
     }
 
-    public void setDead_end(boolean dead_end) {
-        this.dead_end = dead_end;
+    public void setDead_end() {
+        this.dead_end = true;
     }
 
     public boolean isNouveau() {
         return nouveau;
     }
 
-    public void setNouveau(boolean nouveau) {
-        this.nouveau = nouveau;
+    public void setOld() {
+        this.nouveau = false;
     }
 
     @Override

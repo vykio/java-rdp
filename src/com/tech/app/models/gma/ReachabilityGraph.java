@@ -91,6 +91,10 @@ public class ReachabilityGraph {
         this.liste_node = new ArrayList<>();
     }
 
+
+    public boolean containsMarquage(final List<Marquage> m, final Vector<Integer> marquage){
+        return m.stream().anyMatch(a -> a.getMarquage().equals(marquage));
+    }
     /**
      * Méthode qui permet de calculer le GMA. Cette méthode utilise l'algorithme énoncé dans le cours de Systèmes à Evénements Discrets (2020) de Mr LHERBIER.
      * Inconvénient : Il n'y a pas de point d'arret. Si le GMA est non borné, la méthode boucle à l'infini.
@@ -122,6 +126,7 @@ public class ReachabilityGraph {
             liste_node.add(m);
             this.nb_marquages++;
 
+            M0.setOld();
 
             /* Pour toutes les transitions du RdP */
             for (int t = 0; t < this.model.transitionVector.size(); t++) {
@@ -136,8 +141,9 @@ public class ReachabilityGraph {
                     m.addChildren(new NodeStruct(new Node(M1), this.model.transitionVector.get(t)));
 
                     /* Si le marquage M1 n'est pas déjà dans la liste des marquages accessibles alors : */
-                    if (!marquagesAccessibles.contains(M1)) {
+                    if (!containsMarquage(marquagesAccessibles, M1.getMarquage())) {
                         /* On ajoute le marquage M1 aux deux listes : marquages accessibles et marquages à traiter. */
+                        M1.setOld();
                         marquagesAccessibles.add(M1);
                         marquagesATraiter.add(M1);
                     }
