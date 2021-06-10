@@ -170,7 +170,12 @@ public class Transition implements Serializable {
 
     public boolean estFranchissable(){
         List<Integer> marques = new ArrayList<>();
-        System.out.println(this);
+        System.out.print("La transition selectionnée ");
+
+        if(this.getParents() == null || this.getParents().isEmpty()){
+            return false;
+        }
+
         for(Arc a : this.getParents()){
             // créer un vecteur pour récup les marques de chacune des places parents et faire un test comme dans couvre
             marques.add(a.place.getMarquage());

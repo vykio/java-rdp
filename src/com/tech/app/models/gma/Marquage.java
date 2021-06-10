@@ -42,6 +42,6 @@ public class Marquage {
 
     @Override
     public String toString() {
-        return "Marquage{" + marquage + '}';
+        return "{" + marquage + '}';
     }
 }

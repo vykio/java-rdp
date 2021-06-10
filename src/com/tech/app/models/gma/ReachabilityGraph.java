@@ -138,10 +138,6 @@ public class ReachabilityGraph {
                     /* Si le marquage M1 n'est pas déjà dans la liste des marquages accessibles alors : */
                     if (!marquagesAccessibles.contains(M1)) {
                         /* On ajoute le marquage M1 aux deux listes : marquages accessibles et marquages à traiter. */
-                        System.out.println("CURRENT NODE");
-                        System.out.println(m);
-                        System.out.println("=========================");
-                        System.out.println(liste_node);
                         marquagesAccessibles.add(M1);
                         marquagesATraiter.add(M1);
                     }

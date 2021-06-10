@@ -146,7 +146,6 @@ public class Node {
             s.append(this.getM().getMarquage().get(i));
             s.append("\n");
         }
-        System.out.println("Test affichage marquage :" + s);
         return s.toString();
     }
 

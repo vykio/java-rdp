@@ -68,15 +68,14 @@ public class Model implements Serializable {
 
                 /* pour chaque arc, on le transforme en place + poids */
 
-
-                if (FList.contains(listParents, this.placeVector.get(k))) {
-                    this.w_plus.get(k).set(i, FList.poids_arc(listParents, this.placeVector.get(k)));
+                if (FList.contains(listChildren, this.placeVector.get(k))) {
+                    this.w_plus.get(k).set(i, FList.poids_arc(listChildren, this.placeVector.get(k)));
                 } else {
                     this.w_plus.get(k).set(i, 0);
                 }
 
-                if (FList.contains(listChildren, this.placeVector.get(k))) {
-                    this.w_moins.get(k).set(i, FList.poids_arc(listChildren, this.placeVector.get(k)));
+                if (FList.contains(listParents, this.placeVector.get(k))) {
+                    this.w_moins.get(k).set(i, FList.poids_arc(listParents, this.placeVector.get(k)));
                 } else {
                     this.w_moins.get(k).set(i, 0);
                 }
