@@ -143,7 +143,11 @@ public class Node {
     public String getMarquage(){
         StringBuilder s = new StringBuilder();
         for(int i = 0; i < m.getMarquage().size(); i++){
-            s.append(this.getM().getMarquage().get(i));
+            if(this.getM().getMarquage().get(i) == Integer.MAX_VALUE){
+                s.append("w");
+            }else{
+                s.append(this.getM().getMarquage().get(i));
+            }
             s.append("\n");
         }
         return s.toString();

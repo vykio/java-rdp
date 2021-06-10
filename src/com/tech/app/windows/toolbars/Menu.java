@@ -2,6 +2,7 @@ package com.tech.app.windows.toolbars;
 
 import com.tech.app.functions.FUtils;
 import com.tech.app.models.Model;
+import com.tech.app.windows.GCWindow;
 import com.tech.app.windows.GMAWindow;
 import com.tech.app.windows.handlers.SaveManager;
 import com.tech.app.windows.panels.DrawPanel;
@@ -159,6 +160,12 @@ public class Menu extends MenuBar {
         mnuGMA.addActionListener( this::openGMAWindow );
         mnuTools.add(mnuGMA);
 
+        JMenuItem mnuGC = new JMenuItem("Générer le graphe de couverture");
+        mnuGC.setMnemonic('H');
+        mnuGC.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK));
+        mnuGC.addActionListener( this::openGCWindow );
+        mnuTools.add(mnuGC);
+
         JMenuItem mnuStepper = new JMenuItem("Simulation pas à pas");
         mnuStepper.setMnemonic('F');
         mnuStepper.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
@@ -237,6 +244,18 @@ public class Menu extends MenuBar {
                 () -> {
                     try {
                         new GMAWindow(900,500, model);
+                    } catch (UnsupportedLookAndFeelException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+    }
+
+    private void openGCWindow(ActionEvent actionEvent) {
+        EventQueue.invokeLater(
+                () -> {
+                    try {
+                        new GCWindow(900,500, model);
                     } catch (UnsupportedLookAndFeelException e) {
                         e.printStackTrace();
                     }
