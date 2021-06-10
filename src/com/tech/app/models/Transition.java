@@ -175,7 +175,6 @@ public class Transition implements Serializable {
             // créer un vecteur pour récup les marques de chacune des places parents et faire un test comme dans couvre
             marques.add(a.place.getMarquage());
         }
-        System.out.println("ici" + marques);
         for(int i = 0 ; i < marques.size() ; i++){
             if(marques.get(i) < 1)
                 return false;
