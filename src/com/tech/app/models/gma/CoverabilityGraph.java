@@ -10,15 +10,15 @@ import java.util.Vector;
 public class CoverabilityGraph {
 
     private Model model;
-    Vector<Integer> M0;
-    public List<Vector<Integer>> marquagesAccessibles;
-    public List<Vector<Integer>> marquagesATraiter;
+    Marquage M0;
+    public List<Marquage> marquagesAccessibles;
+    public List<Marquage> marquagesATraiter;
     public List<Node> liste_node;
     public int nb_marquages;
 
     public CoverabilityGraph(Model model){
         this.model = model;
-        this.M0 = model.getM0();
+        this.M0 = new Marquage(model.getM0());
         this.marquagesAccessibles = new ArrayList<>();
         this.marquagesATraiter = new ArrayList<>();
         this.liste_node = new ArrayList<>();
@@ -27,7 +27,7 @@ public class CoverabilityGraph {
     // sera utilisé dans le GMA pour prendre le relai en cas de rdp non borné
     public CoverabilityGraph(Model model, Vector<Integer> M0, List<Vector<Integer>> marquagesAccessibles, List<Vector<Integer>> marquagesATraiter, List<Node> liste_node) {
         this.model = model;
-        this.M0 = model.getM0();
+        this.M0 = new Marquage(model.getM0());
         this.marquagesAccessibles = new ArrayList<>();
         this.marquagesATraiter = new ArrayList<>();
         this.liste_node = new ArrayList<>();
@@ -48,12 +48,14 @@ public class CoverabilityGraph {
      * @param t : indice de la colonne
      * @return vecteur après addition.
      */
-    private Vector<Integer> addVector(Vector<Integer> v, Vector<Vector<Integer>> u, int t){
+    private Marquage addVector(Marquage v, Vector<Vector<Integer>> u, int t){
         Vector<Integer> v_temp = new Vector<>();
-        for(int i=0; i < v.size(); i++){
-            v_temp.add(i,(v.get(i)+u.get(i).get(t)));
+        Marquage m_temp = new Marquage(v_temp);
+        for(int i=0; i < v.getMarquage().size(); i++){
+            v_temp.add(i,(v.getMarquage().get(i)+u.get(i).get(t)));
         }
-        return v_temp;
+        m_temp.setMarquage(v_temp);
+        return m_temp;
     }
 
     /**
@@ -64,11 +66,11 @@ public class CoverabilityGraph {
      * @param t : indice de la transition.
      * @return Vrai ou Faux
      */
-    private boolean couvre(Vector<Integer> m, Vector<Vector<Integer>> pre, int t){
+    private boolean couvre(Marquage m, Vector<Vector<Integer>> pre, int t){
 
         for (int i = 0; i < pre.size(); i++) {
             // on teste sur toutes les lignes de la colonne t
-            if (m.get(i) < pre.get(i).get(t)) {
+            if (m.getMarquage().get(i) < pre.get(i).get(t)) {
                 return false;
             }
         }
@@ -81,8 +83,8 @@ public class CoverabilityGraph {
         /* On ajoute le marquage initial aux deux listes */
         marquagesAccessibles.add(M0);
         marquagesATraiter.add(M0);
-        Vector<Integer> M;
-        Vector<Integer> M1;
+        Marquage M;
+        Marquage M1;
 
         /* On initialise la liste des noeuds */
         liste_node = new ArrayList<>();

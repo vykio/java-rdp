@@ -407,4 +407,48 @@ public class Model implements Serializable {
      */
     public Vector<Vector<Integer>> getC() { return C; }
 
+    public Vector<Integer> getMarquage(){
+        Vector<Integer> marquage = new Vector<>();
+        for(Place p : placeVector){
+            marquage.add(p.getMarquage());
+        }
+        return marquage;
+    }
+
+    public void setMarquage(Vector<Integer> marquage){
+        if(marquage.size() == placeVector.size()) {
+            for (int i = 0; i < placeVector.size(); i++){
+                placeVector.get(i).setMarquage(marquage.get(i));
+            }
+        } else {
+            System.out.println("La taille du marquage est différente de la taille du vecteur de places.");
+        }
+    }
+
+    public List<Transition> getTransitionFranchissables(){
+        List<Transition> transitionsFranchissables = new ArrayList<>();
+
+        for(Transition t : transitionVector) {
+            if(t.estFranchissable()){
+                transitionsFranchissables.add(t);
+            }
+        }
+
+        return transitionsFranchissables;
+    }
+
+    public List<Transition> getTransitionFranchissables(Vector<Integer> marquage){
+        List<Transition> transitionsFranchissables = new ArrayList<>();
+        Model temp = this;
+        temp.setMarquage(marquage);
+
+        for(Transition t : transitionVector){
+            if(t.estFranchissable()){
+                transitionsFranchissables.add(t);
+            }
+        }
+
+        return transitionsFranchissables;
+    }
+
 }
