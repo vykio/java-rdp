@@ -1,6 +1,7 @@
 package com.tech.app.models.gma;
 
 import com.tech.app.models.Model;
+import com.tech.app.models.Transition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,8 @@ public class CoverabilityGraph {
         return true;
     }
 
+    //private void addOmegas(Vector<Integer> m)
+
     public void calculateCoverabilityGraph(){
         /* On ajoute le marquage initial aux deux listes */
         marquagesAccessibles.add(M0);
@@ -91,7 +94,6 @@ public class CoverabilityGraph {
             M = marquagesATraiter.get(0);
             marquagesATraiter.remove(0);
 
-
             /* On créé un noeud avec le marquage que l'on vient de charger. On donne un nom au noeud.*/
             Node m = new Node(M);
             m.setName("M"+nb_marquages);
@@ -100,26 +102,12 @@ public class CoverabilityGraph {
             liste_node.add(m);
             this.nb_marquages++;
 
-
-            /* Pour toutes les transitions du RdP */
-            for (int t = 0; t < this.model.transitionVector.size(); t++) {
-
+            for(int t = 0; t < this.model.transitionVector.size(); t++){
                 /* Si le marquage M couvre la colonne t de la matrice pré alors : */
                 if (couvre(M, this.model.getW_moins(), t)) {
 
-                    /* On calcule le prochain marquage accessible à partir de la transition t. */
-                    M1 = addVector(M, this.model.getC(), t);
-
-                    /* On ajoute ce nouveau marquage à la liste des enfants du noeud m. */
-                    m.addChildren(new NodeStruct(new Node(M1), this.model.transitionVector.get(t)));
-
-                    /* Si le marquage M1 n'est pas déjà dans la liste des marquages accessibles alors : */
-                    if (!marquagesAccessibles.contains(M1)) {
-                        /* On ajoute le marquage M1 aux deux listes : marquages accessibles et marquages à traiter. */
-                        marquagesAccessibles.add(M1);
-                        marquagesATraiter.add(M1);
-                    }
                 }
+
             }
         }
     }

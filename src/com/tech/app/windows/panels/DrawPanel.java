@@ -181,6 +181,8 @@ public class DrawPanel extends JPanel {
                 ((Place) selectedObject).draw(g);
             } else if (selectedObject instanceof Transition) {
                 ((Transition) selectedObject).draw(g);
+                ((Transition) selectedObject).estFranchissable();
+                System.out.println("est Franchissable ? :"+ ((Transition) selectedObject).estFranchissable());
             }
             g.setColor(co);
 
@@ -255,9 +257,9 @@ public class DrawPanel extends JPanel {
             if (obj1.getClass() != obj2.getClass()) {
                 this.clickError = false;
                 if (obj1 instanceof Transition) {
-                    ((Transition) obj1).addParent(new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1));
+                    ((Transition) obj1).addChildren(new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1));
                 } else {
-                    ((Transition) obj2).addChildren(new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2));
+                    ((Transition) obj2).addParent(new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2));
                 }
 
             } else {
