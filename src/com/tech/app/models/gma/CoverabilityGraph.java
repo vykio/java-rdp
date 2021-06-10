@@ -77,7 +77,24 @@ public class CoverabilityGraph {
         return true;
     }
 
-    //private void addOmegas(Vector<Integer> m)
+    public boolean containsMarquage(final List<Marquage> m, final Vector<Integer> marquage){
+        return m.stream().anyMatch(a -> a.getMarquage().equals(marquage));
+    }
+
+    public boolean containsBiggerMarquage(final List<Node> nodes, final Marquage m){
+
+        for(Node node : nodes){
+            for(int i = 0; i < node.getM().getMarquage().size(); i++){
+                if(node.getM().getMarquage().get(i) <= m.getMarquage().get(i)){
+                    return false;
+                } else {
+                    // on changera cette valeur en w à l'affichage.
+                    node.getM().getMarquage().set(i,Integer.MAX_VALUE);
+                }
+            }
+        }
+        return true;
+    }
 
     public void calculateCoverabilityGraph(){
         /* On ajoute le marquage initial aux deux listes */
@@ -107,9 +124,22 @@ public class CoverabilityGraph {
             for(int t = 0; t < this.model.transitionVector.size(); t++){
                 /* Si le marquage M couvre la colonne t de la matrice pré alors : */
                 if (couvre(M, this.model.getW_moins(), t)) {
+                    M1 = addVector(M, this.model.getC(), t);
 
+                    if(containsBiggerMarquage(liste_node,M1)){
+                        m.addChildren(new NodeStruct(new Node(M1), this.model.transitionVector.get(t)));
+
+                        /* Si le marquage M1 n'est pas déjà dans la liste des marquages accessibles alors : */
+                        if (!containsMarquage(marquagesAccessibles, M1.getMarquage())) {
+                            /* On ajoute le marquage M1 aux deux listes : marquages accessibles et marquages à traiter. */
+                            M1.setOld();
+                            marquagesAccessibles.add(M1);
+                            marquagesATraiter.add(M1);
+                        }
+                    }
+                } else {
+                    M.setDead_end();
                 }
-
             }
         }
     }
