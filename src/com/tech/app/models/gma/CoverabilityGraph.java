@@ -52,7 +52,11 @@ public class CoverabilityGraph {
         Vector<Integer> v_temp = new Vector<>();
         Marquage m_temp = new Marquage(v_temp);
         for(int i=0; i < v.getMarquage().size(); i++){
-            v_temp.add(i,(v.getMarquage().get(i)+u.get(i).get(t)));
+            if(v.getMarquage().get(i) == Integer.MAX_VALUE){
+                v_temp.add(i, (v.getMarquage().get(i)));
+            }else {
+                v_temp.add(i, (v.getMarquage().get(i) + u.get(i).get(t)));
+            }
         }
         m_temp.setMarquage(v_temp);
         return m_temp;
@@ -81,19 +85,15 @@ public class CoverabilityGraph {
         return m.stream().anyMatch(a -> a.getMarquage().equals(marquage));
     }
 
-    public boolean containsBiggerMarquage(final List<Node> nodes, final Marquage m){
+    public void tryToAddOmegas(final List<Node> nodes, final Marquage m){
 
         for(Node node : nodes){
             for(int i = 0; i < node.getM().getMarquage().size(); i++){
-                if(node.getM().getMarquage().get(i) <= m.getMarquage().get(i)){
-                    return false;
-                } else {
-                    // on changera cette valeur en w à l'affichage.
-                    node.getM().getMarquage().set(i,Integer.MAX_VALUE);
+                if(m.getMarquage().get(i) > node.getM().getMarquage().get(i)){
+                    m.getMarquage().set(i,Integer.MAX_VALUE);
                 }
             }
         }
-        return true;
     }
 
     public void calculateCoverabilityGraph(){
@@ -126,19 +126,16 @@ public class CoverabilityGraph {
                 if (couvre(M, this.model.getW_moins(), t)) {
                     M1 = addVector(M, this.model.getC(), t);
 
-                    if(containsBiggerMarquage(liste_node,M1)){
-                        m.addChildren(new NodeStruct(new Node(M1), this.model.transitionVector.get(t)));
+                    tryToAddOmegas(liste_node,M1);
+                    m.addChildren(new NodeStruct(new Node(M1), this.model.transitionVector.get(t)));
 
-                        /* Si le marquage M1 n'est pas déjà dans la liste des marquages accessibles alors : */
-                        if (!containsMarquage(marquagesAccessibles, M1.getMarquage())) {
-                            /* On ajoute le marquage M1 aux deux listes : marquages accessibles et marquages à traiter. */
-                            M1.setOld();
-                            marquagesAccessibles.add(M1);
-                            marquagesATraiter.add(M1);
-                        }
+                    /* Si le marquage M1 n'est pas déjà dans la liste des marquages accessibles alors : */
+                    if (!containsMarquage(marquagesAccessibles, M1.getMarquage())) {
+                        /* On ajoute le marquage M1 aux deux listes : marquages accessibles et marquages à traiter. */
+                        M1.setOld();
+                        marquagesAccessibles.add(M1);
+                        marquagesATraiter.add(M1);
                     }
-                } else {
-                    M.setDead_end();
                 }
             }
         }
