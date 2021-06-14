@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Node {
 
-    private Marquage m;
+    public Marquage m;
     private List<NodeStruct> children;
     private List<NodeStruct> parents;
     private String name;

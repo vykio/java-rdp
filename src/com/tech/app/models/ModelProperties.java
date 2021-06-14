@@ -1,6 +1,7 @@
 package com.tech.app.models;
 
 import com.tech.app.functions.FUtils;
+import com.tech.app.models.gma.Node;
 import com.tech.app.models.gma.ReachabilityGraph;
 
 public class ModelProperties {
@@ -8,10 +9,13 @@ public class ModelProperties {
     private final Model model;
     private final ReachabilityGraph gma;
 
+
     public boolean estBorne;
     public boolean estVivant;
     public boolean estReinitialisable;
     public boolean estRepetitif;
+
+    public int borneMax = 0;
 
     public enum MODEL_PROPS {
         NONE,
@@ -22,8 +26,10 @@ public class ModelProperties {
     }
 
     public ModelProperties(Model model) {
+        model.updateMatrices();
         this.model = model;
         this.gma = new ReachabilityGraph(model);
+        gma.calculateReachabilityGraph();
     }
 
     public ModelProperties(Model model, MODEL_PROPS props){
@@ -45,15 +51,38 @@ public class ModelProperties {
 
     // besoin du grpahe de couverture au cas ou non borné !
     private void modelBornitude(){
-        String result="";
+        System.out.println(gma.getListe_node());
         System.out.println("[!] Looking if the model is bounded.");
         System.out.println("[!] Looking if the model is bounded..");
         System.out.println("[!] Looking if the model is bounded...");
+
+        if(gma.getListe_node().size() > 1000){
+            System.out.println("Le système n'est pas borné");
+            estBorne = false;
+        }
+
+        for(Node node : gma.getListe_node()){
+            for(int i = 0; i < node.m.getMarquage().size(); i++){
+                if(borneMax < node.m.getMarquage().get(i)){
+                    borneMax = node.m.getMarquage().get(i);
+                }
+            }
+        }
+        estBorne = true;
+        System.out.print("Le système est ");
+
     }
 
     public String getModelBornitude(){
-
-        return "";
+        modelBornitude();
+        if(estBorne){
+            if(borneMax == 1){
+                return "Vrai, binaire.";
+            } else {
+                return "Vrai, "+borneMax+"-borné.";
+            }
+        }
+        return "Faux";
     }
 
     @Override
