@@ -381,8 +381,9 @@ public class Menu extends MenuBar {
 
         String message = modelProperties.toString();
 
-
-        JOptionPane.showMessageDialog(null, message, "A Propos de JRDP", JOptionPane.PLAIN_MESSAGE);
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(300,500));
+        JOptionPane.showMessageDialog(panel, message, "Propriétés du RdP", JOptionPane.PLAIN_MESSAGE);
     }
 
 }

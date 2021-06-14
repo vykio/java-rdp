@@ -13,10 +13,10 @@ public class ModelProperties {
     private final ReachabilityGraph gma;
 
 
-    public boolean estBorne;
-    public boolean estVivant;
-    public boolean estReinitialisable;
-    public boolean estRepetitif;
+    public boolean estBorne = false;
+    public boolean estVivant = false;
+    public boolean estReinitialisable = false;
+    public boolean estRepetitif = false;
 
     public int borneMax = 0;
 
@@ -42,6 +42,7 @@ public class ModelProperties {
                 this.modelBornitude();
                 break;
             case VIVACITE:
+                this.modelVivacite();
                 break;
             case REPETITIVITE:
                 break;
@@ -53,11 +54,7 @@ public class ModelProperties {
     }
 
     // besoin du grpahe de couverture au cas ou non borné !
-    private void modelBornitude(){
-        System.out.println(gma.getListe_node());
-        System.out.println("[!] Looking if the model is bounded.");
-        System.out.println("[!] Looking if the model is bounded..");
-        System.out.println("[!] Looking if the model is bounded...");
+    private boolean modelBornitude(){
 
         if(gma.getListe_node().size() > 1000){
             System.out.println("Le système n'est pas borné");
@@ -73,51 +70,76 @@ public class ModelProperties {
         }
         estBorne = true;
         System.out.println("Le système est "+borneMax+"-borné.");
-
+        return estBorne;
     }
 
-    private void modelVivacite(){
+    private boolean modelVivacite(){
         Vector<Integer> transitionCount = new Vector<>();
         transitionCount.setSize(model.nbTransition);
 
+        for(int i= 0; i < model.nbTransition; i ++){
+            transitionCount.set(i,0);
+        }
+
         for(int i = 0; i < gma.getListe_node().size(); i++){
-            int count = 0;
             for(NodeStruct nodeStruct : gma.getListe_node().get(i).getChildren()){
-                transitionCount.add(model.transitionVector.indexOf(nodeStruct.transition),count+1);
-            }
-            for(NodeStruct nodeStruct : gma.getListe_node().get(i).getParents()){
-                transitionCount.add(model.transitionVector.indexOf(nodeStruct.transition),count+1);
+                transitionCount.set(model.transitionVector.indexOf(nodeStruct.transition),transitionCount.get(model.transitionVector.indexOf(nodeStruct.transition))+ 1);
             }
         }
+
         System.out.println("model : "+model.transitionVector);
-        System.out.println("count : "+ transitionCount);
-        if(transitionCount.stream().anyMatch(count -> count < 1)){
-            estVivant = false;
-            System.out.println("Le système n'est pas vivant.");
-        } else {
+        System.out.println("count : "+transitionCount);
+
+        for (int i = 0; i < transitionCount.size(); i++) {
+            if (transitionCount.get(i) < 1) {
+                estVivant = false;
+                System.out.println("Le système n'est pas vivant.");
+                return false;
+            }
+        }
             estVivant = true;
             System.out.println("Le système est vivant.");
+            return true;
+    }
+
+    public boolean modelRepetitivite(){
+        for(int i = 0; i < gma.liste_node.size(); i++){
+            // Si il y a un noeud dont le marquage enfant est M0 alors il est répétitif.
+            // pour voir réinitialisable, il faut pour tout marquage trouver un chemin qui amène à M0.
+            if(gma.liste_node.get(i).getChildren().stream().anyMatch(n -> n.getNode().getM().getMarquage().equals(model.M0))){
+                estRepetitif = true;
+                System.out.println("Le système possède au moins une boucle");
+                return true;
+            }
         }
+        estRepetitif = false;
+        System.out.println("Le système ne possède pas de boucle");
+        return false;
     }
 
     public String getModelBornitude(){
-        modelBornitude();
-        if(estBorne){
+        if(modelBornitude()){
             if(borneMax == 1){
-                return "Vrai, binaire.";
+                return "<font color='green'>Vrai, binaire. <font/>";
             } else {
-                return "Vrai, "+borneMax+"-borné.";
+                return "<font color ='green'> Vrai, "+borneMax+"-borné. <font/>";
             }
         }
-        return "Faux";
+        return "<font color='red'> Faux <font/>";
     }
 
     public String getModelVivacite(){
-        modelVivacite();
-        if(estVivant){
-            return "Vrai";
+        if(modelVivacite()){
+            return "<font color='green'> Vrai <font/>";
         }
-        return "Faux";
+        return "<font color='red'> Faux <font/>";
+    }
+
+    public String getModelRepetitivite(){
+        if(modelRepetitivite()){
+            return "<font color='green'> Vrai <font/>";
+        }
+        return "<font color='red'> Faux <font/>";
     }
 
     @Override
@@ -126,10 +148,10 @@ public class ModelProperties {
         return  "<html><strong>Propriétés du réseau de Pétri</strong><br>Version: <strong>"+ FUtils.Program.getVersion() +
                 "</strong><br>Github: <a href='https://github.com/gauthierleurette/java-rdp'>github.com/gauthierleurette/java-rdp</a><br><hr><br>" +
                 "<ul>" +
-                "<li>Bornitude : </li>" + this.getModelBornitude() +
+                "<li>Bornitude : </li> " + this.getModelBornitude() +
                 "<li>Vivacité : </li>" + this.getModelVivacite() +
                 "<li>Réversibilité</li>" +
-                "<li>Répétitivité</li>" +
+                "<li>Répétitivité</li>" + this.getModelRepetitivite() +
                 "</ul>" +
                 "<br>" +
                 "</html>";
