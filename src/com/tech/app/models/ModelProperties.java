@@ -2,7 +2,10 @@ package com.tech.app.models;
 
 import com.tech.app.functions.FUtils;
 import com.tech.app.models.gma.Node;
+import com.tech.app.models.gma.NodeStruct;
 import com.tech.app.models.gma.ReachabilityGraph;
+
+import java.util.Vector;
 
 public class ModelProperties {
 
@@ -69,8 +72,32 @@ public class ModelProperties {
             }
         }
         estBorne = true;
-        System.out.print("Le système est ");
+        System.out.println("Le système est "+borneMax+"-borné.");
 
+    }
+
+    private void modelVivacite(){
+        Vector<Integer> transitionCount = new Vector<>();
+        transitionCount.setSize(model.nbTransition);
+
+        for(int i = 0; i < gma.getListe_node().size(); i++){
+            int count = 0;
+            for(NodeStruct nodeStruct : gma.getListe_node().get(i).getChildren()){
+                transitionCount.add(model.transitionVector.indexOf(nodeStruct.transition),count+1);
+            }
+            for(NodeStruct nodeStruct : gma.getListe_node().get(i).getParents()){
+                transitionCount.add(model.transitionVector.indexOf(nodeStruct.transition),count+1);
+            }
+        }
+        System.out.println("model : "+model.transitionVector);
+        System.out.println("count : "+ transitionCount);
+        if(transitionCount.stream().anyMatch(count -> count < 1)){
+            estVivant = false;
+            System.out.println("Le système n'est pas vivant.");
+        } else {
+            estVivant = true;
+            System.out.println("Le système est vivant.");
+        }
     }
 
     public String getModelBornitude(){
@@ -85,6 +112,14 @@ public class ModelProperties {
         return "Faux";
     }
 
+    public String getModelVivacite(){
+        modelVivacite();
+        if(estVivant){
+            return "Vrai";
+        }
+        return "Faux";
+    }
+
     @Override
     public String toString() {
 
@@ -92,7 +127,7 @@ public class ModelProperties {
                 "</strong><br>Github: <a href='https://github.com/gauthierleurette/java-rdp'>github.com/gauthierleurette/java-rdp</a><br><hr><br>" +
                 "<ul>" +
                 "<li>Bornitude : </li>" + this.getModelBornitude() +
-                "<li>Vivacité : </li>" +
+                "<li>Vivacité : </li>" + this.getModelVivacite() +
                 "<li>Réversibilité</li>" +
                 "<li>Répétitivité</li>" +
                 "</ul>" +
