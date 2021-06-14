@@ -18,6 +18,7 @@ public class Model implements Serializable {
     public List<Place> placeVector;
     public List<Transition> transitionVector;
 
+
     Vector<Integer> M0;
     Vector<Vector<Integer>> w_plus, w_moins, C;
 
