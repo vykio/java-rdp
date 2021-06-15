@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Ordre d'affichage :
@@ -373,15 +375,17 @@ public class DrawPanel extends JPanel {
     public void deleteSelectedObject() {
         if (selectedObject != null) {
             if (selectedObject instanceof Place) {
-                this.model.removePlace((Place) selectedObject);
                 // Suppression des arcs liés à la place supprimée
+                List<Arc> arcToDelete = new ArrayList<>();
                 for(Arc a : this.model.arcVector){
                     if(((Place) selectedObject) == a.getPlace()){
-                        selectedObject = null;
-                        this.model.removeArc(a);
-                        repaint();
+                        arcToDelete.add(a);
                     }
                 }
+                this.model.removeArcs(arcToDelete);
+                this.model.removePlace((Place) selectedObject);
+                selectedObject = null;
+                repaint();
             }
             if (selectedObject instanceof Transition){
                 this.model.removeTransition((Transition) selectedObject);

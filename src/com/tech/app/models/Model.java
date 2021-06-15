@@ -188,19 +188,34 @@ public class Model implements Serializable {
 
         try {
             for (Transition t : transitionVector) {
-                if (t.getChildren().contains(a)) {
+                /*
+                for(int i = 0; i<t.getChildren().size();i++){
+                    if(t.getChildren().get(i).equals(a)){
+                        t.removeChildren(a);
+                        i--;
+                    }
+                }
+
+                for(int i = 0; i<t.getParents().size();i++){
+                    if(t.getParents().get(i).equals(a)){
+                        t.removeParent(a);
+                        i--;
+                    }
+                }
+                */
+
+                if(t.getChildren().contains(a)) {
                     System.out.println(t.getChildren());
                     t.removeChildren(a);
                     System.out.println("Child arc removed : " + t);
-                    break;
                 }
 
-                if (t.getParents().contains(a)) {
+                if(t.getParents().contains(a)) {
                     System.out.println(t.getParents());
                     t.removeParent(a);
                     System.out.println("Parent arc removed : " + t);
-                    break;
                 }
+
             }
         } catch (ConcurrentModificationException e){
             e.printStackTrace();
@@ -209,6 +224,39 @@ public class Model implements Serializable {
         this.arcVector.remove(a);
         this.nbArc--;
         this.updateMatrices();
+    }
+
+    public void removeArcs(List<Arc> arcToDelete){
+        //try{*/
+            for(int i = arcToDelete.size() - 1; i >= 0;){
+                for(int j = transitionVector.size() - 1; j >= 0;){
+
+                    if(!transitionVector.get(j).getChildren().isEmpty() && transitionVector.get(j).getChildren().contains(arcToDelete.get(i))){
+                        transitionVector.get(j).removeChildren(arcToDelete.get(i));
+                        arcVector.remove(arcToDelete.get(i));
+                        nbArc--;
+                        arcToDelete.remove(i);
+                    }
+
+                    if(!transitionVector.get(j).getParents().isEmpty() && transitionVector.get(j).getParents().contains(arcToDelete.get(i))){
+                        transitionVector.get(j).removeParent(arcToDelete.get(i));
+                        arcVector.remove(arcToDelete.get(i));
+                        nbArc--;
+                        arcToDelete.remove(i);
+                    }
+                    i--;
+                    j--;
+                }
+            }
+        //}
+        /*
+        catch(ConcurrentModificationException e) {
+            e.printStackTrace();
+        }*/
+        System.out.println(this);
+        this.updateMatrices();
+        System.out.println("apres :");
+        System.out.println(this);
     }
 
     /**
