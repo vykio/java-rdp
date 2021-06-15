@@ -16,7 +16,7 @@ public class ModelProperties {
     public boolean estBorne = false;
     public boolean estVivant = false;
     public boolean estReinitialisable = false;
-    public boolean estRepetitif = false;
+    public boolean estRepetitif = false;public boolean estBloque = false;
 
     public int borneMax = 0;
 
@@ -25,7 +25,8 @@ public class ModelProperties {
         BORNITUDE,
         VIVACITE,
         REVERSIBILITE,
-        REPETITIVITE
+        REPETITIVITE,
+        BLOCAGE
     }
 
     public ModelProperties(Model model) {
@@ -45,8 +46,13 @@ public class ModelProperties {
                 this.modelVivacite();
                 break;
             case REPETITIVITE:
+                this.modelRepetitivite();
                 break;
             case REVERSIBILITE:
+                this.modelReinitialisable();
+                break;
+            case BLOCAGE:
+                this.modelBlocage();
                 break;
             case NONE:
                 break;
@@ -97,15 +103,14 @@ public class ModelProperties {
                 return false;
             }
         }
-            estVivant = true;
-            System.out.println("Le système est vivant.");
-            return true;
+        estVivant = true;
+        System.out.println("Le système est vivant.");
+        return true;
     }
 
     public boolean modelRepetitivite(){
         for(int i = 0; i < gma.liste_node.size(); i++){
-            // Si il y a un noeud dont le marquage enfant est M0 alors il est répétitif.
-            // pour voir réinitialisable, il faut pour tout marquage trouver un chemin qui amène à M0.
+
             if(gma.liste_node.get(i).getChildren().stream().anyMatch(n -> n.getNode().getM().getMarquage().equals(model.M0))){
                 estRepetitif = true;
                 System.out.println("Le système possède au moins une boucle");
@@ -115,6 +120,36 @@ public class ModelProperties {
         estRepetitif = false;
         System.out.println("Le système ne possède pas de boucle");
         return false;
+    }
+
+    public boolean modelReinitialisable(){
+        for(int i = 0; i < gma.liste_node.size(); i++){
+            // Si il y a un noeud dont le marquage enfant est M0 alors il est répétitif.
+            // pour voir réinitialisable, il faut pour tout marquage trouver un chemin qui amène à M0.
+            if(gma.liste_node.get(i).getChildren().stream().anyMatch(n -> n.getNode().getM().getMarquage().equals(model.M0))){
+                estReinitialisable = true;
+                System.out.println("Le système possède au moins une boucle");
+                return true;
+            }
+        }
+        estReinitialisable = false;
+        System.out.println("Le système ne possède pas de boucle");
+        return false;
+    }
+
+    public boolean modelBlocage(){
+
+        for(Node n : gma.liste_node) {
+            if(model.getTransitionFranchissables(n.getM().getMarquage()) != null){
+                estBloque = false;
+                System.out.println("Le système n'a pas de blocage");
+                return false;
+            }
+        }
+
+        estBloque = true;
+        System.out.println("Le système a au moins un blocage");
+        return true;
     }
 
     public String getModelBornitude(){
@@ -142,6 +177,20 @@ public class ModelProperties {
         return "<font color='red'> Faux <font/>";
     }
 
+    public String getModelReinitialisable(){
+        if(modelReinitialisable()){
+            return "<font color='green'> Vrai <font/>";
+        }
+        return "<font color='red'> Faux <font/>";
+    }
+
+    public String getModelBlocage(){
+        if(modelBlocage()){
+            return "<font color='green'> Vrai <font/>";
+        }
+        return "<font color='red'> Faux <font/>";
+    }
+
     @Override
     public String toString() {
 
@@ -150,8 +199,9 @@ public class ModelProperties {
                 "<ul>" +
                 "<li>Bornitude : </li> " + this.getModelBornitude() +
                 "<li>Vivacité : </li>" + this.getModelVivacite() +
-                "<li>Réversibilité</li>" +
-                "<li>Répétitivité</li>" + this.getModelRepetitivite() +
+                "<li>Réinitialisable : </li>" + this.getModelReinitialisable() +
+                "<li>Répétitivité : </li>" + this.getModelRepetitivite() +
+                "<li>Blocage : </li>" + this.getModelBlocage() +
                 "</ul>" +
                 "<br>" +
                 "</html>";
