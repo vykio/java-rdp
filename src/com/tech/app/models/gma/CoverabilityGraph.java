@@ -1,5 +1,6 @@
 package com.tech.app.models.gma;
 
+import com.tech.app.App;
 import com.tech.app.models.Model;
 import com.tech.app.models.Transition;
 
@@ -116,7 +117,16 @@ public class CoverabilityGraph {
         return false;
     }
 
-    private boolean couverture(Marquage M, Marquage M1){
+    public boolean couverture(Marquage M, Marquage M1){
+
+        System.out.println("M1 = "+M1);
+        System.out.println("M = "+ M);
+
+        if(M.getMarquage().equals(M1.getMarquage())){
+            System.out.println("test égalité vrai");
+            return false;
+        }
+
 
         Marquage M2 = subVector(M1,M);
         System.out.println("M1 - M = "+ M2);
@@ -134,8 +144,12 @@ public class CoverabilityGraph {
             return true;
         }
         // Si la différence entre M1 et M contient au moins un élément négatif et aucun positif (>0) alors M1 couvre M
-        System.out.println(M2.getMarquage().stream().anyMatch(i -> i < 0) && M2.getMarquage().stream().noneMatch(i -> i > 0));
-        return M2.getMarquage().stream().anyMatch(i -> i < 0) && M2.getMarquage().stream().noneMatch(i -> i > 0);
+        boolean a = M2.getMarquage().stream().anyMatch(i -> i > 0);
+        boolean b = M2.getMarquage().stream().noneMatch(i -> i < 0);
+        System.out.println("M2.getMarquage().stream().anyMatch(i -> i > 0) = "+ a);
+        System.out.println("M2.getMarquage().stream().noneMatch(i -> i < 0) = "+ b);
+        System.out.println("A && B = "+(a && b));
+        return (a & b);
     }
 
     public boolean containsMarquage(final List<Marquage> m, final Vector<Integer> marquage){
@@ -204,14 +218,44 @@ public class CoverabilityGraph {
                         M1.setOld();
                         marquagesAccessibles.add(M1);
                         marquagesATraiter.add(M1);
-
-                        System.out.println("Marquages à traiter :"+ marquagesATraiter);
-                        System.out.println("Marquages accessibles :"+ marquagesAccessibles);
-
                     }
                 }
             }
         }
     }
+
+    /*
+    public static void main(String[] args) {
+        Vector<Integer> m = new Vector<>();
+        Vector<Integer> m1 = new Vector<>();
+
+        m.add(1);
+        m.add(1);
+        m.add(1);
+
+        m1.add(1);
+        m1.add(1);
+        m1.add(1);
+
+        Marquage M = new Marquage(m);
+        Marquage M1 = new Marquage(m1);
+
+
+        Vector<Integer> v_temp = new Vector<>();
+        Marquage m_temp = new Marquage(v_temp);
+        for(int i=0; i < v.getMarquage().size(); i++){
+            if(v.getMarquage().get(i) == Integer.MAX_VALUE){
+                v_temp.add(i, (v.getMarquage().get(i)));
+            }else {
+                v_temp.add(i, (v.getMarquage().get(i) - u.getMarquage().get(i)));
+            }
+        }
+        m_temp.setMarquage(v_temp);
+
+        System.out.println("Couverture :" + couverture(M,M1));
+
+    }
+
+     */
 }
 
