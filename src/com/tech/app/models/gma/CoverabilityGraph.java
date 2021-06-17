@@ -4,6 +4,7 @@ import com.tech.app.models.Model;
 import com.tech.app.models.Transition;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -62,6 +63,20 @@ public class CoverabilityGraph {
         return m_temp;
     }
 
+    private Marquage subVector(Marquage v, Marquage u){
+        Vector<Integer> v_temp = new Vector<>();
+        Marquage m_temp = new Marquage(v_temp);
+        for(int i=0; i < v.getMarquage().size(); i++){
+            if(v.getMarquage().get(i) == Integer.MAX_VALUE){
+                v_temp.add(i, (v.getMarquage().get(i)));
+            }else {
+                v_temp.add(i, (v.getMarquage().get(i) - u.getMarquage().get(i)));
+            }
+        }
+        m_temp.setMarquage(v_temp);
+        return m_temp;
+    }
+
     /**
      * Cette méthode est utilisée dans l'algorithme de création du GMA. Elle permet de vérifier si le marquage du noeud actuel
      * couvre une colonne de la matrice W_moins ou Pré. On va tester si le marquage du noeud est inférieur à la colonne t de la matrice pré.
@@ -79,6 +94,48 @@ public class CoverabilityGraph {
             }
         }
         return true;
+    }
+
+    private boolean couvre(Marquage m, List<Node> liste_node){
+        for(Node node : liste_node){
+            for(int i=0; i < m.getMarquage().size(); i ++){
+                if(m.getMarquage().get(i) < node.getM().getMarquage().get(i)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean couvre(Marquage m1, Marquage m2){
+        for(int i = 0; i < m1.getMarquage().size(); i++){
+            if(m1.getMarquage().get(i) > m2.getMarquage().get(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean couverture(Marquage M, Marquage M1){
+
+        Marquage M2 = subVector(M1,M);
+        System.out.println("M1 - M = "+ M2);
+
+        /*
+        if(M2.getMarquage().stream().anyMatch(i -> i > 0)){
+            System.out.println("M1 - M contient au moins un nombre > 0");
+        } else if(M2.getMarquage().stream().anyMatch(i -> i < 0)){
+            System.out.println("M1 - M contient au moins un nombre négatif.");
+        }
+        */
+
+        if(M2.getMarquage().stream().allMatch(i -> i == 0)){
+            System.out.println("M1 - M est nul donc M1 = M");
+            return true;
+        }
+        // Si la différence entre M1 et M contient au moins un élément négatif et aucun positif (>0) alors M1 couvre M
+        System.out.println(M2.getMarquage().stream().anyMatch(i -> i < 0) && M2.getMarquage().stream().noneMatch(i -> i > 0));
+        return M2.getMarquage().stream().anyMatch(i -> i < 0) && M2.getMarquage().stream().noneMatch(i -> i > 0);
     }
 
     public boolean containsMarquage(final List<Marquage> m, final Vector<Integer> marquage){
@@ -102,6 +159,7 @@ public class CoverabilityGraph {
         marquagesATraiter.add(M0);
         Marquage M;
         Marquage M1;
+        Marquage M2;
 
         /* On initialise la liste des noeuds */
         liste_node = new ArrayList<>();
@@ -126,7 +184,18 @@ public class CoverabilityGraph {
                 if (couvre(M, this.model.getW_moins(), t)) {
                     M1 = addVector(M, this.model.getC(), t);
 
-                    tryToAddOmegas(liste_node,M1);
+
+                    /*
+                    //Si M1 couvre M
+                    if(couvre(M,M1)){
+                        tryToAddOmegas(liste_node, M1);
+                    }
+                    */
+
+                    if(couverture(M, M1)){
+                        tryToAddOmegas(liste_node,M1);
+                    }
+
                     m.addChildren(new NodeStruct(new Node(M1), this.model.transitionVector.get(t)));
 
                     /* Si le marquage M1 n'est pas déjà dans la liste des marquages accessibles alors : */
@@ -135,9 +204,14 @@ public class CoverabilityGraph {
                         M1.setOld();
                         marquagesAccessibles.add(M1);
                         marquagesATraiter.add(M1);
+
+                        System.out.println("Marquages à traiter :"+ marquagesATraiter);
+                        System.out.println("Marquages accessibles :"+ marquagesAccessibles);
+
                     }
                 }
             }
         }
     }
 }
+

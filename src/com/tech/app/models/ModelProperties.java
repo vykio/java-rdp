@@ -62,7 +62,7 @@ public class ModelProperties {
     // besoin du grpahe de couverture au cas ou non borné !
     private boolean modelBornitude(){
 
-        if(gma.getListe_node().size() > 1000){
+        if(gma.getListe_node().size() > 100){
             System.out.println("Le système n'est pas borné");
             estBorne = false;
         }

@@ -170,8 +170,6 @@ public class Transition implements Serializable {
 
     public boolean estFranchissable(){
         List<Integer> marques = new ArrayList<>();
-        System.out.print("La transition selectionnée ");
-
         if(this.getParents() == null || this.getParents().isEmpty()){
             return false;
         }

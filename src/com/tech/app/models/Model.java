@@ -38,6 +38,19 @@ public class Model implements Serializable {
         this.C = new Vector<>();
     }
 
+    public Model(Model model){
+        this.nbPlace = model.nbPlace;
+        this.nbTransition = model.nbTransition;
+
+        this.placeVector = model.placeVector;
+        this.transitionVector = model.transitionVector;
+
+        this.M0 = model.M0;
+        this.w_plus = model.w_plus;
+        this.w_moins = model.w_moins;
+        this.C = model.C;
+    }
+
     /**
      * Remplir M0
      * @return Vecteur d'entiers
@@ -439,7 +452,7 @@ public class Model implements Serializable {
 
     public List<Transition> getTransitionFranchissables(Vector<Integer> marquage){
         List<Transition> transitionsFranchissables = new ArrayList<>();
-        Model temp = this;
+        Model temp = new Model(this);
         temp.setMarquage(marquage);
 
         for(Transition t : transitionVector){
@@ -447,7 +460,7 @@ public class Model implements Serializable {
                 transitionsFranchissables.add(t);
             }
         }
-
+        temp.setMarquage(this.M0);
         return transitionsFranchissables;
     }
 
