@@ -1,6 +1,7 @@
 package com.tech.app.models;
 
 import com.tech.app.functions.FUtils;
+import com.tech.app.models.gma.CoverabilityGraph;
 import com.tech.app.models.gma.Node;
 import com.tech.app.models.gma.NodeStruct;
 import com.tech.app.models.gma.ReachabilityGraph;
@@ -10,13 +11,15 @@ import java.util.Vector;
 public class ModelProperties {
 
     private final Model model;
-    private final ReachabilityGraph gma;
+    //private final ReachabilityGraph gma;
+    private final CoverabilityGraph coverabilityGraph;
 
 
     public boolean estBorne = false;
     public boolean estVivant = false;
     public boolean estReinitialisable = false;
-    public boolean estRepetitif = false;public boolean estBloque = false;
+    public boolean estRepetitif = false;
+    public boolean estBloque = false;
 
     public int borneMax = 0;
 
@@ -32,8 +35,8 @@ public class ModelProperties {
     public ModelProperties(Model model) {
         model.updateMatrices();
         this.model = model;
-        this.gma = new ReachabilityGraph(model);
-        gma.calculateReachabilityGraph();
+        this.coverabilityGraph = new CoverabilityGraph(model);
+        coverabilityGraph.calculateCoverabilityGraph();
     }
 
     public ModelProperties(Model model, MODEL_PROPS props){
@@ -62,13 +65,12 @@ public class ModelProperties {
     // besoin du grpahe de couverture au cas ou non borné !
     private boolean modelBornitude(){
 
-        if(gma.getListe_node().size() > 100){
-            System.out.println("Le système n'est pas borné");
-            estBorne = false;
-        }
-
-        for(Node node : gma.getListe_node()){
+        for(Node node : coverabilityGraph.getListe_node()){
             for(int i = 0; i < node.m.getMarquage().size(); i++){
+                if(node.m.getMarquage().get(i) == Integer.MAX_VALUE){
+                    System.out.println("Le système n'est pas borné");
+                    return false;
+                }
                 if(borneMax < node.m.getMarquage().get(i)){
                     borneMax = node.m.getMarquage().get(i);
                 }
@@ -87,8 +89,8 @@ public class ModelProperties {
             transitionCount.set(i,0);
         }
 
-        for(int i = 0; i < gma.getListe_node().size(); i++){
-            for(NodeStruct nodeStruct : gma.getListe_node().get(i).getChildren()){
+        for(int i = 0; i < coverabilityGraph.getListe_node().size(); i++){
+            for(NodeStruct nodeStruct : coverabilityGraph.getListe_node().get(i).getChildren()){
                 transitionCount.set(model.transitionVector.indexOf(nodeStruct.transition),transitionCount.get(model.transitionVector.indexOf(nodeStruct.transition))+ 1);
             }
         }
@@ -109,9 +111,9 @@ public class ModelProperties {
     }
 
     public boolean modelRepetitivite(){
-        for(int i = 0; i < gma.liste_node.size(); i++){
+        for(int i = 0; i < coverabilityGraph.liste_node.size(); i++){
 
-            if(gma.liste_node.get(i).getChildren().stream().anyMatch(n -> n.getNode().getM().getMarquage().equals(model.M0))){
+            if(coverabilityGraph.liste_node.get(i).getChildren().stream().anyMatch(n -> n.getNode().getM().getMarquage().equals(model.M0))){
                 estRepetitif = true;
                 System.out.println("Le système possède au moins une boucle");
                 return true;
@@ -123,10 +125,10 @@ public class ModelProperties {
     }
 
     public boolean modelReinitialisable(){
-        for(int i = 0; i < gma.liste_node.size(); i++){
+        for(int i = 0; i < coverabilityGraph.liste_node.size(); i++){
             // Si il y a un noeud dont le marquage enfant est M0 alors il est répétitif.
             // pour voir réinitialisable, il faut pour tout marquage trouver un chemin qui amène à M0.
-            if(gma.liste_node.get(i).getChildren().stream().anyMatch(n -> n.getNode().getM().getMarquage().equals(model.M0))){
+            if(coverabilityGraph.liste_node.get(i).getChildren().stream().anyMatch(n -> n.getNode().getM().getMarquage().equals(model.M0))){
                 estReinitialisable = true;
                 System.out.println("Le système possède au moins une boucle");
                 return true;
@@ -139,17 +141,17 @@ public class ModelProperties {
 
     public boolean modelBlocage(){
 
-        for(Node n : gma.liste_node) {
-            if(model.getTransitionFranchissables(n.getM().getMarquage()) != null){
-                estBloque = false;
-                System.out.println("Le système n'a pas de blocage");
-                return false;
+        for(Node n : coverabilityGraph.liste_node) {
+            if(n.getChildren().isEmpty()){
+                estBloque = true;
+                System.out.println("Le système a au moins un blocage");
+                return true;
             }
         }
+        estBloque = false;
+        System.out.println("Le système n'a pas de blocage");
 
-        estBloque = true;
-        System.out.println("Le système a au moins un blocage");
-        return true;
+        return false;
     }
 
     public String getModelBornitude(){
@@ -200,8 +202,8 @@ public class ModelProperties {
                 "<li>Bornitude : </li> " + this.getModelBornitude() +
                 "<li>Vivacité : </li>" + this.getModelVivacite() +
                 "<li>Réinitialisable : </li>" + this.getModelReinitialisable() +
-                "<li>Répétitivité : </li>" + this.getModelRepetitivite() +
-                "<li>Blocage : </li>" + this.getModelBlocage() +
+                //"<li>Répétitivité : </li>" + this.getModelRepetitivite() +
+               "<li>Blocage : </li>" + this.getModelBlocage() +
                 "</ul>" +
                 "<br>" +
                 "</html>";

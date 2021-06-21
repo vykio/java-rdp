@@ -101,27 +101,18 @@ public class CoverabilityGraph {
 
     public boolean couverture(Marquage M, Marquage M1) {
 
-        System.out.println("M1 = " + M1);
-        System.out.println("M = " + M);
-
         if (M.getMarquage().equals(M1.getMarquage())) {
-            System.out.println("test égalité vrai");
             return false;
         }
 
         Marquage M2 = subVector(M1, M);
-        System.out.println("M1 - M = " + M2);
 
         if (M2.getMarquage().stream().allMatch(i -> i == 0)) {
-            System.out.println("M1 - M est nul donc M1 = M");
             return true;
         }
         // Si la différence entre M1 et M contient au moins un élément négatif et aucun positif (>0) alors M1 couvre M
         boolean a = M2.getMarquage().stream().anyMatch(i -> i > 0 & i != Integer.MAX_VALUE);
         boolean b = M2.getMarquage().stream().noneMatch(i -> i < 0);
-        System.out.println("M2.getMarquage().stream().anyMatch(i -> i > 0) = " + a);
-        System.out.println("M2.getMarquage().stream().noneMatch(i -> i < 0) = " + b);
-        System.out.println("A && B = " + (a && b));
         return (a & b);
     }
 
