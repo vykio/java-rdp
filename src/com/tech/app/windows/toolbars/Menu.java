@@ -162,13 +162,15 @@ public class Menu extends MenuBar {
         mnuProps.addActionListener( this::openPropsPopup );
         mnuTools.add(mnuProps);
 
+        /*
         JMenuItem mnuGMA = new JMenuItem("Générer GMA");
         mnuGMA.setMnemonic('G');
         mnuGMA.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK));
         mnuGMA.addActionListener( this::openGMAWindow );
         mnuTools.add(mnuGMA);
+        */
 
-        JMenuItem mnuGC = new JMenuItem("Générer le graphe de couverture");
+        JMenuItem mnuGC = new JMenuItem("Générer le GMA / Graphe de couverture");
         mnuGC.setMnemonic('H');
         mnuGC.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK));
         mnuGC.addActionListener( this::openGCWindow );
@@ -247,6 +249,7 @@ public class Menu extends MenuBar {
         return toolbar;
     }
 
+    /*
     private void openGMAWindow(ActionEvent actionEvent) {
         EventQueue.invokeLater(
                 () -> {
@@ -258,6 +261,7 @@ public class Menu extends MenuBar {
                 }
         );
     }
+    */
 
     private void openGCWindow(ActionEvent actionEvent) {
         EventQueue.invokeLater(
