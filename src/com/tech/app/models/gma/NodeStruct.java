@@ -21,4 +21,7 @@ public class NodeStruct {
         this.transition = transition;
     }
 
+    public Node getNode() {
+        return node;
+    }
 }

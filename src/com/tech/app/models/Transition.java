@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Cette classe permet de créer l'objet Transition.
@@ -166,6 +167,23 @@ public class Transition implements Serializable {
      * Méthode qui permet de remettre la position du label à 1
      */
     public void resetPosition() { this.position = 1; }
+
+    public boolean estFranchissable(){
+        List<Integer> marques = new ArrayList<>();
+        if(this.getParents() == null || this.getParents().isEmpty()){
+            return false;
+        }
+
+        for(Arc a : this.getParents()){
+            // créer un vecteur pour récup les marques de chacune des places parents et faire un test comme dans couvre
+            marques.add(a.place.getMarquage());
+        }
+        for(int i = 0 ; i < marques.size() ; i++){
+            if(marques.get(i) < 1)
+                return false;
+        }
+        return true;
+    }
 
     /**
      * Méthode qui permet d'afficher les caractéristiques de la transition.

@@ -12,9 +12,9 @@ import java.util.Vector;
 public class ReachabilityGraph {
 
     private Model model;
-    Vector<Integer> M0;
-    public List<Vector<Integer>> marquagesAccessibles;
-    public List<Vector<Integer>> marquagesATraiter;
+    Marquage M0;
+    public List<Marquage> marquagesAccessibles;
+    public List<Marquage> marquagesATraiter;
     public List<Node> liste_node;
     public int nb_marquages;
 
@@ -24,7 +24,7 @@ public class ReachabilityGraph {
      */
     public ReachabilityGraph(Model model){
         this.model = model;
-        this.M0 = model.getM0();
+        this.M0 = new Marquage(model.getM0());
         this.marquagesAccessibles = new ArrayList<>();
         this.marquagesATraiter = new ArrayList<>();
         this.liste_node = new ArrayList<>();
@@ -41,7 +41,7 @@ public class ReachabilityGraph {
      * C'est-à-dire l'état dans lequel il a été dessiné.
      * @return Vecteur d'entiers
      */
-    private Vector<Integer> getM0(){ return this.M0; }
+    private Marquage getM0(){ return this.M0; }
 
     /**
      * Cette méthode est utilisée dans l'algorithme de création du GMA. Elle permet de vérifier si le marquage du noeud actuel
@@ -51,11 +51,11 @@ public class ReachabilityGraph {
      * @param t : indice de la transition.
      * @return Vrai ou Faux
      */
-    private boolean couvre(Vector<Integer> m, Vector<Vector<Integer>> pre, int t){
+    private boolean couvre(Marquage m, Vector<Vector<Integer>> pre, int t){
 
         for (int i = 0; i < pre.size(); i++) {
             // on teste sur toutes les lignes de la colonne t
-            if (m.get(i) < pre.get(i).get(t)) {
+            if (m.getMarquage().get(i) < pre.get(i).get(t)) {
                 return false;
             }
         }
@@ -69,12 +69,14 @@ public class ReachabilityGraph {
      * @param t : indice de la colonne
      * @return vecteur après addition.
      */
-    private Vector<Integer> addVector(Vector<Integer> v, Vector<Vector<Integer>> u, int t){
+    private Marquage addVector(Marquage v, Vector<Vector<Integer>> u, int t){
         Vector<Integer> v_temp = new Vector<>();
-        for(int i=0; i < v.size(); i++){
-            v_temp.add(i,(v.get(i)+u.get(i).get(t)));
+        Marquage m_temp = new Marquage(v_temp);
+        for(int i=0; i < v.getMarquage().size(); i++){
+            v_temp.add(i,(v.getMarquage().get(i)+u.get(i).get(t)));
         }
-        return v_temp;
+        m_temp.setMarquage(v_temp);
+        return m_temp;
     }
 
     /**
@@ -83,12 +85,16 @@ public class ReachabilityGraph {
      */
     public void updateModel(Model model) {
         this.model = model;
-        this.M0 = model.getM0();
+        this.M0 = new Marquage(model.getM0());
         this.marquagesAccessibles = new ArrayList<>();
         this.marquagesATraiter = new ArrayList<>();
         this.liste_node = new ArrayList<>();
     }
 
+
+    public boolean containsMarquage(final List<Marquage> m, final Vector<Integer> marquage){
+        return m.stream().anyMatch(a -> a.getMarquage().equals(marquage));
+    }
     /**
      * Méthode qui permet de calculer le GMA. Cette méthode utilise l'algorithme énoncé dans le cours de Systèmes à Evénements Discrets (2020) de Mr LHERBIER.
      * Inconvénient : Il n'y a pas de point d'arret. Si le GMA est non borné, la méthode boucle à l'infini.
@@ -98,8 +104,8 @@ public class ReachabilityGraph {
         /* On ajoute le marquage initial aux deux listes */
         marquagesAccessibles.add(M0);
         marquagesATraiter.add(M0);
-        Vector<Integer> M;
-        Vector<Integer> M1;
+        Marquage M;
+        Marquage M1;
 
         /* On initialise la liste des noeuds */
         liste_node = new ArrayList<>();
@@ -120,6 +126,7 @@ public class ReachabilityGraph {
             liste_node.add(m);
             this.nb_marquages++;
 
+            M0.setOld();
 
             /* Pour toutes les transitions du RdP */
             for (int t = 0; t < this.model.transitionVector.size(); t++) {
@@ -134,8 +141,9 @@ public class ReachabilityGraph {
                     m.addChildren(new NodeStruct(new Node(M1), this.model.transitionVector.get(t)));
 
                     /* Si le marquage M1 n'est pas déjà dans la liste des marquages accessibles alors : */
-                    if (!marquagesAccessibles.contains(M1)) {
+                    if (!containsMarquage(marquagesAccessibles, M1.getMarquage())) {
                         /* On ajoute le marquage M1 aux deux listes : marquages accessibles et marquages à traiter. */
+                        M1.setOld();
                         marquagesAccessibles.add(M1);
                         marquagesATraiter.add(M1);
                     }

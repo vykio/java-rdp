@@ -195,6 +195,8 @@ public class DrawPanel extends JPanel {
                 ((Place) selectedObject).draw(g);
             } else if (selectedObject instanceof Transition) {
                 ((Transition) selectedObject).draw(g);
+                ((Transition) selectedObject).estFranchissable();
+                System.out.println("est Franchissable ? :"+ ((Transition) selectedObject).estFranchissable());
             }
             g.setColor(co);
 
