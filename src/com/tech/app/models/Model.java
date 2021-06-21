@@ -18,6 +18,7 @@ public class Model implements Serializable {
     public List<Place> placeVector;
     public List<Transition> transitionVector;
 
+
     Vector<Integer> M0;
     Vector<Vector<Integer>> w_plus, w_moins, C;
 
@@ -35,6 +36,19 @@ public class Model implements Serializable {
         this.w_plus = new Vector<>();
         this.w_moins = new Vector<>();
         this.C = new Vector<>();
+    }
+
+    public Model(Model model){
+        this.nbPlace = model.nbPlace;
+        this.nbTransition = model.nbTransition;
+
+        this.placeVector = model.placeVector;
+        this.transitionVector = model.transitionVector;
+
+        this.M0 = model.M0;
+        this.w_plus = model.w_plus;
+        this.w_moins = model.w_moins;
+        this.C = model.C;
     }
 
     /**
@@ -68,15 +82,14 @@ public class Model implements Serializable {
 
                 /* pour chaque arc, on le transforme en place + poids */
 
-
-                if (FList.contains(listParents, this.placeVector.get(k))) {
-                    this.w_plus.get(k).set(i, FList.poids_arc(listParents, this.placeVector.get(k)));
+                if (FList.contains(listChildren, this.placeVector.get(k))) {
+                    this.w_plus.get(k).set(i, FList.poids_arc(listChildren, this.placeVector.get(k)));
                 } else {
                     this.w_plus.get(k).set(i, 0);
                 }
 
-                if (FList.contains(listChildren, this.placeVector.get(k))) {
-                    this.w_moins.get(k).set(i, FList.poids_arc(listChildren, this.placeVector.get(k)));
+                if (FList.contains(listParents, this.placeVector.get(k))) {
+                    this.w_moins.get(k).set(i, FList.poids_arc(listParents, this.placeVector.get(k)));
                 } else {
                     this.w_moins.get(k).set(i, 0);
                 }
@@ -406,5 +419,49 @@ public class Model implements Serializable {
      * @return C.
      */
     public Vector<Vector<Integer>> getC() { return C; }
+
+    public Vector<Integer> getMarquage(){
+        Vector<Integer> marquage = new Vector<>();
+        for(Place p : placeVector){
+            marquage.add(p.getMarquage());
+        }
+        return marquage;
+    }
+
+    public void setMarquage(Vector<Integer> marquage){
+        if(marquage.size() == placeVector.size()) {
+            for (int i = 0; i < placeVector.size(); i++){
+                placeVector.get(i).setMarquage(marquage.get(i));
+            }
+        } else {
+            System.out.println("La taille du marquage est différente de la taille du vecteur de places.");
+        }
+    }
+
+    public List<Transition> getTransitionFranchissables(){
+        List<Transition> transitionsFranchissables = new ArrayList<>();
+
+        for(Transition t : transitionVector) {
+            if(t.estFranchissable()){
+                transitionsFranchissables.add(t);
+            }
+        }
+
+        return transitionsFranchissables;
+    }
+
+    public List<Transition> getTransitionFranchissables(Vector<Integer> marquage){
+        List<Transition> transitionsFranchissables = new ArrayList<>();
+        Model temp = new Model(this);
+        temp.setMarquage(marquage);
+
+        for(Transition t : transitionVector){
+            if(t.estFranchissable()){
+                transitionsFranchissables.add(t);
+            }
+        }
+        temp.setMarquage(this.M0);
+        return transitionsFranchissables;
+    }
 
 }

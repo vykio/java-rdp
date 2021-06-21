@@ -2,6 +2,8 @@ package com.tech.app.windows.toolbars;
 
 import com.tech.app.functions.FUtils;
 import com.tech.app.models.Model;
+import com.tech.app.windows.GCWindow;
+import com.tech.app.models.ModelProperties;
 import com.tech.app.windows.GMAWindow;
 import com.tech.app.windows.handlers.SaveManager;
 import com.tech.app.windows.panels.DrawPanel;
@@ -25,6 +27,7 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 public class Menu extends MenuBar {
     /* Construction de l'interface graphique pour tester à part*/
     private Model model;
+    private ModelProperties modelProperties;
 
     private SaveManager saveManager;
     private DrawPanel dp;
@@ -140,7 +143,7 @@ public class Menu extends MenuBar {
         mnuEdit.add(mnuCut);
 
         JMenuItem mnuPaste = new JMenuItem("Coller");
-        mnuPaste.setMnemonic('P');
+        mnuPaste.setMnemonic('V');
         mnuPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
         mnuPaste.setEnabled(false);
         mnuEdit.add(mnuPaste);
@@ -153,11 +156,25 @@ public class Menu extends MenuBar {
         JMenu mnuTools = new JMenu("Outils");
         mnuTools.setMnemonic('T');
 
+        JMenuItem mnuProps = new JMenuItem("Propriétés du RdP");
+        mnuProps.setMnemonic('P');
+        mnuProps.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK));
+        mnuProps.addActionListener( this::openPropsPopup );
+        mnuTools.add(mnuProps);
+
+        /*
         JMenuItem mnuGMA = new JMenuItem("Générer GMA");
         mnuGMA.setMnemonic('G');
         mnuGMA.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK));
         mnuGMA.addActionListener( this::openGMAWindow );
         mnuTools.add(mnuGMA);
+        */
+
+        JMenuItem mnuGC = new JMenuItem("Générer le GMA / Graphe de couverture");
+        mnuGC.setMnemonic('H');
+        mnuGC.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK));
+        mnuGC.addActionListener( this::openGCWindow );
+        mnuTools.add(mnuGC);
 
         JMenuItem mnuStepper = new JMenuItem("Simulation pas à pas");
         mnuStepper.setMnemonic('F');
@@ -232,11 +249,25 @@ public class Menu extends MenuBar {
         return toolbar;
     }
 
+    /*
     private void openGMAWindow(ActionEvent actionEvent) {
         EventQueue.invokeLater(
                 () -> {
                     try {
                         new GMAWindow(900,500, model);
+                    } catch (UnsupportedLookAndFeelException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+    }
+    */
+
+    private void openGCWindow(ActionEvent actionEvent) {
+        EventQueue.invokeLater(
+                () -> {
+                    try {
+                        new GCWindow(900,500, model);
                     } catch (UnsupportedLookAndFeelException e) {
                         e.printStackTrace();
                     }
@@ -346,6 +377,17 @@ public class Menu extends MenuBar {
                 "Créé par :<ul><li>Alexandre V.</li><li>Gauthier L.</li><li>Théo P.</li><li>Emeric B.</li></ul><br>" +
                 "</html>";
         JOptionPane.showMessageDialog(null, message, "A Propos de JRDP", JOptionPane.QUESTION_MESSAGE);
+    }
+
+    public void openPropsPopup(ActionEvent event){
+
+        modelProperties = new ModelProperties(model);
+
+        String message = modelProperties.toString();
+
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(300,500));
+        JOptionPane.showMessageDialog(panel, message, "Propriétés du RdP", JOptionPane.PLAIN_MESSAGE);
     }
 
 }

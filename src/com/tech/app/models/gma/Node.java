@@ -2,7 +2,6 @@ package com.tech.app.models.gma;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Cette classe nous permet de créer une structure d'arbre que l'on utilise dans la création du GMA.
@@ -10,7 +9,7 @@ import java.util.Vector;
  */
 public class Node {
 
-    private Vector<Integer> m;
+    public Marquage m;
     private List<NodeStruct> children;
     private List<NodeStruct> parents;
     private String name;
@@ -21,7 +20,7 @@ public class Node {
      * @param children : Liste de ses enfants.
      * @param parents : Liste de ses parents.
      */
-    public Node(Vector<Integer> m, List<NodeStruct> children, List<NodeStruct> parents) {
+    public Node(Marquage m, List<NodeStruct> children, List<NodeStruct> parents) {
         this(m,children,parents,null);
     }
 
@@ -32,7 +31,7 @@ public class Node {
      * @param parents : Liste de ses parents.
      * @param name : nom du marquage.
      */
-    public Node(Vector<Integer> m, List<NodeStruct> children, List<NodeStruct> parents, String name){
+    public Node(Marquage m, List<NodeStruct> children, List<NodeStruct> parents, String name){
         this.m = m;
         this.children = children;
         this.parents = parents;
@@ -44,11 +43,11 @@ public class Node {
      * Constructeur
      * @param m : marquage
      */
-    public Node(Vector<Integer> m) {
+    public Node(Marquage m) {
         this(m, new ArrayList<>(), new ArrayList<>());
     }
 
-    public Node(Vector<Integer> m, String name) {
+    public Node(Marquage m, String name) {
         this(m, new ArrayList<>(), new ArrayList<>(),name);
     }
 
@@ -73,13 +72,13 @@ public class Node {
      * Méthode qui permet de récupérer le marquage du noeud.
      * @return m : marquage
      */
-    public Vector<Integer> getM() { return m; }
+    public Marquage getM() { return m; }
 
     /**
      * Méthode qui permet de donner/modifier le marquage d'un noeud.
      * @param m : marquage
      */
-    public void setM(Vector<Integer> m) { this.m = m; }
+    public void setM(Marquage m) { this.m = m; }
 
     /**
      * Méthode qui permet de récupérer la liste des enfants du noeud.
@@ -123,12 +122,12 @@ public class Node {
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("m:\n").append(m).append("\nChildren:\n");
+        sb.append("m: ").append(m).append("\nChildren: ");
         for (NodeStruct n : this.children) {
             sb.append(this.children.indexOf(n));
             sb.append("\t").append(n.node);
         }
-        sb.append("\nParents:\n");
+        sb.append("\nParents: ");
         for (NodeStruct n : this.parents) {
             sb.append(this.parents.indexOf(n));
             sb.append("\t").append(n.node);
@@ -143,8 +142,12 @@ public class Node {
      */
     public String getMarquage(){
         StringBuilder s = new StringBuilder();
-        for(int i = 0; i < m.size(); i++){
-            s.append(this.getM().get(i));
+        for(int i = 0; i < m.getMarquage().size(); i++){
+            if(this.getM().getMarquage().get(i) == Integer.MAX_VALUE){
+                s.append("w");
+            }else{
+                s.append(this.getM().getMarquage().get(i));
+            }
             s.append("\n");
         }
         return s.toString();
