@@ -8,8 +8,11 @@ import org.scilab.forge.jlatexmath.TeXIcon;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Ordre d'affichage :
@@ -26,6 +29,9 @@ public class DrawPanel extends JPanel {
 
     private final JFrame frame;
     public Model model;
+
+    private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
+    private static final String DELETE = "delete";
 
     private double arcOriginX = 0, arcOriginY =0, arcDestX=0, arcDestY=0;
     private int indexOfClickArc = 0;
@@ -71,6 +77,14 @@ public class DrawPanel extends JPanel {
         this.frame = frame;
         this.model = model;
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
+
+        this.getInputMap(IFW).put(KeyStroke.getKeyStroke("DELETE"), DELETE);
+        this.getActionMap().put(DELETE, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteSelectedObject();
+            }
+        });
     }
 
     /**
@@ -257,9 +271,13 @@ public class DrawPanel extends JPanel {
             if (obj1.getClass() != obj2.getClass()) {
                 this.clickError = false;
                 if (obj1 instanceof Transition) {
-                    ((Transition) obj1).addChildren(new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1));
+                    Arc a = new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1);
+                    ((Transition) obj1).addChildren(a);
+                    model.addArc(a);
                 } else {
-                    ((Transition) obj2).addParent(new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2));
+                    Arc b = new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2);
+                    ((Transition) obj2).addParent(b);
+                    model.addArc(b);
                 }
 
             } else {
@@ -359,10 +377,22 @@ public class DrawPanel extends JPanel {
     public void deleteSelectedObject() {
         if (selectedObject != null) {
             if (selectedObject instanceof Place) {
+                // Suppression des arcs liés à la place supprimée
+                List<Arc> arcToDelete = new ArrayList<>();
+                for(Arc a : this.model.arcVector){
+                    if(((Place) selectedObject) == a.getPlace()){
+                        arcToDelete.add(a);
+                    }
+                }
+                this.model.removeArcs(arcToDelete);
                 this.model.removePlace((Place) selectedObject);
-            } else {
+                selectedObject = null;
+                repaint();
+            }
+            if (selectedObject instanceof Transition){
                 this.model.removeTransition((Transition) selectedObject);
             }
+            selectedObject = null;
             repaint();
         }
     }

@@ -3,9 +3,7 @@ package com.tech.app.models;
 import com.tech.app.functions.FList;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Cette classe est le coeur du RdP. C'est dans cette classe que l'on va stocker les places, transitions et arcs du RdP et que l'on va calculer les matrices du RdP.
@@ -14,9 +12,11 @@ public class Model implements Serializable {
 
     public int nbPlace;
     public int nbTransition;
+    public int nbArc;
 
     public List<Place> placeVector;
     public List<Transition> transitionVector;
+    public List<Arc> arcVector;
 
 
     Vector<Integer> M0;
@@ -28,9 +28,11 @@ public class Model implements Serializable {
     public Model() {
         this.nbPlace = 0;
         this.nbTransition = 0;
+        this.nbArc = 0;
 
         this.placeVector = new ArrayList<>();
         this.transitionVector = new ArrayList<>();
+        this.arcVector = new ArrayList<>();
 
         this.M0 = new Vector<>();
         this.w_plus = new Vector<>();
@@ -134,6 +136,11 @@ public class Model implements Serializable {
         this.updateMatrices();
     }
 
+    public void addArc(Arc a){
+        this.arcVector.add(a);
+        this.nbArc++;
+    }
+
     /**
      * Supprimer une place
      * @param name : Nom de la place
@@ -166,6 +173,103 @@ public class Model implements Serializable {
         this.transitionVector.remove(transition);
         this.nbTransition--;
         this.updateMatrices();
+    }
+
+    public void removeArc(Arc a){
+
+        // Test pour éviter l'exception ConcurrentModificationException (n'enlève pas l'exception)
+
+        /*for(Iterator<Transition> transitionIterator = transitionVector.iterator(); transitionIterator.hasNext();) {
+            Transition t = transitionIterator.next();
+            if (t.getChildren().contains(a)) {
+                for (Iterator<Arc> arcIterator = t.getChildren().iterator(); arcIterator.hasNext(); ) {
+                    Arc arc = arcIterator.next();
+                    if (arc.equals(a)) {
+                        arcIterator.remove();
+                    }
+                }
+            }
+            if (t.getParents().contains(a)) {
+                for (Iterator<Arc> arcIterator = t.getParents().iterator(); arcIterator.hasNext(); ) {
+                    Arc arc = arcIterator.next();
+                    if (arc.equals(a)) {
+                        arcIterator.remove();
+                    }
+                }
+            }
+        }*/
+
+        try {
+            for (Transition t : transitionVector) {
+                /*
+                for(int i = 0; i<t.getChildren().size();i++){
+                    if(t.getChildren().get(i).equals(a)){
+                        t.removeChildren(a);
+                        i--;
+                    }
+                }
+
+                for(int i = 0; i<t.getParents().size();i++){
+                    if(t.getParents().get(i).equals(a)){
+                        t.removeParent(a);
+                        i--;
+                    }
+                }
+                */
+
+                if(t.getChildren().contains(a)) {
+                    System.out.println(t.getChildren());
+                    t.removeChildren(a);
+                    System.out.println("Child arc removed : " + t);
+                }
+
+                if(t.getParents().contains(a)) {
+                    System.out.println(t.getParents());
+                    t.removeParent(a);
+                    System.out.println("Parent arc removed : " + t);
+                }
+
+            }
+        } catch (ConcurrentModificationException e){
+            e.printStackTrace();
+        }
+
+        this.arcVector.remove(a);
+        this.nbArc--;
+        this.updateMatrices();
+    }
+
+    public void removeArcs(List<Arc> arcToDelete){
+        //try{*/
+            for(int i = arcToDelete.size() - 1; i >= 0;){
+                for(int j = transitionVector.size() - 1; j >= 0;){
+
+                    if(!transitionVector.get(j).getChildren().isEmpty() && transitionVector.get(j).getChildren().contains(arcToDelete.get(i))){
+                        transitionVector.get(j).removeChildren(arcToDelete.get(i));
+                        arcVector.remove(arcToDelete.get(i));
+                        nbArc--;
+                        arcToDelete.remove(i);
+                    }
+
+                    if(!transitionVector.get(j).getParents().isEmpty() && transitionVector.get(j).getParents().contains(arcToDelete.get(i))){
+                        transitionVector.get(j).removeParent(arcToDelete.get(i));
+                        arcVector.remove(arcToDelete.get(i));
+                        nbArc--;
+                        arcToDelete.remove(i);
+                    }
+                    i--;
+                    j--;
+                }
+            }
+        //}
+        /*
+        catch(ConcurrentModificationException e) {
+            e.printStackTrace();
+        }*/
+        System.out.println(this);
+        this.updateMatrices();
+        System.out.println("apres :");
+        System.out.println(this);
     }
 
     /**
