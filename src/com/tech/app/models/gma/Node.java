@@ -122,12 +122,12 @@ public class Node {
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("m:\n").append(m).append("\nChildren:\n");
+        sb.append("m: ").append(m).append("\nChildren: ");
         for (NodeStruct n : this.children) {
             sb.append(this.children.indexOf(n));
             sb.append("\t").append(n.node);
         }
-        sb.append("\nParents:\n");
+        sb.append("\nParents: ");
         for (NodeStruct n : this.parents) {
             sb.append(this.parents.indexOf(n));
             sb.append("\t").append(n.node);

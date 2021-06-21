@@ -18,7 +18,7 @@ public class CoverabilityGraph {
     public List<Node> liste_node;
     public int nb_marquages;
 
-    public CoverabilityGraph(Model model){
+    public CoverabilityGraph(Model model) {
         this.model = model;
         this.M0 = new Marquage(model.getM0());
         this.marquagesAccessibles = new ArrayList<>();
@@ -45,18 +45,19 @@ public class CoverabilityGraph {
 
     /**
      * Méthode qui nous permet de faire une addition entre un vecteur et une colonne d'une matrice.
+     *
      * @param v : vecteur
      * @param u : matrice
      * @param t : indice de la colonne
      * @return vecteur après addition.
      */
-    private Marquage addVector(Marquage v, Vector<Vector<Integer>> u, int t){
+    private Marquage addVector(Marquage v, Vector<Vector<Integer>> u, int t) {
         Vector<Integer> v_temp = new Vector<>();
         Marquage m_temp = new Marquage(v_temp);
-        for(int i=0; i < v.getMarquage().size(); i++){
-            if(v.getMarquage().get(i) == Integer.MAX_VALUE){
+        for (int i = 0; i < v.getMarquage().size(); i++) {
+            if (v.getMarquage().get(i) == Integer.MAX_VALUE) {
                 v_temp.add(i, (v.getMarquage().get(i)));
-            }else {
+            } else {
                 v_temp.add(i, (v.getMarquage().get(i) + u.get(i).get(t)));
             }
         }
@@ -64,13 +65,13 @@ public class CoverabilityGraph {
         return m_temp;
     }
 
-    private Marquage subVector(Marquage v, Marquage u){
+    private Marquage subVector(Marquage v, Marquage u) {
         Vector<Integer> v_temp = new Vector<>();
         Marquage m_temp = new Marquage(v_temp);
-        for(int i=0; i < v.getMarquage().size(); i++){
-            if(v.getMarquage().get(i) == Integer.MAX_VALUE){
+        for (int i = 0; i < v.getMarquage().size(); i++) {
+            if (v.getMarquage().get(i) == Integer.MAX_VALUE) {
                 v_temp.add(i, (v.getMarquage().get(i)));
-            }else {
+            } else {
                 v_temp.add(i, (v.getMarquage().get(i) - u.getMarquage().get(i)));
             }
         }
@@ -81,12 +82,13 @@ public class CoverabilityGraph {
     /**
      * Cette méthode est utilisée dans l'algorithme de création du GMA. Elle permet de vérifier si le marquage du noeud actuel
      * couvre une colonne de la matrice W_moins ou Pré. On va tester si le marquage du noeud est inférieur à la colonne t de la matrice pré.
-     * @param m : marquage du noeud.
+     *
+     * @param m   : marquage du noeud.
      * @param pre : matrice Pre du modèle.
-     * @param t : indice de la transition.
+     * @param t   : indice de la transition.
      * @return Vrai ou Faux
      */
-    private boolean couvre(Marquage m, Vector<Vector<Integer>> pre, int t){
+    private boolean couvre(Marquage m, Vector<Vector<Integer>> pre, int t) {
 
         for (int i = 0; i < pre.size(); i++) {
             // on teste sur toutes les lignes de la colonne t
@@ -97,49 +99,57 @@ public class CoverabilityGraph {
         return true;
     }
 
-    public boolean couverture(Marquage M, Marquage M1){
+    public boolean couverture(Marquage M, Marquage M1) {
 
-        System.out.println("M1 = "+M1);
-        System.out.println("M = "+ M);
+        System.out.println("M1 = " + M1);
+        System.out.println("M = " + M);
 
-        if(M.getMarquage().equals(M1.getMarquage())){
+        if (M.getMarquage().equals(M1.getMarquage())) {
             System.out.println("test égalité vrai");
             return false;
         }
 
+        Marquage M2 = subVector(M1, M);
+        System.out.println("M1 - M = " + M2);
 
-        Marquage M2 = subVector(M1,M);
-        System.out.println("M1 - M = "+ M2);
-
-        if(M2.getMarquage().stream().allMatch(i -> i == 0)){
+        if (M2.getMarquage().stream().allMatch(i -> i == 0)) {
             System.out.println("M1 - M est nul donc M1 = M");
             return true;
         }
         // Si la différence entre M1 et M contient au moins un élément négatif et aucun positif (>0) alors M1 couvre M
-        boolean a = M2.getMarquage().stream().anyMatch(i -> i > 0);
+        boolean a = M2.getMarquage().stream().anyMatch(i -> i > 0 & i != Integer.MAX_VALUE);
         boolean b = M2.getMarquage().stream().noneMatch(i -> i < 0);
-        System.out.println("M2.getMarquage().stream().anyMatch(i -> i > 0) = "+ a);
-        System.out.println("M2.getMarquage().stream().noneMatch(i -> i < 0) = "+ b);
-        System.out.println("A && B = "+(a && b));
+        System.out.println("M2.getMarquage().stream().anyMatch(i -> i > 0) = " + a);
+        System.out.println("M2.getMarquage().stream().noneMatch(i -> i < 0) = " + b);
+        System.out.println("A && B = " + (a && b));
         return (a & b);
     }
 
-    public boolean containsMarquage(final List<Marquage> m, final Vector<Integer> marquage){
+    public boolean containsMarquage(final List<Marquage> m, final Vector<Integer> marquage) {
         return m.stream().anyMatch(a -> a.getMarquage().equals(marquage));
     }
 
-    public void tryToAddOmegas(final List<Node> nodes, final Marquage m){
+    public void tryToAddOmegas(final List<Node> nodes, final Marquage m) {
 
-        for(Node node : nodes){
-            for(int i = 0; i < node.getM().getMarquage().size(); i++){
-                if(m.getMarquage().get(i) > node.getM().getMarquage().get(i)){
-                    m.getMarquage().set(i,Integer.MAX_VALUE);
+        for (Node node : nodes) {
+            for (int i = 0; i < node.getM().getMarquage().size(); i++) {
+                if (m.getMarquage().get(i) > node.getM().getMarquage().get(i)) {
+                    m.getMarquage().set(i, Integer.MAX_VALUE);
                 }
             }
         }
     }
 
-    public void calculateCoverabilityGraph(){
+    public void tryToAddOmegas(final Marquage m, final Marquage m1) {
+
+        for (int i = 0; i < m.getMarquage().size(); i++) {
+            if (m1.getMarquage().get(i) > m.getMarquage().get(i)) {
+                m1.getMarquage().set(i, Integer.MAX_VALUE);
+            }
+        }
+    }
+
+    public void calculateCoverabilityGraph() {
         /* On ajoute le marquage initial aux deux listes */
         marquagesAccessibles.add(M0);
         marquagesATraiter.add(M0);
@@ -158,30 +168,36 @@ public class CoverabilityGraph {
 
             /* On créé un noeud avec le marquage que l'on vient de charger. On donne un nom au noeud.*/
             Node m = new Node(M);
-            m.setName("M"+nb_marquages);
+            m.setName("M" + nb_marquages);
 
             /* On ajoute ce noeud à la liste des noeuds. On incrémente le compteur de marquages */
             liste_node.add(m);
             this.nb_marquages++;
 
-            for(int t = 0; t < this.model.transitionVector.size(); t++){
+            for (int t = 0; t < this.model.transitionVector.size(); t++) {
                 /* Si le marquage M couvre la colonne t de la matrice pré alors : */
                 if (couvre(M, this.model.getW_moins(), t)) {
 
                     M1 = addVector(M, this.model.getC(), t);
 
-                    //Pour tous les parents de m jusque M0, on teste la couverture.
-                    for(NodeStruct n : m.getParents()){
-                        if(couverture(n.getNode().getM(),M1)){
-                            tryToAddOmegas(liste_node,M1);
-                        }
-                    }
-
                     /*
                     if(couverture(M, M1)){
                         tryToAddOmegas(liste_node,M1);
                     }
-                    */
+                     */
+
+                    if (couverture(M, M1)) {
+                        //tryToAddOmegas(liste_node,M1);
+                        tryToAddOmegas(M, M1);
+                    } else {
+                        for (Node n : liste_node) {
+                            if (couverture(n.getM(), M1)) {
+                                if(!containsMarquage(marquagesAccessibles,M1.getMarquage()))
+                                tryToAddOmegas(n.getM(), M1);
+                                //tryToAddOmegas(liste_node,M1);
+                            }
+                        }
+                    }
 
                     m.addChildren(new NodeStruct(new Node(M1), this.model.transitionVector.get(t)));
 
