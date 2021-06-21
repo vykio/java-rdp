@@ -248,18 +248,18 @@ public class Model implements Serializable {
                         transitionVector.get(j).removeChildren(arcToDelete.get(i));
                         arcVector.remove(arcToDelete.get(i));
                         nbArc--;
-                        arcToDelete.remove(i);
+
                     }
 
                     if(!transitionVector.get(j).getParents().isEmpty() && transitionVector.get(j).getParents().contains(arcToDelete.get(i))){
                         transitionVector.get(j).removeParent(arcToDelete.get(i));
                         arcVector.remove(arcToDelete.get(i));
                         nbArc--;
-                        arcToDelete.remove(i);
                     }
-                    i--;
                     j--;
                 }
+                arcToDelete.remove(i);
+                i--;
             }
         //}
         /*
