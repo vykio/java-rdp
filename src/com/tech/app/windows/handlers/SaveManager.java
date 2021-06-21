@@ -1,8 +1,15 @@
 package com.tech.app.windows.handlers;
 
+import com.tech.app.models.Arc;
 import com.tech.app.models.Model;
+import com.tech.app.models.Place;
+import com.tech.app.models.Transition;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Classe qui gère la sauvegarde et le chargement de fichier.
@@ -22,6 +29,7 @@ public class SaveManager {
             f = (new File(f.getAbsolutePath() + ".jrdp"));
         }
 
+        /*
         try {
             FileOutputStream fileOut = new FileOutputStream(f);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -33,7 +41,57 @@ public class SaveManager {
             e.printStackTrace();
             return false;
         }
+        */
+
+
+        try {
+            /*
+            FileOutputStream fileOut = new FileOutputStream(f);
+            DataOutputStream out = new DataOutputStream(fileOut);
+
+             */
+            FileWriter out = new FileWriter(f);
+
+            //Ecriture des places
+            for(int i = 0; i < model.placeVector.size();i++){
+                // name x y marquage
+                out.write(model.placeVector.get(i).getName()+" "+ (int) model.placeVector.get(i).getX()+" "+ (int) model.placeVector.get(i).getY()+" "+model.placeVector.get(i).getMarquage()+"\n");
+            }
+
+            //Ecriture des transitions et des arcs
+            for(int i = 0; i < model.transitionVector.size();i++){
+                // name x y c[a(name_place, poids),...] p[a(name_place, poids),...]
+                out.write(model.transitionVector.get(i).getName()+" "+ (int) model.transitionVector.get(i).getX()+" "+ (int) model.transitionVector.get(i).getY()+" ");
+                if(!model.transitionVector.get(i).getChildren().isEmpty()){
+                    out.write("c ");
+                    //ecriture des enfants
+                    for(int j=0; j<model.transitionVector.get(i).getChildren().size(); j++){
+                        out.write("a "+model.transitionVector.get(i).getChildren().get(j).getPlace().getName()+" "+ model.transitionVector.get(i).getChildren().get(j).getPoids()+" ");
+                    }
+                    //out.write(" ");
+                }
+                if(!model.transitionVector.get(i).getParents().isEmpty()){
+                    out.write(" p ");
+                    //ecriture des parents
+                    for(int j=0; j<model.transitionVector.get(i).getParents().size(); j++){
+                        out.write("a "+model.transitionVector.get(i).getParents().get(j).getPlace().getName()+" "+ model.transitionVector.get(i).getParents().get(j).getPoids()+" ");
+                    }
+                    //out.write(" ");
+                }
+                out.write("\n");
+            }
+
+            out.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+
+public static Place findByName(List<Place> placeVector, String name){
+        return placeVector.stream().filter(place -> name.equals(place.getName())).findFirst().orElse(null);
+}
 
     /**
      * Méthode qui permet de charger le modèle enregisté dans un fichier .jrdp.
@@ -43,7 +101,9 @@ public class SaveManager {
      * @return modèle de la sauvegarde.
      */
     public Model load(File f, Model model) {
-        Model mo;
+        Model mo = new Model();
+
+        /*
         try {
             FileInputStream fileIn = new FileInputStream(f);
             ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -55,6 +115,59 @@ public class SaveManager {
         } catch (IOException | ClassNotFoundException | ClassCastException e) {
             return null;
         }
+
+         */
+
+        try {
+
+            FileReader in = new FileReader(f);
+
+            //Lecture ligne par ligne.
+            try{
+                List<String> allLines = Files.readAllLines(Path.of(f.getAbsolutePath()));
+
+                for(String line : allLines){
+                    System.out.println(line);
+
+                    String[] words = line.split("\\s+");
+
+                    if(line.startsWith("P")){
+                        // fonction qui découpe la ligne et récupère les infos dans un tableau pour pouvoir mettre facilement dans les constructeurs
+                        mo.addPlace(new Place(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]), Integer.parseInt(words[3])));
+                    }
+
+                    if(line.startsWith("t")){
+                        Transition temp =  new Transition(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]));
+                        mo.addTransition(temp);
+
+                        for(int j = 3; j < words.length; j=j+4){
+
+                            if(words[j].equals("c") && words[j+1].equals("a") && !words[j+2].equals("p")){
+                                Place p = findByName(mo.placeVector, words[j+2]);
+                                temp.addChildren(new Arc(p,Integer.parseInt(words[j+3])));
+                            }
+
+                            if(words[j].equals("p") && words[j+1].equals("a") && !words[j+2].equals("")){
+                                Place p = findByName(mo.placeVector, words[j+2]);
+
+                                temp.addParent(new Arc(p,Integer.parseInt(words[j+3])));
+                            }
+                        }
+                    }
+                    System.out.println(Arrays.toString(words));
+                }
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+            model = mo;
+            in.close();
+            return model;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
+
 }
+

@@ -47,6 +47,9 @@ public class Place implements Serializable {
      */
     public Place(String name, double x, double y) { this(name, x, y, 0,"",0); }
 
+    public Place(String name, double x, double y, int marquage) { this(name, x, y, marquage,"",0); }
+
+
     /**
      * Constructeur d'une place.
      * @param name : nom de la place.
