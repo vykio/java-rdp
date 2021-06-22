@@ -102,7 +102,8 @@ public static Place findByName(List<Place> placeVector, String name){
      */
     public Model load(File f, Model model) {
         Model mo = new Model();
-
+        boolean childrenSection = false;
+        boolean parentSection = false;
         /*
         try {
             FileInputStream fileIn = new FileInputStream(f);
@@ -140,21 +141,47 @@ public static Place findByName(List<Place> placeVector, String name){
                         Transition temp =  new Transition(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]));
                         mo.addTransition(temp);
 
-                        for(int j = 3; j < words.length; j=j+4){
+                        for(int j = 3; j < words.length;){
 
-                            if(words[j].equals("c") && words[j+1].equals("a") && !words[j+2].equals("p")){
-                                Place p = findByName(mo.placeVector, words[j+2]);
-                                temp.addChildren(new Arc(p,Integer.parseInt(words[j+3])));
+                            boolean actionPerformed = false;
+
+                            if(!actionPerformed && childrenSection && words[j].equals("a")){
+                                Place p = findByName(mo.placeVector, words[j+1]);
+                                temp.addChildren(new Arc(p,Integer.parseInt(words[j+2])));
+                                actionPerformed = true;
+                                j=j+3;
                             }
 
-                            if(words[j].equals("p") && words[j+1].equals("a") && !words[j+2].equals("")){
-                                Place p = findByName(mo.placeVector, words[j+2]);
+                            if(!actionPerformed && parentSection && words[j].equals("a")){
+                                Place p = findByName(mo.placeVector, words[j+1]);
+                                temp.addParent(new Arc(p,Integer.parseInt(words[j+2])));
+                                actionPerformed = true;
+                                j=j+3;
+                            }
 
+                            // Si il ya un arc enfant
+                            if(!actionPerformed && words[j].equals("c") && words[j+1].equals("a")){
+                                childrenSection = true;
+                                parentSection = false;
+                                Place p = findByName(mo.placeVector, words[j+2]);
+                                temp.addChildren(new Arc(p,Integer.parseInt(words[j+3])));
+                                actionPerformed = true;
+                                j=j+4;
+                            }
+
+                            // Si il y a un arc parent
+                            if(!actionPerformed && words[j].equals("p") && words[j+1].equals("a")){
+                                childrenSection = false;
+                                parentSection = true;
+                                Place p = findByName(mo.placeVector, words[j+2]);
                                 temp.addParent(new Arc(p,Integer.parseInt(words[j+3])));
+                                actionPerformed = true;
+                                j=j+4;
                             }
                         }
                     }
                     System.out.println(Arrays.toString(words));
+                    System.out.println(mo);
                 }
             } catch (IOException e){
                 e.printStackTrace();
