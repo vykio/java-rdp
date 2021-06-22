@@ -42,6 +42,11 @@ public class Arc implements Serializable {
         this(place, poids, 0,0, false, null);
     }
 
+    public Arc(Place place, int poids, boolean placeToTransition, Transition t){
+        this(place, poids, 0,0, placeToTransition, t);
+    }
+
+
     /**
      * Constructeur d'arc utilisé dans la classe Transition.
      * @param place : Place.
@@ -81,6 +86,7 @@ public class Arc implements Serializable {
         return "Arc{" +
                 "place=" + place +
                 ", poids=" + poids +
+                ", placeToTransition = "+ placeToTransition+
                 '}';
     }
 
