@@ -42,9 +42,7 @@ public class Arc implements Serializable {
         this(place, poids, 0,0, false, null);
     }
 
-    public Arc(Place place, int poids, boolean placeToTransition, Transition t){
-        this(place, poids, 0,0, placeToTransition, t);
-    }
+    public Arc(Place place, int poids, boolean placeToTransition, Transition t){ this(place, poids, 0,0, placeToTransition, t); }
 
 
     /**
