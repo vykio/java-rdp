@@ -314,6 +314,7 @@ public class Menu extends MenuBar {
         } else {
             JOptionPane.showMessageDialog(this, "Aucun fichier choisi !");
         }
+        dp.repaint();
     }
 
     /**

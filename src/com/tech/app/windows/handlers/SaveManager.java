@@ -151,14 +151,14 @@ public static Transition findTransitionByName(List<Transition> transitionVector,
 
                             if(!actionPerformed && childrenSection && words[j].equals("a")){
                                 Place p = findPlaceByName(mo.placeVector, words[j+1]);
-                                temp.addChildren(new Arc(p,Integer.parseInt(words[j+2]), false, temp));
+                                temp.addChildren(new Arc(p,Integer.parseInt(words[j+2]),temp.getX(), temp.getY(), false, temp));
                                 actionPerformed = true;
                                 j=j+3;
                             }
 
                             if(!actionPerformed && parentSection && words[j].equals("a")){
                                 Place p = findPlaceByName(mo.placeVector, words[j+1]);
-                                temp.addParent(new Arc(p,Integer.parseInt(words[j+2]), true, temp));
+                                temp.addParent(new Arc(p,Integer.parseInt(words[j+2]),temp.getX(), temp.getY(), true, temp));
                                 actionPerformed = true;
                                 j=j+3;
                             }
@@ -168,7 +168,7 @@ public static Transition findTransitionByName(List<Transition> transitionVector,
                                 childrenSection = true;
                                 parentSection = false;
                                 Place p = findPlaceByName(mo.placeVector, words[j+2]);
-                                temp.addChildren(new Arc(p,Integer.parseInt(words[j+3]),false, temp));
+                                temp.addChildren(new Arc(p,Integer.parseInt(words[j+3]),temp.getX(), temp.getY(),false, temp));
                                 actionPerformed = true;
                                 j=j+4;
                             }
@@ -178,7 +178,7 @@ public static Transition findTransitionByName(List<Transition> transitionVector,
                                 childrenSection = false;
                                 parentSection = true;
                                 Place p = findPlaceByName(mo.placeVector, words[j+2]);
-                                temp.addParent(new Arc(p,Integer.parseInt(words[j+3]),true, temp));
+                                temp.addParent(new Arc(p,Integer.parseInt(words[j+3]),temp.getX(), temp.getY(),true, temp));
                                 actionPerformed = true;
                                 j=j+4;
                             }
