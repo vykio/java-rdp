@@ -62,6 +62,9 @@ public class Transition implements Serializable {
      */
     public Transition(String name, double x, double y) { this(name, x, y, new ArrayList<>(), new ArrayList<>(),"",0); }
 
+    public Transition(String name, double x, double y, String label, int position) { this(name, x, y, new ArrayList<>(), new ArrayList<>(),label,position); }
+
+
     /**
      * Constructeur d'une transition en (0,0)
      * @param name : nom de la transition.
@@ -152,6 +155,8 @@ public class Transition implements Serializable {
      */
     public void addLabel(String label) { this.label = label; }
 
+    public String getLabel() {return label;}
+
     /**
      * Méthode qui permet de retirer le label de la transition.
      */
@@ -162,6 +167,9 @@ public class Transition implements Serializable {
      * @param convert : position.
      */
     public void addPosition(int convert) { this.position = convert; }
+
+    public int getPosition(){return position;}
+
 
     /**
      * Méthode qui permet de remettre la position du label à 1

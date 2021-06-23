@@ -4,6 +4,7 @@ import com.tech.app.models.Arc;
 import com.tech.app.models.Model;
 import com.tech.app.models.Place;
 import com.tech.app.models.Transition;
+import org.jgrapht.util.ArrayUtil;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -55,28 +56,37 @@ public class SaveManager {
             //Ecriture des places
             for(int i = 0; i < model.placeVector.size();i++){
                 // name x y marquage
-                out.write(model.placeVector.get(i).getName()+" "+ (int) model.placeVector.get(i).getX()+" "+ (int) model.placeVector.get(i).getY()+" "+model.placeVector.get(i).getMarquage()+"\n");
+                if(model.placeVector.get(i).getLabel().equals("")){
+                    out.write(model.placeVector.get(i).getName()+" "+ (int) model.placeVector.get(i).getX()+" "+ (int) model.placeVector.get(i).getY()+" "+model.placeVector.get(i).getMarquage()+"\n");
+                } else {
+                    out.write(model.placeVector.get(i).getName() + " " + (int) model.placeVector.get(i).getX() + " " + (int) model.placeVector.get(i).getY() + " " + model.placeVector.get(i).getMarquage() + " " + model.placeVector.get(i).getLabel() + " " + model.placeVector.get(i).getPosition() + "\n");
+                }
             }
 
             //Ecriture des transitions et des arcs
             for(int i = 0; i < model.transitionVector.size();i++){
                 // name x y c[a(name_place, poids),...] p[a(name_place, poids),...]
-                out.write(model.transitionVector.get(i).getName()+" "+ (int) model.transitionVector.get(i).getX()+" "+ (int) model.transitionVector.get(i).getY()+" ");
+
+                if(model.transitionVector.get(i).getLabel().equals("")){
+                    out.write(model.transitionVector.get(i).getName()+" "+ (int) model.transitionVector.get(i).getX()+" "+ (int) model.transitionVector.get(i).getY()+" ");
+                }else {
+                    out.write(model.transitionVector.get(i).getName() + " " + (int) model.transitionVector.get(i).getX() + " " + (int) model.transitionVector.get(i).getY() + " " + model.transitionVector.get(i).getLabel() + " " + model.transitionVector.get(i).getPosition() + " ");
+                }
+
                 if(!model.transitionVector.get(i).getChildren().isEmpty()){
                     out.write("c ");
                     //ecriture des enfants
                     for(int j=0; j<model.transitionVector.get(i).getChildren().size(); j++){
                         out.write("a "+model.transitionVector.get(i).getChildren().get(j).getPlace().getName()+" "+ model.transitionVector.get(i).getChildren().get(j).getPoids()+" ");
                     }
-                    //out.write(" ");
                 }
+
                 if(!model.transitionVector.get(i).getParents().isEmpty()){
                     out.write(" p ");
                     //ecriture des parents
                     for(int j=0; j<model.transitionVector.get(i).getParents().size(); j++){
                         out.write("a "+model.transitionVector.get(i).getParents().get(j).getPlace().getName()+" "+ model.transitionVector.get(i).getParents().get(j).getPoids()+" ");
                     }
-                    //out.write(" ");
                 }
                 out.write("\n");
             }
@@ -137,28 +147,41 @@ public static Transition findTransitionByName(List<Transition> transitionVector,
                     String[] words = line.split("\\s+");
 
                     if(line.startsWith("P")){
-                        // fonction qui découpe la ligne et récupère les infos dans un tableau pour pouvoir mettre facilement dans les constructeurs
-                        mo.addPlace(new Place(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]), Integer.parseInt(words[3])));
+                        if(words.length == 6){
+                            mo.addPlace(new Place(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]), Integer.parseInt(words[3]), words[4], Integer.parseInt(words[5])));
+                        } else {
+                            mo.addPlace(new Place(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]), Integer.parseInt(words[3])));
+                        }
                     }
 
                     if(line.startsWith("t")){
-                        Transition temp =  new Transition(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]));
-                        mo.addTransition(temp);
+                        Transition t;
 
-                        for(int j = 3; j < words.length;){
+                        List<String> l = Arrays.asList(words);
+                        int indexofC = l.indexOf("c");
+
+                        if(indexofC == 5) {
+                            t =  new Transition(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]), words[3], Integer.parseInt(words[4]));
+                        } else {
+                            t =  new Transition(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]));
+                        }
+
+                        mo.addTransition(t);
+
+                        for(int j = indexofC; j < words.length;){
 
                             boolean actionPerformed = false;
 
                             if(!actionPerformed && childrenSection && words[j].equals("a")){
                                 Place p = findPlaceByName(mo.placeVector, words[j+1]);
-                                temp.addChildren(new Arc(p,Integer.parseInt(words[j+2]),temp.getX(), temp.getY(), false, temp));
+                                t.addChildren(new Arc(p,Integer.parseInt(words[j+2]),t.getX(), t.getY(), false, t));
                                 actionPerformed = true;
                                 j=j+3;
                             }
 
                             if(!actionPerformed && parentSection && words[j].equals("a")){
                                 Place p = findPlaceByName(mo.placeVector, words[j+1]);
-                                temp.addParent(new Arc(p,Integer.parseInt(words[j+2]),temp.getX(), temp.getY(), true, temp));
+                                t.addParent(new Arc(p,Integer.parseInt(words[j+2]),t.getX(), t.getY(), true, t));
                                 actionPerformed = true;
                                 j=j+3;
                             }
@@ -168,7 +191,7 @@ public static Transition findTransitionByName(List<Transition> transitionVector,
                                 childrenSection = true;
                                 parentSection = false;
                                 Place p = findPlaceByName(mo.placeVector, words[j+2]);
-                                temp.addChildren(new Arc(p,Integer.parseInt(words[j+3]),temp.getX(), temp.getY(),false, temp));
+                                t.addChildren(new Arc(p,Integer.parseInt(words[j+3]),t.getX(), t.getY(),false, t));
                                 actionPerformed = true;
                                 j=j+4;
                             }
@@ -178,7 +201,7 @@ public static Transition findTransitionByName(List<Transition> transitionVector,
                                 childrenSection = false;
                                 parentSection = true;
                                 Place p = findPlaceByName(mo.placeVector, words[j+2]);
-                                temp.addParent(new Arc(p,Integer.parseInt(words[j+3]),temp.getX(), temp.getY(),true, temp));
+                                t.addParent(new Arc(p,Integer.parseInt(words[j+3]),t.getX(), t.getY(),true, t));
                                 actionPerformed = true;
                                 j=j+4;
                             }

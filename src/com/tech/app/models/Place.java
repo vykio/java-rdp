@@ -114,11 +114,15 @@ public class Place implements Serializable {
      */
     public void resetlabel() { this.label = " "; }
 
+    public String getLabel() {return label;}
+
     /**
      * Méthode qui permet de donner la position du label de la place.
      * @param convert : position
      */
     public void addPosition(int convert) { this.position = convert; }
+
+    public int getPosition(){return position;}
 
     /**
      * Méthode qui permet de remettre la position du label à 1.
