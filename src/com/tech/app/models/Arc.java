@@ -128,9 +128,6 @@ public class Arc implements Serializable {
             e.printStackTrace();
         }
 
-        //System.out.println("AT : "+ at);
-        //System.out.println("REVERSE : "+ reverse);
-
         /* Ligne */
         if (!this.pointCtr1.getMoved()) {
             this.pointCtr1.setX((start + len-ARR_SIZE)/2);

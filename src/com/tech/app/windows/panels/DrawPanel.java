@@ -122,8 +122,8 @@ public class DrawPanel extends JPanel {
             if (obj instanceof Place) {
                 Place p = (Place) obj;
                 p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
-            } else if (obj instanceof PointControle) {
-                PointControle pt = (PointControle) obj;
+            } else if (obj instanceof Arc) {
+                PointControle pt = ((Arc) obj).getPointCtr1();
                 pt.updatePosition(pt.getX() + dx * 1 / scaleX, pt.getY() + dy * 1 / scaleY);
             } else {
                 Transition p = (Transition) obj;
@@ -184,8 +184,15 @@ public class DrawPanel extends JPanel {
             } else if (selectedObject instanceof Transition) {
                 ((Transition) selectedObject).draw(g);
             } else if (selectedObject instanceof Arc){
-                ((Arc) selectedObject).draw(g);
-                ((Arc) selectedObject).getPointCtr1().draw(gr);
+                Arc a = ((Arc) selectedObject);
+                a.draw(g);
+                Point2D src = new Point2D.Double(a.getPointCtr1().getX(),a.getPointCtr1().getY());
+                Point2D dest = new Point2D.Double();
+                a.at.transform(src, dest);
+                a.getPointCtr1().setX(dest.getX());
+                a.getPointCtr1().setY(dest.getY());
+                a.getPointCtr1().draw((Graphics2D) g);
+                System.out.println(a.getPointCtr1());
             }
             g.setColor(co);
 
