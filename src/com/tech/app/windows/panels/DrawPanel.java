@@ -9,6 +9,7 @@ import org.scilab.forge.jlatexmath.TeXIcon;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 /*
@@ -182,6 +183,8 @@ public class DrawPanel extends JPanel {
                 ((Place) selectedObject).draw(g);
             } else if (selectedObject instanceof Transition) {
                 ((Transition) selectedObject).draw(g);
+            } else if (selectedObject instanceof Arc){
+                ((Arc) selectedObject).draw(g);
             }
             g.setColor(co);
 
@@ -337,13 +340,22 @@ public class DrawPanel extends JPanel {
             }
         }
         for (Arc a : model.arcVector){
-            if(a.forme.contains(x,y)){
+            Point2D.Double src = new Point2D.Double(x,y);
+            Point2D.Double dest = new Point2D.Double();
+            a.reverse.transform(src,dest);
+            /*
+            System.out.println("point src : "+ src);
+            System.out.println("point dest : " + dest);
+            System.out.println("hitbox : "+ a.hitbox.getBounds2D();
+             */
+            if(a.hitbox.contains(dest)){
+                System.out.println("arc ok");
                 return a;
             }
         }
         for (Transition t : model.transitionVector) {
             for (Arc a : t.getChildren()) {
-                System.out.println("Pt1 > " + a.getPointCtr1());
+                //System.out.println("Pt1 > " + a.getPointCtr1());
                 if (a.containsControlPoint1(x, y)) {
                     a.getPointCtr1().setMoved(true);
                     return a.getPointCtr1();

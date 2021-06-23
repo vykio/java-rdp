@@ -88,6 +88,8 @@ public class Arc implements Serializable {
 
     public Line2D.Double forme;
     public AffineTransform at;
+    public AffineTransform reverse;
+    public Rectangle2D.Double hitbox;
 
     /**
      * Méthode qui permet de dessiner un arc.
@@ -116,6 +118,19 @@ public class Arc implements Serializable {
         at.concatenate(AffineTransform.getRotateInstance(angle));
         g2.transform(at);
 
+        hitbox = new Rectangle2D.Double(0,- ARR_SIZE/2.0 ,len,ARR_SIZE);
+        //hitbox = new Rectangle2D.Double(transition.getX() - transition.WIDTH/2.0,transition.getY() - ARR_SIZE/2.0 , Math.sqrt(Math.pow(place.getX() - transition.getX(),2) + Math.pow(place.getY() - transition.getY(), 2)) ,ARR_SIZE);
+        g2.draw(hitbox);
+
+        try {
+            reverse = at.createInverse();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        //System.out.println("AT : "+ at);
+        //System.out.println("REVERSE : "+ reverse);
+
         /* Ligne */
         if (!this.pointCtr1.getMoved()) {
             this.pointCtr1.setX((start + len-ARR_SIZE)/2);
@@ -123,7 +138,7 @@ public class Arc implements Serializable {
         }
 
         /*point de controle*/
-        pointCtr1.draw(g2);
+        //pointCtr1.draw(g2);
 
         QuadCurve2D.Double courbe = new QuadCurve2D.Double(start, 0, this.pointCtr1.getX(), this.pointCtr1.getY(), len, 0);
         /* Référentiel */
@@ -184,7 +199,7 @@ public class Arc implements Serializable {
     public boolean containing(Point.Double origin, int size, Point.Double toCompare) {
         double a1 = Math.abs(origin.getX() - toCompare.getX());
         double a2 = Math.abs(origin.getY() - toCompare.getY());
-        System.out.println("(a1:a2) = (" + a1 + ":"+ a2+")");
+        //System.out.println("(a1:a2) = (" + a1 + ":"+ a2+")");
         return (a1 < size) && (a2 < size);
     }
 
@@ -203,10 +218,10 @@ public class Arc implements Serializable {
 
         at.transform(point, pointDest);
 
-        System.out.println("PtCtrlTRANSFORM:(" + pointDest.getX() + ":" + pointDest.getY() + ") PtCtrl:(" + pointCtr1.getX() + ":" + pointCtr1.getY()+ ")");
+        //System.out.println("PtCtrlTRANSFORM:(" + pointDest.getX() + ":" + pointDest.getY() + ") PtCtrl:(" + pointCtr1.getX() + ":" + pointCtr1.getY()+ ")");
 
         boolean res = containing(pointDest, pointCtr1.getSize(), new Point.Double(x,y));
-        System.out.println(res);
+        //System.out.println(res);
         return res;
     }
 
@@ -217,6 +232,8 @@ public class Arc implements Serializable {
     public PointControle getPointCtr1() {
         return pointCtr1;
     }
+
+    public AffineTransform getAt() { return at; }
 
     /**
      * Méthode qui permet de mettre à jour les coordonnées de l'arc.
