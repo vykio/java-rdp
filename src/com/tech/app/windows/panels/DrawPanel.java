@@ -185,6 +185,7 @@ public class DrawPanel extends JPanel {
                 ((Transition) selectedObject).draw(g);
             } else if (selectedObject instanceof Arc){
                 ((Arc) selectedObject).draw(g);
+                ((Arc) selectedObject).getPointCtr1().draw(gr);
             }
             g.setColor(co);
 
