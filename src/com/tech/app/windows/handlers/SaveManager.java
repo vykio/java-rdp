@@ -30,49 +30,34 @@ public class SaveManager {
             f = (new File(f.getAbsolutePath() + ".jrdp"));
         }
 
-        /*
         try {
-            FileOutputStream fileOut = new FileOutputStream(f);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(model);
-            out.close();
-            fileOut.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        */
 
-
-        try {
-            /*
-            FileOutputStream fileOut = new FileOutputStream(f);
-            DataOutputStream out = new DataOutputStream(fileOut);
-
-             */
             FileWriter out = new FileWriter(f);
 
             //Ecriture des places
             for(int i = 0; i < model.placeVector.size();i++){
-                // name x y marquage
+
+                // Si la place n'a pas de label
                 if(model.placeVector.get(i).getLabel().equals("")){
+                    // name x y marquage
                     out.write(model.placeVector.get(i).getName()+" "+ (int) model.placeVector.get(i).getX()+" "+ (int) model.placeVector.get(i).getY()+" "+model.placeVector.get(i).getMarquage()+"\n");
                 } else {
+                    // name x y marquage label position
                     out.write(model.placeVector.get(i).getName() + " " + (int) model.placeVector.get(i).getX() + " " + (int) model.placeVector.get(i).getY() + " " + model.placeVector.get(i).getMarquage() + " " + model.placeVector.get(i).getLabel() + " " + model.placeVector.get(i).getPosition() + "\n");
                 }
             }
 
             //Ecriture des transitions et des arcs
             for(int i = 0; i < model.transitionVector.size();i++){
-                // name x y c[a(name_place, poids),...] p[a(name_place, poids),...]
 
+                // Si la transition n'a pas de label
                 if(model.transitionVector.get(i).getLabel().equals("")){
                     out.write(model.transitionVector.get(i).getName()+" "+ (int) model.transitionVector.get(i).getX()+" "+ (int) model.transitionVector.get(i).getY()+" ");
                 }else {
                     out.write(model.transitionVector.get(i).getName() + " " + (int) model.transitionVector.get(i).getX() + " " + (int) model.transitionVector.get(i).getY() + " " + model.transitionVector.get(i).getLabel() + " " + model.transitionVector.get(i).getPosition() + " ");
                 }
 
+                // Si la transition a des arcs enfants
                 if(!model.transitionVector.get(i).getChildren().isEmpty()){
                     out.write("c ");
                     //ecriture des enfants
@@ -81,6 +66,7 @@ public class SaveManager {
                     }
                 }
 
+                // Si la transition a des arcs parents
                 if(!model.transitionVector.get(i).getParents().isEmpty()){
                     out.write(" p ");
                     //ecriture des parents
@@ -93,18 +79,17 @@ public class SaveManager {
 
             out.close();
             return true;
+
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-public static Place findPlaceByName(List<Place> placeVector, String name){
-        return placeVector.stream().filter(place -> name.equals(place.getName())).findFirst().orElse(null);
-}
 
-public static Transition findTransitionByName(List<Transition> transitionVector, String name){
-    return transitionVector.stream().filter(transition -> name.equals(transition.getName())).findFirst().orElse(null);
+public static Place findPlaceByName(List<Place> placeVector, String name){
+        //permet de recupérer une place de la liste de place du model par son attribut nom
+        return placeVector.stream().filter(place -> name.equals(place.getName())).findFirst().orElse(null);
 }
 
     /**
@@ -115,23 +100,10 @@ public static Transition findTransitionByName(List<Transition> transitionVector,
      * @return modèle de la sauvegarde.
      */
     public Model load(File f, Model model) {
+
         Model mo = new Model();
         boolean childrenSection = false;
         boolean parentSection = false;
-        /*
-        try {
-            FileInputStream fileIn = new FileInputStream(f);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            mo = (Model) in.readObject();
-            model = mo;
-            in.close();
-            fileIn.close();
-            return model;
-        } catch (IOException | ClassNotFoundException | ClassCastException e) {
-            return null;
-        }
-
-         */
 
         try {
 
@@ -142,11 +114,13 @@ public static Transition findTransitionByName(List<Transition> transitionVector,
                 List<String> allLines = Files.readAllLines(Path.of(f.getAbsolutePath()));
 
                 for(String line : allLines){
-                    System.out.println(line);
 
+                    // ici on récupère dans un tableau tous les "mots" de la ligne == séparés par un espace
                     String[] words = line.split("\\s+");
 
+                    //Si la ligne commence par un P alors on va créer une place.
                     if(line.startsWith("P")){
+                        //Si il y a 6 mots dans la ligne alors la place à un label et une position.
                         if(words.length == 6){
                             mo.addPlace(new Place(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]), Integer.parseInt(words[3]), words[4], Integer.parseInt(words[5])));
                         } else {
@@ -154,31 +128,38 @@ public static Transition findTransitionByName(List<Transition> transitionVector,
                         }
                     }
 
+                    // Si la ligne commence par un t, alors on va créer une transition.
                     if(line.startsWith("t")){
                         Transition t;
 
+                        //Ici on cherche à récupérer l'indice où se trouve le "c" qui va nous permettre de savoir si la transition a un label et une position ou non.
                         List<String> l = Arrays.asList(words);
                         int indexofC = l.indexOf("c");
 
+                        // si l'indice de c est de 5 alors la transition a un label et une position.
                         if(indexofC == 5) {
                             t =  new Transition(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]), words[3], Integer.parseInt(words[4]));
                         } else {
                             t =  new Transition(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]));
                         }
 
+                        // on ajoute la transition au model
                         mo.addTransition(t);
 
+                        // Pour j commencant à l'indice de c jusqu'a la fin du tableau de mots, on va chercher à ajouter les arcs enfants et parent de la transition.
                         for(int j = indexofC; j < words.length;){
 
                             boolean actionPerformed = false;
 
-                            if(!actionPerformed && childrenSection && words[j].equals("a")){
+                            // Si on a déjà ajouter un arc enfant et que l'indice j du tableau de mot vaut "a" -> jamais vrai au premier tour.
+                            if(childrenSection && words[j].equals("a")){
                                 Place p = findPlaceByName(mo.placeVector, words[j+1]);
                                 t.addChildren(new Arc(p,Integer.parseInt(words[j+2]),t.getX(), t.getY(), false, t));
                                 actionPerformed = true;
                                 j=j+3;
                             }
 
+                            // Si on n'a pas déjà ajouter un arc dans cette itération, que l'on a déjà ajouté un premier parent et que l'indice j du tableau de mot vaut "a"
                             if(!actionPerformed && parentSection && words[j].equals("a")){
                                 Place p = findPlaceByName(mo.placeVector, words[j+1]);
                                 t.addParent(new Arc(p,Integer.parseInt(words[j+2]),t.getX(), t.getY(), true, t));
@@ -186,8 +167,8 @@ public static Transition findTransitionByName(List<Transition> transitionVector,
                                 j=j+3;
                             }
 
-                            // Si il ya un arc enfant
-                            if(!actionPerformed && words[j].equals("c") && words[j+1].equals("a")){
+                            // Si on n'a pas déjà ajouter un arc dans cette itération, que l'indice j du tableau de mot vaut "c"
+                            if(!actionPerformed && words[j].equals("c")){
                                 childrenSection = true;
                                 parentSection = false;
                                 Place p = findPlaceByName(mo.placeVector, words[j+2]);
@@ -196,32 +177,29 @@ public static Transition findTransitionByName(List<Transition> transitionVector,
                                 j=j+4;
                             }
 
-                            // Si il y a un arc parent
-                            if(!actionPerformed && words[j].equals("p") && words[j+1].equals("a")){
+                            // Si on n'a pas déjà ajouter un arc dans cette itération, l'indice j du tableau de mot vaut "p"
+                            if(!actionPerformed && words[j].equals("p") ){
                                 childrenSection = false;
                                 parentSection = true;
                                 Place p = findPlaceByName(mo.placeVector, words[j+2]);
                                 t.addParent(new Arc(p,Integer.parseInt(words[j+3]),t.getX(), t.getY(),true, t));
-                                actionPerformed = true;
                                 j=j+4;
                             }
                         }
                     }
-                    System.out.println(Arrays.toString(words));
-                    System.out.println(mo);
                 }
             } catch (IOException e){
                 e.printStackTrace();
             }
+
             model = mo;
             in.close();
             return model;
+
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
-
-
 }
 
