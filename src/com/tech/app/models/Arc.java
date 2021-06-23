@@ -120,7 +120,7 @@ public class Arc implements Serializable {
 
         hitbox = new Rectangle2D.Double(0,- ARR_SIZE/2.0 ,len,ARR_SIZE);
         //hitbox = new Rectangle2D.Double(transition.getX() - transition.WIDTH/2.0,transition.getY() - ARR_SIZE/2.0 , Math.sqrt(Math.pow(place.getX() - transition.getX(),2) + Math.pow(place.getY() - transition.getY(), 2)) ,ARR_SIZE);
-        g2.draw(hitbox);
+        //g2.draw(hitbox);
 
         try {
             reverse = at.createInverse();
@@ -196,7 +196,7 @@ public class Arc implements Serializable {
     public boolean containing(Point.Double origin, int size, Point.Double toCompare) {
         double a1 = Math.abs(origin.getX() - toCompare.getX());
         double a2 = Math.abs(origin.getY() - toCompare.getY());
-        //System.out.println("(a1:a2) = (" + a1 + ":"+ a2+")");
+        System.out.println("(a1:a2) = (" + a1 + ":"+ a2+")");
         return (a1 < size) && (a2 < size);
     }
 
@@ -215,11 +215,15 @@ public class Arc implements Serializable {
 
         at.transform(point, pointDest);
 
-        //System.out.println("PtCtrlTRANSFORM:(" + pointDest.getX() + ":" + pointDest.getY() + ") PtCtrl:(" + pointCtr1.getX() + ":" + pointCtr1.getY()+ ")");
+        System.out.println("PtCtrlTRANSFORM:(" + pointDest.getX() + ":" + pointDest.getY() + ") PtCtrl:(" + pointCtr1.getX() + ":" + pointCtr1.getY()+ ")");
 
-        boolean res = containing(pointDest, pointCtr1.getSize(), new Point.Double(x,y));
-        //System.out.println(res);
-        return res;
+
+
+        boolean res = containing(pointDest, pointCtr1.getSize()+ pointCtr1.getSize()/2, new Point.Double(x,y));
+
+        boolean result = pointCtr1.contains(x,y);
+        System.out.println(result);
+        return result;
     }
 
     /**

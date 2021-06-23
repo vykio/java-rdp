@@ -124,10 +124,14 @@ public class DrawPanel extends JPanel {
                 p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
             } else if (obj instanceof Arc) {
                 PointControle pt = ((Arc) obj).getPointCtr1();
-                pt.updatePosition(pt.getX() + dx * 1 / scaleX, pt.getY() + dy * 1 / scaleY);
+                obj = null;
+                //pt.updatePosition(pt.getX() + dx * 1 / scaleX, pt.getY() + dy * 1 / scaleY);
+            } else if (obj instanceof PointControle) {
+                PointControle point = (PointControle) obj;
+                point.updatePosition(point.getX() + dx * 1 / scaleX, point.getY() + dy * 1 / scaleY);
             } else {
-                Transition p = (Transition) obj;
-                    p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
+                Transition t = (Transition) obj;
+                t.updatePosition(t.getX() + dx * 1 / scaleX, t.getY() + dy * 1 / scaleY);
             }
             repaint();
         }
@@ -281,7 +285,6 @@ public class DrawPanel extends JPanel {
             } else {
                 this.clickError = true;
             }
-
         }
         repaint();
 
@@ -337,6 +340,18 @@ public class DrawPanel extends JPanel {
      * @return Objet
      */
     public Object getSelectedObject(double x, double y) {
+
+        if(selectedObject !=null && selectedObject instanceof Arc){
+            Arc a = (Arc) selectedObject;
+            selectedObject = null;
+            System.out.println("oui");
+            System.out.println("{x : "+x+", y : "+y+"}");
+            if(a.containsControlPoint1(x,y)){
+                System.out.println("oui 2");
+               a.getPointCtr1().setMoved(true);
+               return a.getPointCtr1();
+            }
+        }
         for (Place p:model.placeVector) {
             if (p.forme.contains(x,y)) {
                 return p;
@@ -356,22 +371,12 @@ public class DrawPanel extends JPanel {
             System.out.println("point dest : " + dest);
             System.out.println("hitbox : "+ a.hitbox.getBounds2D();
              */
-            if(a.hitbox.contains(dest)){
+            if(a.hitbox.contains(dest) || a.forme.contains(dest)){
                 System.out.println("arc ok");
                 return a;
             }
         }
-        for (Transition t : model.transitionVector) {
-            for (Arc a : t.getChildren()) {
-                //System.out.println("Pt1 > " + a.getPointCtr1());
-                if (a.containsControlPoint1(x, y)) {
-                    a.getPointCtr1().setMoved(true);
-                    return a.getPointCtr1();
-                }
-            }
-        }
-
-        return null;
+       return null;
     }
 
     /**
