@@ -85,6 +85,7 @@ public class Arc implements Serializable {
                 "place=" + place +
                 ", poids=" + poids +
                 ", placeToTransition = "+ placeToTransition+
+                ", "+ pointCtr1+
                 '}';
     }
 
@@ -92,6 +93,7 @@ public class Arc implements Serializable {
 
     public Line2D.Double forme;
     public AffineTransform at;
+    public AffineTransform reverse;
 
     /**
      * Méthode qui permet de dessiner un arc.
@@ -120,8 +122,14 @@ public class Arc implements Serializable {
         at.concatenate(AffineTransform.getRotateInstance(angle));
         g2.transform(at);
 
+        try {
+            reverse = at.createInverse();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
         /* Ligne */
-        if (!this.pointCtr1.getMoved()) {
+        if (this.pointCtr1.getOrigin()) {
             this.pointCtr1.setX((start + len-ARR_SIZE)/2);
             this.pointCtr1.setY(0);
         }

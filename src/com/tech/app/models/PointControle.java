@@ -11,6 +11,7 @@ public class PointControle implements Serializable {
 
     private double x, y;
     private boolean moved;
+    private boolean origin;
     private final int size;
 
     /**
@@ -28,6 +29,7 @@ public class PointControle implements Serializable {
     public PointControle (double x, double y) {
         this.x = x;
         this.y = y;
+        this.origin = true;
         this.moved = false;
         this.size = 5;
     }
@@ -80,13 +82,15 @@ public class PointControle implements Serializable {
      */
     public boolean getMoved() { return moved; }
 
+    public boolean getOrigin() { return origin; }
+
+    public void setOrigin(boolean bool){ this.origin = bool;}
+
     /**
      * Méthode qui permet de récupérer la taille du point de controle.
      * @return size.
      */
-    public int getSize() {
-        return size;
-    }
+    public int getSize() { return size; }
 
     /**
      * Méthode qui permet de définir si le point de controle est en mouvement.
@@ -100,9 +104,7 @@ public class PointControle implements Serializable {
      * Méthode qui permet de dessiner le point de controle.
      * @param g2 : Graphics2D.
      */
-    public void draw(Graphics2D g2) {
-        g2.draw(new Rectangle2D.Double(this.getX(), this.getY(), size, size));
-    }
+    public void draw(Graphics2D g2) { g2.draw(new Rectangle2D.Double(this.getX(), this.getY(), size, size)); }
 
     /**
      * Méthode qui permet de savoir si les coordonnées en paramètre sont dans la zone du point de controle.
@@ -110,9 +112,7 @@ public class PointControle implements Serializable {
      * @param y : y à tester
      * @return booléen.
      */
-    public boolean contains(double x, double y) {
-        return (Math.abs(x - this.getX()) < size) && (Math.abs(y - this.getY()) < size);
-    }
+    public boolean contains(double x, double y) { return (Math.abs(x - this.getX()) < size) && (Math.abs(y - this.getY()) < size); }
 
     /**
      * Méthode qui affiche les caractéristiques du point de controle.
@@ -124,6 +124,7 @@ public class PointControle implements Serializable {
         return "PointControle{" +
                 "x=" + x +
                 ", y=" + y +
+                ", origin=" +origin +
                 ", moved=" + moved +
                 ", size=" + size +
                 '}';

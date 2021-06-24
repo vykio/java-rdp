@@ -7,6 +7,7 @@ import com.tech.app.models.Transition;
 import com.tech.app.models.PointControle;
 import org.jgrapht.util.ArrayUtil;
 
+import java.awt.geom.Point2D;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -63,7 +64,12 @@ public class SaveManager {
                     out.write("c ");
                     //ecriture des enfants
                     for(int j=0; j<model.transitionVector.get(i).getChildren().size(); j++){
-                        out.write("a "+model.transitionVector.get(i).getChildren().get(j).getPlace().getName()+" "+ model.transitionVector.get(i).getChildren().get(j).getPoids()+" ");
+                        Arc child = model.transitionVector.get(i).getChildren().get(j);
+                        //Point2D.Double pt = new Point2D.Double();
+                        //child.reverse.transform(new Point2D.Double(child.getPointCtr1().getX(),child.getPointCtr1().getY()), pt);
+                        //out.write("a "+child.getPlace().getName()+" "+ child.getPoids()+" "+ (int) pt.getX()+" " + (int) pt.getY()+" ");
+                        out.write("a "+child.getPlace().getName()+" "+ child.getPoids()+" "+ (int) child.getPointCtr1().getX()+" " + (int) child.getPointCtr1().getY()+" ");
+
                     }
                 }
 
@@ -72,7 +78,12 @@ public class SaveManager {
                     out.write(" p ");
                     //ecriture des parents
                     for(int j=0; j<model.transitionVector.get(i).getParents().size(); j++){
-                        out.write("a "+model.transitionVector.get(i).getParents().get(j).getPlace().getName()+" "+ model.transitionVector.get(i).getParents().get(j).getPoids()+" ");
+                        Arc parent = model.transitionVector.get(i).getParents().get(j);
+                        //Point2D.Double pt = new Point2D.Double();
+                        //parent.reverse.transform(new Point2D.Double(parent.getPointCtr1().getX(),parent.getPointCtr1().getY()), pt);
+                        //out.write("a "+parent.getPlace().getName()+" "+ parent.getPoids()+" " + (int) pt.getX()+" " + (int) pt.getY()+" ");
+                        out.write("a "+parent.getPlace().getName()+" "+ parent.getPoids()+" " + (int) parent.getPointCtr1().getX()+" " + (int) parent.getPointCtr1().getY()+" ");
+
                     }
                 }
                 out.write("\n");
