@@ -4,6 +4,7 @@ import com.tech.app.models.Arc;
 import com.tech.app.models.Model;
 import com.tech.app.models.Place;
 import com.tech.app.models.Transition;
+import com.tech.app.models.PointControle;
 import org.jgrapht.util.ArrayUtil;
 
 import java.io.*;
@@ -154,17 +155,23 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
                             // Si on a déjà ajouter un arc enfant et que l'indice j du tableau de mot vaut "a" -> jamais vrai au premier tour.
                             if(childrenSection && words[j].equals("a")){
                                 Place p = findPlaceByName(mo.placeVector, words[j+1]);
-                                t.addChildren(new Arc(p,Integer.parseInt(words[j+2]),t.getX(), t.getY(), false, t));
+                                Arc a = new Arc(p,Integer.parseInt(words[j+2]),t.getX(), t.getY(), false, t);
+                                PointControle pt = new PointControle(Integer.parseInt(words[j+3]),Integer.parseInt(words[j+4]));
+                                a.setPointCtr1(pt);
+                                t.addChildren(a);
                                 actionPerformed = true;
-                                j=j+3;
+                                j=j+5;
                             }
 
                             // Si on n'a pas déjà ajouter un arc dans cette itération, que l'on a déjà ajouté un premier parent et que l'indice j du tableau de mot vaut "a"
                             if(!actionPerformed && parentSection && words[j].equals("a")){
                                 Place p = findPlaceByName(mo.placeVector, words[j+1]);
-                                t.addParent(new Arc(p,Integer.parseInt(words[j+2]),t.getX(), t.getY(), true, t));
+                                Arc a = new Arc(p,Integer.parseInt(words[j+2]),t.getX(), t.getY(), true, t);
+                                PointControle pt = new PointControle(Integer.parseInt(words[j+3]),Integer.parseInt(words[j+4]));
+                                a.setPointCtr1(pt);
+                                t.addParent(a);
                                 actionPerformed = true;
-                                j=j+3;
+                                j=j+5;
                             }
 
                             // Si on n'a pas déjà ajouter un arc dans cette itération, que l'indice j du tableau de mot vaut "c"
@@ -172,9 +179,12 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
                                 childrenSection = true;
                                 parentSection = false;
                                 Place p = findPlaceByName(mo.placeVector, words[j+2]);
-                                t.addChildren(new Arc(p,Integer.parseInt(words[j+3]),t.getX(), t.getY(),false, t));
+                                Arc a = new Arc(p,Integer.parseInt(words[j+3]),t.getX(), t.getY(),false, t);
+                                PointControle pt = new PointControle(Integer.parseInt(words[j+4]),Integer.parseInt(words[j+5]));
+                                a.setPointCtr1(pt);
+                                t.addChildren(a);
                                 actionPerformed = true;
-                                j=j+4;
+                                j=j+6;
                             }
 
                             // Si on n'a pas déjà ajouter un arc dans cette itération, l'indice j du tableau de mot vaut "p"
@@ -182,8 +192,11 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
                                 childrenSection = false;
                                 parentSection = true;
                                 Place p = findPlaceByName(mo.placeVector, words[j+2]);
-                                t.addParent(new Arc(p,Integer.parseInt(words[j+3]),t.getX(), t.getY(),true, t));
-                                j=j+4;
+                                Arc a  = new Arc(p,Integer.parseInt(words[j+3]),t.getX(), t.getY(),true, t);
+                                PointControle pt = new PointControle(Integer.parseInt(words[j+4]),Integer.parseInt(words[j+5]));
+                                a.setPointCtr1(pt);
+                                t.addParent(a);
+                                j=j+6;
                             }
                         }
                     }
@@ -202,4 +215,3 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
         }
     }
 }
-

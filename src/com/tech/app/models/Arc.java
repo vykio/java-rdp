@@ -13,7 +13,7 @@ public class Arc implements Serializable {
     private int poids;
     private final boolean placeToTransition;
     private final Transition transition;
-    private final PointControle pointCtr1;
+    private PointControle pointCtr1;
 
     /**
      * Constructeur d'arc utilisé dans DrawPanel lorsque l'utilisateur clique sur la zone de dessin en ayant selectionné l'outil arc.
@@ -221,6 +221,8 @@ public class Arc implements Serializable {
     public PointControle getPointCtr1() {
         return pointCtr1;
     }
+
+    public void setPointCtr1(PointControle pt){ this.pointCtr1 = pt;}
 
     /**
      * Méthode qui permet de mettre à jour les coordonnées de l'arc.
