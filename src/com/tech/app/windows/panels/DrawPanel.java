@@ -122,10 +122,6 @@ public class DrawPanel extends JPanel {
             if (obj instanceof Place) {
                 Place p = (Place) obj;
                 p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
-            } else if (obj instanceof Arc) {
-                PointControle pt = ((Arc) obj).getPointCtr1();
-                obj = null;
-                //pt.updatePosition(pt.getX() + dx * 1 / scaleX, pt.getY() + dy * 1 / scaleY);
             } else if (obj instanceof PointControle) {
                 PointControle point = (PointControle) obj;
                 point.updatePosition(point.getX() + dx * 1 / scaleX, point.getY() + dy * 1 / scaleY);
@@ -343,15 +339,14 @@ public class DrawPanel extends JPanel {
 
         if(selectedObject !=null && selectedObject instanceof Arc){
             Arc a = (Arc) selectedObject;
-            selectedObject = null;
             System.out.println("oui");
             System.out.println("{x : "+x+", y : "+y+"}");
             if(a.containsControlPoint1(x,y)){
-                System.out.println("oui 2");
                a.getPointCtr1().setMoved(true);
                return a.getPointCtr1();
             }
         }
+
         for (Place p:model.placeVector) {
             if (p.forme.contains(x,y)) {
                 return p;
@@ -366,13 +361,7 @@ public class DrawPanel extends JPanel {
             Point2D.Double src = new Point2D.Double(x,y);
             Point2D.Double dest = new Point2D.Double();
             a.reverse.transform(src,dest);
-            /*
-            System.out.println("point src : "+ src);
-            System.out.println("point dest : " + dest);
-            System.out.println("hitbox : "+ a.hitbox.getBounds2D();
-             */
-            if(a.hitbox.contains(dest) || a.forme.contains(dest)){
-                System.out.println("arc ok");
+            if(a.hitbox.contains(dest)){
                 return a;
             }
         }

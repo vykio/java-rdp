@@ -118,9 +118,7 @@ public class Arc implements Serializable {
         at.concatenate(AffineTransform.getRotateInstance(angle));
         g2.transform(at);
 
-        hitbox = new Rectangle2D.Double(0,- ARR_SIZE/2.0 ,len,ARR_SIZE);
-        //hitbox = new Rectangle2D.Double(transition.getX() - transition.WIDTH/2.0,transition.getY() - ARR_SIZE/2.0 , Math.sqrt(Math.pow(place.getX() - transition.getX(),2) + Math.pow(place.getY() - transition.getY(), 2)) ,ARR_SIZE);
-        //g2.draw(hitbox);
+
 
         try {
             reverse = at.createInverse();
@@ -141,6 +139,10 @@ public class Arc implements Serializable {
         /* Référentiel */
 
         g2.draw(courbe);
+
+        hitbox = new Rectangle2D.Double(0,- ARR_SIZE/2.0 ,len,ARR_SIZE);
+        //hitbox = new Rectangle2D.Double(transition.getX() - transition.WIDTH/2.0,transition.getY() - ARR_SIZE/2.0 , Math.sqrt(Math.pow(place.getX() - transition.getX(),2) + Math.pow(place.getY() - transition.getY(), 2)) ,ARR_SIZE);
+        g2.draw(hitbox);
 
         /* Fléche */
         Path2D path = new Path2D.Double();
