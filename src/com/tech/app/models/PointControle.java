@@ -12,7 +12,7 @@ public class PointControle implements Serializable {
     private double x, y;
     private boolean moved;
     private boolean origin;
-    private final int size;
+    private int size;
 
     /**
      * Constructeur d'un point de controle en (0,0).
@@ -27,9 +27,13 @@ public class PointControle implements Serializable {
      * @param y : y
      */
     public PointControle (double x, double y) {
+
+    }
+
+    public PointControle(double x, double y, boolean origin){
         this.x = x;
         this.y = y;
-        this.origin = true;
+        this.origin = origin;
         this.moved = false;
         this.size = 5;
     }
@@ -42,6 +46,7 @@ public class PointControle implements Serializable {
     public void updatePosition(double x, double y) {
         this.x = x;
         this.y = y;
+        this.origin = false;
     }
 
     /**

@@ -138,7 +138,6 @@ public class DrawPanel extends JPanel {
                 PointControle pt = (PointControle) obj;
                 pt.updatePosition(pt.getX() + dx * 1 / scaleX, pt.getY() + dy * 1 / scaleY);
                 //System.out.println("test");
-                pt.setOrigin(false);
                 System.out.println(model);
             } else {
                 Transition p = (Transition) obj;
