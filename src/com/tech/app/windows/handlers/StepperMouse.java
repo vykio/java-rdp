@@ -13,6 +13,7 @@ import java.awt.geom.AffineTransform;
 public class StepperMouse extends MouseAdapter {
 
     public StepperHandler stepperHandler;
+    public Stepper stepper;
 
     public boolean mousePressed = false;
     public boolean mouseClicked = false;
@@ -25,6 +26,7 @@ public class StepperMouse extends MouseAdapter {
 
     public StepperMouse(StepperHandler stepperHandler) {
         this.stepperHandler = stepperHandler;
+        this.stepper = new Stepper(stepperHandler.model);
         stepperHandler.addMouseListener(this);
         stepperHandler.addMouseMotionListener(this);
         stepperHandler.addMouseWheelListener(new StepperScaleHandler());
@@ -70,6 +72,11 @@ public class StepperMouse extends MouseAdapter {
         if(mouseEntered){
             if(SwingUtilities.isLeftMouseButton(e)){
                 selectedObject = stepperHandler.getSelectedObject(x/stepperHandler.scaleX, y/stepperHandler.scaleY);
+                System.out.println(selectedObject);
+            }
+            if(selectedObject!=null){
+                stepper.goToNextMarquage(selectedObject);
+                stepperHandler.repaint();
             }
         }
     }

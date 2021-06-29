@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class StepperHandler extends JPanel {
 
     private final JFrame frame;
-    private final Model model;
+    public final Model model;
 
     public final double MAX_ZOOM = 3;
     public final double MIN_ZOOM = 0.5;

@@ -39,7 +39,7 @@ public class StepperWindow extends Window{
 
         StepperMouse stepperMouse = new StepperMouse(stepperHandler);
 
-        StepperToolbar stepperToolbar = new StepperToolbar(this);
+        StepperToolbar stepperToolbar = new StepperToolbar(this,model);
         stepperToolbar.applyToolbar();
 
     }
