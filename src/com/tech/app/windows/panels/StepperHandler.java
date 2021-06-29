@@ -4,22 +4,41 @@ import com.tech.app.functions.FUtils;
 import com.tech.app.models.Model;
 import com.tech.app.models.Place;
 import com.tech.app.models.Transition;
-import com.tech.app.windows.toolbars.StepperToolbar;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.List;
+import java.util.ArrayList;
 
 public class StepperHandler extends JPanel {
 
     private final JFrame frame;
     private final Model model;
-    private final double scaleFactor = FUtils.Screen.getScaleFactor();
+
+    public final double MAX_ZOOM = 3;
+    public final double MIN_ZOOM = 0.5;
+
+    private final double scaleFactor;
+    public double scaleX;
+    public double scaleY;
+
+    public double mouseX, mouseY;
+    private double arcOriginX = 0, arcOriginY =0, arcDestX=0, arcDestY=0;
+
+    public AffineTransform transform;
 
 
     public StepperHandler(JFrame frame, Model model){
+        this.scaleFactor = FUtils.Screen.getScaleFactor();
+        this.scaleX = scaleFactor;
+        this.scaleY = scaleFactor;
+
         this.frame = frame;
         this.model=model;
+
+        this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
+
     }
 
     public void applyPanel() {
@@ -39,7 +58,6 @@ public class StepperHandler extends JPanel {
 
         /* Appliquer le zoom */
 
-        AffineTransform transform = AffineTransform.getScaleInstance(scaleFactor,scaleFactor);
         gr.setTransform(transform);
 
         /* Afficher chaque places et transitions, qui ne sont pas sélectionnées */
@@ -56,5 +74,32 @@ public class StepperHandler extends JPanel {
                 g.setColor(co);
             }
         }
+    }
+
+    public void updatePositions(double scaleX, double scaleY, double dx, double dy) {
+        for (Place p : model.placeVector) {
+            p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
+            repaint();
+        }
+        for (Transition t : model.transitionVector) {
+            t.updatePosition(t.getX() + dx * 1 / scaleX, t.getY() + dy * 1 / scaleY);
+            repaint();
+        }
+
+        /* Mettre à jour les coordonnées des arcs en cours de création */
+        arcOriginX += dx / scaleX*scaleFactor;
+        arcOriginY += dy / scaleY*scaleFactor;
+        arcDestX += dx / scaleX*scaleFactor;
+        arcDestY += dy / scaleY*scaleFactor;
+    }
+
+    public Object getSelectedObject(double x, double y){
+        List<Transition> transitionFranchissable = model.getTransitionFranchissables();
+        for(Transition t : transitionFranchissable){
+            if(t.forme.contains(x,y)){
+                return t;
+            }
+        }
+        return null;
     }
 }
