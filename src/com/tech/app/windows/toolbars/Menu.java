@@ -281,7 +281,8 @@ public class Menu extends MenuBar {
         EventQueue.invokeLater(
                 () -> {
                     try{
-                        new StepperWindow(900,500,model);
+                        Model stepperModel = new Model(model);
+                        new StepperWindow(900,500,stepperModel);
                     } catch(UnsupportedLookAndFeelException e){
                         e.printStackTrace();
                     }

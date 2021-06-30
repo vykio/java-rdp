@@ -27,6 +27,7 @@ public class StepperWindow extends Window{
             UIManager.setLookAndFeel(new MetalLookAndFeel());
         }
         this.model = model;
+        model.updateMatrices();
         setWindowHandler(new StepperWindowHandler(this));
         build();
 

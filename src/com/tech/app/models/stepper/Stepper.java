@@ -10,8 +10,7 @@ import java.util.Vector;
 
 public class Stepper{
 
-    private Model model;
-    public StepperHandler stepperHandler;
+    private final Model model;
 
     public Stepper(Model model){
         this.model = model;

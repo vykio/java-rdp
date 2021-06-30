@@ -19,7 +19,7 @@ public class StepperHandler extends JPanel {
     public final double MAX_ZOOM = 3;
     public final double MIN_ZOOM = 0.5;
 
-    private final double scaleFactor;
+    public final double scaleFactor;
     public double scaleX;
     public double scaleY;
 
