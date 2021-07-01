@@ -2,6 +2,7 @@ package com.tech.app.windows.toolbars;
 
 import com.tech.app.models.Model;
 import com.tech.app.models.stepper.Stepper;
+import com.tech.app.windows.handlers.StepperMouse;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,11 +15,12 @@ public class StepperToolbar extends Toolbar{
 
     public Model model;
     public Stepper stepper;
+    public StepperMouse stepperMouse;
 
-    public StepperToolbar(JFrame frame, Model model){
+    public StepperToolbar(JFrame frame, Model model, StepperMouse stepperMouse){
         super(frame);
         this.model = model;
-        this.stepper = new Stepper(model);
+        this.stepper = stepperMouse.stepper;
     }
 
     @Override
@@ -95,18 +97,19 @@ public class StepperToolbar extends Toolbar{
     }
 
     public void btnOriginListener(ActionEvent event){
-
+        stepper.goToFirstMarquage();
     }
 
     public void btnPreviousListener(ActionEvent event){
-
+        stepper.goToPreviousMarquage();
     }
 
     public void btnNextListener(ActionEvent event){
+        stepper.goToNextMarquage();
     }
 
     public void btnLastListener(ActionEvent event){
-
+        stepper.goToLastMarquage();
     }
 
 }

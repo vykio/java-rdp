@@ -5,15 +5,21 @@ import com.tech.app.models.Transition;
 import com.tech.app.models.gma.Marquage;
 import com.tech.app.windows.panels.StepperHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 public class Stepper{
 
     private final Model model;
+    private final StepperHandler stepperHandler;
+    public List<Vector<Integer>> marquagesPasse;
 
-    public Stepper(Model model){
+    public Stepper(Model model, StepperHandler stepperHandler){
         this.model = model;
+        this.stepperHandler = stepperHandler;
+        this.marquagesPasse = new ArrayList<>();
+        marquagesPasse.add(model.getM0());
     }
 
     /**
@@ -36,16 +42,51 @@ public class Stepper{
         return transitions.stream().filter(t -> t.equals(selectedObject)).findFirst().orElse(null);
     }
 
-    public void goToNextMarquage(Object selectedObject){
+    public void clickToNextMarquage(Object selectedObject){
 
-        Transition t = findTransition(model.transitionVector, selectedObject);
-        int indexOfT = model.transitionVector.indexOf(t);
+        int indexOfT = model.transitionVector.indexOf((Transition) selectedObject);
 
-        Vector<Integer> newMarquage = addVector(model.getMarquage(), model.getC(), indexOfT);
+        Vector<Integer> nextMarquage = addVector(model.getMarquage(), model.getC(), indexOfT);
 
-        model.setMarquage(newMarquage);
-        //stepperHandler.repaint();
+        marquagesPasse.add(nextMarquage);
+        System.out.println("from click =" +marquagesPasse);
+
+        model.setMarquage(nextMarquage);
+        stepperHandler.repaint();
     }
 
+    public List<Vector<Integer>> getMarquagesPasse() {
+        return marquagesPasse;
+    }
 
+    public void goToLastMarquage(){
+        model.setMarquage(getMarquagesPasse().get(getMarquagesPasse().size() -1));
+        stepperHandler.repaint();
+
+    }
+
+    public void goToNextMarquage() {
+        if(!getMarquagesPasse().isEmpty()) {
+            Vector<Integer> nextMarquage = getMarquagesPasse().iterator().next();
+
+            model.setMarquage(nextMarquage);
+        }
+        stepperHandler.repaint();
+    }
+
+    public void goToPreviousMarquage(){
+        System.out.println(getMarquagesPasse());
+        if(!getMarquagesPasse().isEmpty()) {
+
+            Vector<Integer> previousMarquage = getMarquagesPasse().get(getMarquagesPasse().size() - 1);
+
+            model.setMarquage(previousMarquage);
+        }
+        stepperHandler.repaint();
+    }
+
+    public void goToFirstMarquage(){
+        model.setMarquage(getMarquagesPasse().get(0));
+        stepperHandler.repaint();
+    }
 }

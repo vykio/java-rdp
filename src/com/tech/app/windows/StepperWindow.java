@@ -3,6 +3,7 @@ package com.tech.app.windows;
 import com.tech.app.functions.FUtils;
 import com.tech.app.models.Model;
 
+import com.tech.app.models.stepper.Stepper;
 import com.tech.app.windows.handlers.DrawMouse;
 import com.tech.app.windows.handlers.StepperMouse;
 import com.tech.app.windows.handlers.StepperWindowHandler;
@@ -40,8 +41,10 @@ public class StepperWindow extends Window{
 
         StepperMouse stepperMouse = new StepperMouse(stepperHandler);
 
-        StepperToolbar stepperToolbar = new StepperToolbar(this,model);
+        StepperToolbar stepperToolbar = new StepperToolbar(this,model,stepperMouse);
         stepperToolbar.applyToolbar();
+
+        Stepper stepper = new Stepper(model,stepperHandler);
 
     }
 }

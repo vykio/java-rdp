@@ -26,7 +26,7 @@ public class StepperMouse extends MouseAdapter {
 
     public StepperMouse(StepperHandler stepperHandler) {
         this.stepperHandler = stepperHandler;
-        this.stepper = new Stepper(stepperHandler.model);
+        this.stepper = new Stepper(stepperHandler.model, stepperHandler);
         stepperHandler.addMouseListener(this);
         stepperHandler.addMouseMotionListener(this);
         stepperHandler.addMouseWheelListener(new StepperScaleHandler());
@@ -75,7 +75,7 @@ public class StepperMouse extends MouseAdapter {
                 System.out.println(selectedObject);
             }
             if(selectedObject!=null){
-                stepper.goToNextMarquage(selectedObject);
+                stepper.clickToNextMarquage(selectedObject);
                 stepperHandler.repaint();
             }
         }
