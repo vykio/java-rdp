@@ -42,6 +42,10 @@ public class Stepper{
         return transitions.stream().filter(t -> t.equals(selectedObject)).findFirst().orElse(null);
     }
 
+    private Vector<Integer> findMarquage(List<Vector<Integer>> marquagesPasse, Vector<Integer> currentMarquage){
+        return marquagesPasse.stream().filter(m -> m.equals(currentMarquage)).findFirst().orElse(null);
+    }
+
     public void clickToNextMarquage(Object selectedObject){
 
         int indexOfT = model.transitionVector.indexOf((Transition) selectedObject);
@@ -67,7 +71,10 @@ public class Stepper{
 
     public void goToNextMarquage() {
         if(!getMarquagesPasse().isEmpty()) {
-            Vector<Integer> nextMarquage = getMarquagesPasse().iterator().next();
+
+            int indexOfCurrentMarquage = marquagesPasse.indexOf(findMarquage(marquagesPasse, model.getMarquage()));
+
+            Vector<Integer> nextMarquage = getMarquagesPasse().get(indexOfCurrentMarquage+1);
 
             model.setMarquage(nextMarquage);
         }
@@ -78,7 +85,9 @@ public class Stepper{
         System.out.println(getMarquagesPasse());
         if(!getMarquagesPasse().isEmpty()) {
 
-            Vector<Integer> previousMarquage = getMarquagesPasse().get(getMarquagesPasse().size() - 1);
+            int indexOfCurrentMarquage = marquagesPasse.indexOf(findMarquage(marquagesPasse, model.getMarquage()));
+
+            Vector<Integer> previousMarquage = getMarquagesPasse().get(indexOfCurrentMarquage - 1);
 
             model.setMarquage(previousMarquage);
         }
