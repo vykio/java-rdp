@@ -7,6 +7,7 @@ import com.tech.app.windows.panels.StepperHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
 public class Stepper{
@@ -96,6 +97,27 @@ public class Stepper{
 
     public void goToFirstMarquage(){
         model.setMarquage(getMarquagesPasse().get(0));
+        stepperHandler.repaint();
+    }
+
+    public void repaint(){
+        stepperHandler.repaint();
+    }
+
+    public void randomize(){
+
+        List<Transition> transitionList = model.getTransitionFranchissables();
+
+        Random random = new Random();
+
+        int indexOfT = model.transitionVector.indexOf(transitionList.get(random.nextInt(transitionList.size())));
+
+        Vector<Integer> nextMarquage = addVector(model.getMarquage(), model.getC(), indexOfT);
+
+        marquagesPasse.add(nextMarquage);
+
+        model.setMarquage(nextMarquage);
+        System.out.println(marquagesPasse);
         stepperHandler.repaint();
     }
 }

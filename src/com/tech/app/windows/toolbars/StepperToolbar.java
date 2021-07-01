@@ -3,24 +3,30 @@ package com.tech.app.windows.toolbars;
 import com.tech.app.models.Model;
 import com.tech.app.models.stepper.Stepper;
 import com.tech.app.windows.handlers.StepperMouse;
+import com.tech.app.windows.panels.StepperHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class StepperToolbar extends Toolbar{
 
     public Model model;
     public Stepper stepper;
     public StepperMouse stepperMouse;
+    public StepperHandler stepperHandler;
 
-    public StepperToolbar(JFrame frame, Model model, StepperMouse stepperMouse){
+    public StepperToolbar(JFrame frame, Model model, StepperMouse stepperMouse, StepperHandler stepperHandler){
         super(frame);
         this.model = model;
         this.stepper = stepperMouse.stepper;
+        this.stepperHandler = stepperHandler;
     }
 
     @Override
@@ -53,12 +59,34 @@ public class StepperToolbar extends Toolbar{
 
         toolBar.addSeparator();
 
+        JToggleButton btnAuto = new JToggleButton();
+        btnAuto.setText("Automatique");
+        btnAuto.setToolTipText("On franchit aléatoirement les transitions franchissables");
+        ItemListener itemListener = itemEvent -> {
+            int state = itemEvent.getStateChange();
+            do {
+                btnAuto.setText("Stop");
+                state = itemEvent.getStateChange();
+                stepper.randomize();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                //stepperHandler.repaint();
+            }while(state == ItemEvent.SELECTED);
+
+
+        };
+        btnAuto.addItemListener(itemListener);
+        btnAuto.addActionListener(this::btnAutoListener);
+        toolBar.add(btnAuto);
+
         ButtonGroup btnGroup = new ButtonGroup();
         btnGroup.add(btnOrigin);
         btnGroup.add(btnPrevious);
         btnGroup.add(btnNext);
         btnGroup.add(btnLast);
-
 
 
         Image imageOrigin = null;
@@ -112,4 +140,7 @@ public class StepperToolbar extends Toolbar{
         stepper.goToLastMarquage();
     }
 
+    public void btnAutoListener(ActionEvent event){
+
+    }
 }
