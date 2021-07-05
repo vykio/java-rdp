@@ -9,11 +9,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class StepperToolbar extends Toolbar{
 
@@ -59,28 +59,46 @@ public class StepperToolbar extends Toolbar{
 
         toolBar.addSeparator();
 
-        JToggleButton btnAuto = new JToggleButton();
-        btnAuto.setText("Automatique");
-        btnAuto.setToolTipText("On franchit aléatoirement les transitions franchissables");
-        ItemListener itemListener = itemEvent -> {
-            int state = itemEvent.getStateChange();
-            do {
-                btnAuto.setText("Stop");
-                state = itemEvent.getStateChange();
+        JButton btnAutoON = new JButton();
+        btnAutoON.setText("Automatique : ON");
+        btnAutoON.setToolTipText("On franchit aléatoirement les transitions franchissables");
+
+        JButton btnAutoOFF = new JButton();
+        btnAutoOFF.setText("Automatique : OFF");
+        btnAutoOFF.setToolTipText("Arret de la simulation aléatoire.");
+        btnAutoOFF.setEnabled(false);
+
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 stepper.randomize();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
+            }
+        });
+
+        btnAutoON.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(btnAutoON.getText().equals("Automatique : ON")){
+                    timer.start();
+                    btnAutoON.setEnabled(false);
+                    btnAutoOFF.setEnabled(true);
                 }
-                //stepperHandler.repaint();
-            }while(state == ItemEvent.SELECTED);
+            }
+        });
 
+        toolBar.add(btnAutoON);
 
-        };
-        btnAuto.addItemListener(itemListener);
-        btnAuto.addActionListener(this::btnAutoListener);
-        toolBar.add(btnAuto);
+        btnAutoOFF.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timer.stop();
+                btnAutoON.setEnabled(true);
+                btnAutoOFF.setEnabled(false);
+            }
+        });
+
+        toolBar.add(btnAutoOFF);
+
 
         ButtonGroup btnGroup = new ButtonGroup();
         btnGroup.add(btnOrigin);
@@ -141,6 +159,15 @@ public class StepperToolbar extends Toolbar{
     }
 
     public void btnAutoListener(ActionEvent event){
+
+        stepper.randomize();
+        /*try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }*/
+
+
 
     }
 }
