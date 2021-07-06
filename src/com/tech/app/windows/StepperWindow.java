@@ -13,6 +13,8 @@ import com.tech.app.windows.toolbars.StepperToolbar;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class StepperWindow extends Window{
 
@@ -30,6 +32,42 @@ public class StepperWindow extends Window{
         this.model = model;
         model.updateMatrices();
         setWindowHandler(new StepperWindowHandler(this));
+        addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                model.setMarquage(model.getM0());
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
         build();
 
     }

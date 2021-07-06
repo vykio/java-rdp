@@ -9,9 +9,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -68,43 +65,41 @@ public class StepperToolbar extends Toolbar{
         btnAutoOFF.setToolTipText("Arret de la simulation aléatoire.");
         btnAutoOFF.setEnabled(false);
 
-        Timer timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                stepper.randomize();
-            }
-        });
+        Timer timer = new Timer(100, e -> stepper.randomize());
 
-        btnAutoON.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(btnAutoON.getText().equals("Automatique : ON")){
-                    timer.start();
-                    btnAutoON.setEnabled(false);
-                    btnAutoOFF.setEnabled(true);
-                }
+        btnAutoON.addActionListener(e -> {
+            if(btnAutoON.getText().equals("Automatique : ON")){
+                timer.start();
+                btnAutoON.setEnabled(false);
+                btnAutoOFF.setEnabled(true);
             }
         });
 
         toolBar.add(btnAutoON);
 
-        btnAutoOFF.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                timer.stop();
-                btnAutoON.setEnabled(true);
-                btnAutoOFF.setEnabled(false);
-            }
+        btnAutoOFF.addActionListener(e -> {
+            timer.stop();
+            btnAutoON.setEnabled(true);
+            btnAutoOFF.setEnabled(false);
         });
 
         toolBar.add(btnAutoOFF);
 
+        if(model.getTransitionFranchissables().isEmpty()){
+            timer.stop();
+            btnAutoON.setEnabled(true);
+            btnAutoOFF.setEnabled(false);
+        }
 
-        ButtonGroup btnGroup = new ButtonGroup();
-        btnGroup.add(btnOrigin);
-        btnGroup.add(btnPrevious);
-        btnGroup.add(btnNext);
-        btnGroup.add(btnLast);
+        ButtonGroup  playerGroup = new ButtonGroup();
+        playerGroup.add(btnOrigin);
+        playerGroup.add(btnPrevious);
+        playerGroup.add(btnNext);
+        playerGroup.add(btnLast);
+
+        ButtonGroup autoGroup = new ButtonGroup();
+        autoGroup.add(btnAutoON);
+        autoGroup.add(btnAutoOFF);
 
 
         Image imageOrigin = null;
@@ -158,16 +153,4 @@ public class StepperToolbar extends Toolbar{
         stepper.goToLastMarquage();
     }
 
-    public void btnAutoListener(ActionEvent event){
-
-        stepper.randomize();
-        /*try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }*/
-
-
-
-    }
 }

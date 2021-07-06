@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.List;
-import java.util.ArrayList;
 
 public class StepperHandler extends JPanel {
 
@@ -73,6 +72,14 @@ public class StepperHandler extends JPanel {
                 t.draw(g);
                 g.setColor(co);
             }
+        }
+
+        if(model.getTransitionFranchissables().isEmpty()){
+            Color color = g.getColor();
+            g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX*scaleFactor)));
+            g.setColor(Color.RED);
+            g.drawString("Le RdP a atteint un blocage",(int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-80)*scaleFactor/scaleY));
+            g.setColor(color);
         }
     }
 

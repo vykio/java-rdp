@@ -106,18 +106,26 @@ public class Stepper{
 
     public void randomize(){
 
-        List<Transition> transitionList = model.getTransitionFranchissables();
+        try {
+            List<Transition> transitionList = model.getTransitionFranchissables();
 
-        Random random = new Random();
+            Random random = new Random();
 
-        int indexOfT = model.transitionVector.indexOf(transitionList.get(random.nextInt(transitionList.size())));
+            if (!transitionList.isEmpty()) {
+                int indexOfT = model.transitionVector.indexOf(transitionList.get(random.nextInt(transitionList.size())));
 
-        Vector<Integer> nextMarquage = addVector(model.getMarquage(), model.getC(), indexOfT);
+                System.out.println(model.transitionVector.get(indexOfT));
 
-        marquagesPasse.add(nextMarquage);
+                Vector<Integer> nextMarquage = addVector(model.getMarquage(), model.getC(), indexOfT);
 
-        model.setMarquage(nextMarquage);
-        System.out.println(marquagesPasse);
-        stepperHandler.repaint();
+                marquagesPasse.add(nextMarquage);
+
+                model.setMarquage(nextMarquage);
+                System.out.println(marquagesPasse);
+                stepperHandler.repaint();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
