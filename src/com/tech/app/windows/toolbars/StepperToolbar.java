@@ -57,17 +57,17 @@ public class StepperToolbar extends Toolbar{
         toolBar.addSeparator();
 
         JButton btnAutoON = new JButton();
-        btnAutoON.setText("Automatique : ON");
+        btnAutoON.setText("Automatique : Début");
         btnAutoON.setToolTipText("On franchit aléatoirement les transitions franchissables");
         toolBar.add(btnAutoON);
 
         JButton btnAutoOFF = new JButton();
-        btnAutoOFF.setText("Automatique : OFF");
+        btnAutoOFF.setText("Automatique : Fin");
         btnAutoOFF.setToolTipText("Arret de la simulation aléatoire.");
         btnAutoOFF.setEnabled(false);
         toolBar.add(btnAutoOFF);
 
-        JButton textVitesse = new JButton("Vitesse du simulateur (ms)");
+        JButton textVitesse = new JButton("Pas de simulation (ms)");
         textVitesse.setEnabled(false);
         toolBar.add(textVitesse);
 
@@ -85,12 +85,11 @@ public class StepperToolbar extends Toolbar{
             if(e.getSource() == vitesses){
                 vitesse[0] = Integer.parseInt(v[vitesses.getSelectedIndex()]);
                 timer.setDelay(vitesse[0]);
-                //System.out.println("nouveau delay : "+vitesse[0]);
             }
         });
 
         btnAutoON.addActionListener(e -> {
-            if(btnAutoON.getText().equals("Automatique : ON")){
+            if(btnAutoON.getText().equals("Automatique : Début")){
                 timer.start();
                 btnAutoON.setEnabled(false);
                 btnAutoOFF.setEnabled(true);

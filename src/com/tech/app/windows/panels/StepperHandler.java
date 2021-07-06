@@ -72,10 +72,15 @@ public class StepperHandler extends JPanel {
         }
         for (Transition t:model.transitionVector) {
             if(!t.estFranchissable()){
+                t.drawParents(g);
+                t.drawChildren(g);
                 t.draw(g);
             } else {
                 Color co = g.getColor();
                 g.setColor(Color.RED);
+                t.drawParents(g);
+                g.setColor(Color.BLUE);
+                t.drawChildren(g);
                 t.draw(g);
                 g.setColor(co);
             }

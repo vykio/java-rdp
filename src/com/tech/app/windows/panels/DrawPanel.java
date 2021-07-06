@@ -179,6 +179,8 @@ public class DrawPanel extends JPanel {
         }
         for (Transition t:model.transitionVector) {
             if (t != selectedObject) {
+                t.drawParents(g);
+                t.drawChildren(g);
                 t.draw(g);
             }
         }
@@ -194,6 +196,8 @@ public class DrawPanel extends JPanel {
             if (selectedObject instanceof Place) {
                 ((Place) selectedObject).draw(g);
             } else if (selectedObject instanceof Transition) {
+                ((Transition) selectedObject).drawParents(g);
+                ((Transition) selectedObject).drawChildren(g);
                 ((Transition) selectedObject).draw(g);
                 ((Transition) selectedObject).estFranchissable();
                 System.out.println("est Franchissable ? :"+ ((Transition) selectedObject).estFranchissable());
