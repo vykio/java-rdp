@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -56,6 +57,7 @@ public class StepperToolbar extends Toolbar{
 
         toolBar.addSeparator();
 
+        /*
         JButton btnAutoON = new JButton();
         btnAutoON.setText("Automatique : Début");
         btnAutoON.setToolTipText("On franchit aléatoirement les transitions franchissables");
@@ -66,6 +68,14 @@ public class StepperToolbar extends Toolbar{
         btnAutoOFF.setToolTipText("Arret de la simulation aléatoire.");
         btnAutoOFF.setEnabled(false);
         toolBar.add(btnAutoOFF);
+
+         */
+
+        JButton btnAuto = new JButton();
+        btnAuto.setText("Début du mode Auto");
+        btnAuto.setToolTipText("On franchit aléatoirement les transitions franchissables");
+        toolBar.add(btnAuto);
+
 
         JButton textVitesse = new JButton("Pas de simulation (ms)");
         textVitesse.setEnabled(false);
@@ -100,8 +110,10 @@ public class StepperToolbar extends Toolbar{
                 stepper.randomize();
             } else {
                 ((Timer)e.getSource()).stop();
-                btnAutoON.setEnabled(true);
-                btnAutoOFF.setEnabled(false);
+                //btnAutoON.setEnabled(true);
+                //btnAutoOFF.setEnabled(false);
+                btnAuto.setText("Début du mode Auto");
+                btnAuto.setSelected(false);
             }
         });
 
@@ -112,6 +124,23 @@ public class StepperToolbar extends Toolbar{
             }
         });
 
+
+        btnAuto.addActionListener(e -> {
+            if(btnAuto.getText().equals("Début du mode Auto")){
+                timer.start();
+                btnAuto.setText("Arret du mode Auto");
+                btnAuto.setToolTipText("Arret de la simulation aléatoire.");
+                btnAuto.setSelected(false);
+            } else {
+                timer.stop();
+                btnAuto.setText("Début du mode Auto");
+                btnAuto.setToolTipText("On franchit aléatoirement les transitions franchissables");
+                btnAuto.setSelected(false);
+            }
+        });
+
+
+/*
         btnAutoON.addActionListener(e -> {
             if(btnAutoON.getText().equals("Automatique : Début")){
                 timer.start();
@@ -119,7 +148,6 @@ public class StepperToolbar extends Toolbar{
                 btnAutoOFF.setEnabled(true);
             }
         });
-        btnAutoON.addActionListener(this::btnAutoONListener);
 
         btnAutoOFF.addActionListener(e -> {
             timer.stop();
@@ -127,11 +155,7 @@ public class StepperToolbar extends Toolbar{
             btnAutoOFF.setEnabled(false);
         });
 
-        if(model.getTransitionFranchissables().isEmpty()){
-            timer.stop();
-            btnAutoON.setEnabled(true);
-            btnAutoOFF.setEnabled(false);
-        }
+ */
 
         ButtonGroup  playerGroup = new ButtonGroup();
         playerGroup.add(btnOrigin);
@@ -139,9 +163,11 @@ public class StepperToolbar extends Toolbar{
         playerGroup.add(btnNext);
         playerGroup.add(btnLast);
 
+
         ButtonGroup autoGroup = new ButtonGroup();
-        autoGroup.add(btnAutoON);
-        autoGroup.add(btnAutoOFF);
+        //autoGroup.add(btnAutoON);
+        //autoGroup.add(btnAutoOFF);
+        autoGroup.add(btnAuto);
 
 
         Image imageOrigin = null;
@@ -210,6 +236,7 @@ public class StepperToolbar extends Toolbar{
     public void btnAutoOFFListener(ActionEvent event){
 
     }
+
     public void btnSequenceListener(ActionEvent event){
         //stepper.setShowSequence(((JRadioButton) event.getSource()).isSelected());
         stepper.setShowSequence(((JToggleButton) event.getSource()).isSelected());
