@@ -79,10 +79,12 @@ public class StepperHandler extends JPanel {
                 Color co = g.getColor();
                 g.setColor(Color.RED);
                 t.drawParents(g);
-                g.setColor(Color.BLUE);
+                g.setColor(new Color(50,205,50));
                 t.drawChildren(g);
+                g.setColor(Color.BLUE);
                 t.draw(g);
                 g.setColor(co);
+
             }
         }
 

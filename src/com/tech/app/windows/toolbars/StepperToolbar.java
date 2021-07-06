@@ -77,8 +77,23 @@ public class StepperToolbar extends Toolbar{
         vitesses.setSelectedItem(v[v.length-1]);
         toolBar.add(vitesses);
 
+        toolBar.addSeparator();
+
+        JRadioButton btnSequence = new JRadioButton();
+        btnSequence.setText("Affichage de la séquence");
+        btnSequence.setToolTipText("Affichage de la séquence de transition de la simulation en cours");
+        toolBar.add(btnSequence);
+
+        /* Gestion du mode automatique*/
+
         Timer timer = new Timer(vitesse[0], e -> {
-            stepper.randomize();
+            if(!stepper.model.getTransitionFranchissables().isEmpty()) {
+                stepper.randomize();
+            } else {
+                ((Timer)e.getSource()).stop();
+                btnAutoON.setEnabled(true);
+                btnAutoOFF.setEnabled(false);
+            }
         });
 
         vitesses.addActionListener(e -> {
@@ -95,6 +110,7 @@ public class StepperToolbar extends Toolbar{
                 btnAutoOFF.setEnabled(true);
             }
         });
+        btnAutoON.addActionListener(this::btnAutoONListener);
 
         btnAutoOFF.addActionListener(e -> {
             timer.stop();
@@ -177,4 +193,13 @@ public class StepperToolbar extends Toolbar{
             stepper.goToLastMarquage();
         }
     }
+
+    public void btnAutoONListener(ActionEvent event){
+
+    }
+
+    public void btnAutoOFFListener(ActionEvent event){
+
+    }
+
 }
