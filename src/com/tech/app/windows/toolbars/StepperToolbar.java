@@ -9,7 +9,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class StepperToolbar extends Toolbar{
@@ -55,17 +59,58 @@ public class StepperToolbar extends Toolbar{
         toolBar.add(btnLast);
 
         toolBar.addSeparator();
+        toolBar.addSeparator();
+
 
         JButton btnAutoON = new JButton();
         btnAutoON.setText("Automatique : ON");
         btnAutoON.setToolTipText("On franchit aléatoirement les transitions franchissables");
+        toolBar.add(btnAutoON);
 
         JButton btnAutoOFF = new JButton();
         btnAutoOFF.setText("Automatique : OFF");
         btnAutoOFF.setToolTipText("Arret de la simulation aléatoire.");
         btnAutoOFF.setEnabled(false);
+        toolBar.add(btnAutoOFF);
 
-        Timer timer = new Timer(100, e -> stepper.randomize());
+
+        int[] vitesse = new int[]{1000};
+        String[] v = {"0","100","200","300","400","500","600","700","800","900","1000"};
+        JComboBox<String> vitesses =  new JComboBox<String>(v);
+        vitesses.setSelectedItem(v[v.length-1]);
+        /*
+        vitesses.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getSource() == vitesses){
+                    vitesse[0] = Integer.parseInt(v[vitesses.getSelectedIndex()]);
+                    System.out.println("nouveau delay : "+vitesse[0]);
+                }
+            }
+        });
+
+         */
+
+        toolBar.add(vitesses);
+
+        System.out.println("vitesse : "+ Arrays.toString(vitesse));
+
+        Timer timer = new Timer(vitesse[0], e -> {
+            stepper.randomize();
+        });
+
+        vitesses.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == vitesses){
+                    vitesse[0] = Integer.parseInt(v[vitesses.getSelectedIndex()]);
+                    timer.setDelay(vitesse[0]);
+                    System.out.println("nouveau delay : "+vitesse[0]);
+                }
+            }
+        });
+
+        System.out.println("vitesse timer : "+ timer.getDelay());
 
         btnAutoON.addActionListener(e -> {
             if(btnAutoON.getText().equals("Automatique : ON")){
@@ -75,15 +120,11 @@ public class StepperToolbar extends Toolbar{
             }
         });
 
-        toolBar.add(btnAutoON);
-
         btnAutoOFF.addActionListener(e -> {
             timer.stop();
             btnAutoON.setEnabled(true);
             btnAutoOFF.setEnabled(false);
         });
-
-        toolBar.add(btnAutoOFF);
 
         if(model.getTransitionFranchissables().isEmpty()){
             timer.stop();
