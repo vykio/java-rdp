@@ -82,6 +82,7 @@ public class StepperToolbar extends Toolbar{
         JRadioButton btnSequence = new JRadioButton();
         btnSequence.setText("Affichage de la séquence");
         btnSequence.setToolTipText("Affichage de la séquence de transition de la simulation en cours");
+        btnSequence.addActionListener(this::btnSequenceListener);
         toolBar.add(btnSequence);
 
         /* Gestion du mode automatique*/
@@ -201,5 +202,9 @@ public class StepperToolbar extends Toolbar{
     public void btnAutoOFFListener(ActionEvent event){
 
     }
+    public void btnSequenceListener(ActionEvent event){
+        stepper.setShowSequence(((JRadioButton) event.getSource()).isSelected());
+    }
+
 
 }

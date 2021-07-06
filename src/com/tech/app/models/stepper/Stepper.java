@@ -17,6 +17,8 @@ public class Stepper{
     public List<Vector<Integer>> marquagesPasse;
     public List<String> sequenceTransition;
 
+    public boolean showSequence = false;
+
     public Stepper(Model model, StepperHandler stepperHandler){
         this.model = model;
         this.stepperHandler = stepperHandler;
@@ -34,6 +36,11 @@ public class Stepper{
 
     public void setStepperHandler(StepperHandler stepperHandler){
         this.stepperHandler = stepperHandler;
+    }
+
+    public void setShowSequence(boolean showSequence) {
+        this.showSequence = showSequence;
+        stepperHandler.repaint();
     }
 
     public List<String> getSequenceTransition(){

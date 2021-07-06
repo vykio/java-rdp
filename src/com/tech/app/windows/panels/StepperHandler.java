@@ -97,7 +97,7 @@ public class StepperHandler extends JPanel {
         }
 
 
-        if(!stepper.getSequenceTransition().isEmpty()) {
+        if(!stepper.getSequenceTransition().isEmpty() && stepper.showSequence) {
             drawSequence(g);
         }
 
