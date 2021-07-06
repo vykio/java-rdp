@@ -71,36 +71,33 @@ public class Stepper{
     }
 
     public void goToNextMarquage() {
-        if(!getMarquagesPasse().isEmpty()) {
 
-            int indexOfCurrentMarquage = marquagesPasse.indexOf(findMarquage(marquagesPasse, model.getMarquage()));
+        int indexOfCurrentMarquage = marquagesPasse.indexOf(findMarquage(marquagesPasse, model.getMarquage()));
 
-            Vector<Integer> nextMarquage = getMarquagesPasse().get(indexOfCurrentMarquage+1);
-
+        // Si le prochain est au plus le dernier marquage
+        if(indexOfCurrentMarquage +1 <= marquagesPasse.size() -1) {
+            Vector<Integer> nextMarquage = getMarquagesPasse().get(indexOfCurrentMarquage + 1);
             model.setMarquage(nextMarquage);
         }
+
         stepperHandler.repaint();
     }
 
     public void goToPreviousMarquage(){
-        System.out.println(getMarquagesPasse());
-        if(!getMarquagesPasse().isEmpty()) {
 
-            int indexOfCurrentMarquage = marquagesPasse.indexOf(findMarquage(marquagesPasse, model.getMarquage()));
+        int indexOfCurrentMarquage = marquagesPasse.indexOf(findMarquage(marquagesPasse, model.getMarquage()));
 
+        // Si le marquage précédent est au moins le premier marquage
+        if(indexOfCurrentMarquage -1 >= 0) {
             Vector<Integer> previousMarquage = getMarquagesPasse().get(indexOfCurrentMarquage - 1);
-
             model.setMarquage(previousMarquage);
         }
+
         stepperHandler.repaint();
     }
 
     public void goToFirstMarquage(){
         model.setMarquage(getMarquagesPasse().get(0));
-        stepperHandler.repaint();
-    }
-
-    public void repaint(){
         stepperHandler.repaint();
     }
 
