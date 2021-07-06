@@ -79,7 +79,15 @@ public class StepperToolbar extends Toolbar{
 
         toolBar.addSeparator();
 
+        /*
         JRadioButton btnSequence = new JRadioButton();
+        btnSequence.setText("Affichage de la séquence");
+        btnSequence.setToolTipText("Affichage de la séquence de transition de la simulation en cours");
+        btnSequence.addActionListener(this::btnSequenceListener);
+        toolBar.add(btnSequence);
+         */
+
+        JToggleButton btnSequence = new JToggleButton();
         btnSequence.setText("Affichage de la séquence");
         btnSequence.setToolTipText("Affichage de la séquence de transition de la simulation en cours");
         btnSequence.addActionListener(this::btnSequenceListener);
@@ -203,7 +211,8 @@ public class StepperToolbar extends Toolbar{
 
     }
     public void btnSequenceListener(ActionEvent event){
-        stepper.setShowSequence(((JRadioButton) event.getSource()).isSelected());
+        //stepper.setShowSequence(((JRadioButton) event.getSource()).isSelected());
+        stepper.setShowSequence(((JToggleButton) event.getSource()).isSelected());
     }
 
 
