@@ -16,14 +16,11 @@ public class StepperToolbar extends Toolbar{
 
     public Model model;
     public Stepper stepper;
-    public StepperMouse stepperMouse;
-    public StepperHandler stepperHandler;
 
-    public StepperToolbar(JFrame frame, Model model, StepperMouse stepperMouse, StepperHandler stepperHandler){
+    public StepperToolbar(JFrame frame, StepperMouse stepperMouse){
         super(frame);
-        this.model = model;
+        this.model = stepperMouse.model;
         this.stepper = stepperMouse.stepper;
-        this.stepperHandler = stepperHandler;
     }
 
     @Override
@@ -32,6 +29,9 @@ public class StepperToolbar extends Toolbar{
         toolBar.setFloatable(false);
 
         toolBar.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        //System.out.println("stepper from toolbar hash : "+stepper.hashCode());
+
 
         JButton btnOrigin = new JButton();
         btnOrigin.setToolTipText("Retourner au marquage d'origine");
@@ -68,6 +68,7 @@ public class StepperToolbar extends Toolbar{
         toolBar.add(btnAutoOFF);
 
         JButton textVitesse = new JButton("Vitesse du simulateur (ms)");
+        textVitesse.setEnabled(false);
         toolBar.add(textVitesse);
 
         int[] vitesse = new int[]{1000};
@@ -84,7 +85,7 @@ public class StepperToolbar extends Toolbar{
             if(e.getSource() == vitesses){
                 vitesse[0] = Integer.parseInt(v[vitesses.getSelectedIndex()]);
                 timer.setDelay(vitesse[0]);
-                System.out.println("nouveau delay : "+vitesse[0]);
+                //System.out.println("nouveau delay : "+vitesse[0]);
             }
         });
 

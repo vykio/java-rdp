@@ -12,15 +12,41 @@ import java.util.Vector;
 
 public class Stepper{
 
-    private final Model model;
-    private final StepperHandler stepperHandler;
+    public final Model model;
+    private StepperHandler stepperHandler;
     public List<Vector<Integer>> marquagesPasse;
+    public List<String> sequenceTransition;
 
     public Stepper(Model model, StepperHandler stepperHandler){
         this.model = model;
         this.stepperHandler = stepperHandler;
         this.marquagesPasse = new ArrayList<>();
+        this.sequenceTransition = new ArrayList<>();
         marquagesPasse.add(model.getM0());
+    }
+
+    public Stepper(Model model){
+        this.model = model;
+        this.marquagesPasse = new ArrayList<>();
+        this.sequenceTransition = new ArrayList<>();
+        marquagesPasse.add(model.getM0());
+    }
+
+    public void setStepperHandler(StepperHandler stepperHandler){
+        this.stepperHandler = stepperHandler;
+    }
+
+    public List<String> getSequenceTransition(){
+        return sequenceTransition;
+    }
+
+    public String getSequenceTransitionToString(){
+        StringBuilder msg = new StringBuilder();
+        msg.append("Séquence : ");
+        for(String t : getSequenceTransition()){
+                msg.append(t).append(", ");
+        }
+        return msg.toString();
     }
 
     /**
@@ -54,7 +80,7 @@ public class Stepper{
         Vector<Integer> nextMarquage = addVector(model.getMarquage(), model.getC(), indexOfT);
 
         marquagesPasse.add(nextMarquage);
-        System.out.println("from click =" +marquagesPasse);
+        sequenceTransition.add(model.transitionVector.get(indexOfT).getName());
 
         model.setMarquage(nextMarquage);
         stepperHandler.repaint();
@@ -111,14 +137,17 @@ public class Stepper{
             if (!transitionList.isEmpty()) {
                 int indexOfT = model.transitionVector.indexOf(transitionList.get(random.nextInt(transitionList.size())));
 
-                System.out.println(model.transitionVector.get(indexOfT));
+                //System.out.println(model.transitionVector.get(indexOfT));
 
                 Vector<Integer> nextMarquage = addVector(model.getMarquage(), model.getC(), indexOfT);
 
                 marquagesPasse.add(nextMarquage);
+                sequenceTransition.add(model.transitionVector.get(indexOfT).getName());
+
+                //System.out.println(sequenceTransition);
 
                 model.setMarquage(nextMarquage);
-                System.out.println(marquagesPasse);
+                //System.out.println(marquagesPasse);
                 stepperHandler.repaint();
             }
         } catch (Exception e){

@@ -1,5 +1,6 @@
 package com.tech.app.windows.handlers;
 
+import com.tech.app.models.Model;
 import com.tech.app.models.stepper.Stepper;
 import com.tech.app.windows.panels.StepperHandler;
 
@@ -14,6 +15,8 @@ public class StepperMouse extends MouseAdapter {
 
     public StepperHandler stepperHandler;
     public Stepper stepper;
+    public Model model;
+
 
     public boolean mousePressed = false;
     public boolean mouseClicked = false;
@@ -26,10 +29,12 @@ public class StepperMouse extends MouseAdapter {
 
     public StepperMouse(StepperHandler stepperHandler) {
         this.stepperHandler = stepperHandler;
-        this.stepper = new Stepper(stepperHandler.model, stepperHandler);
+        this.stepper = stepperHandler.stepper;
+        this.model = stepperHandler.model;
         stepperHandler.addMouseListener(this);
         stepperHandler.addMouseMotionListener(this);
         stepperHandler.addMouseWheelListener(new StepperScaleHandler());
+        //System.out.println("stepper from mouse hash : "+stepper.hashCode());
     }
 
     /**
@@ -41,7 +46,6 @@ public class StepperMouse extends MouseAdapter {
          * @param e : évenement de mouvement de la molette.
          */
         public void mouseWheelMoved(MouseWheelEvent e) {
-            System.out.println("oui");
             final double factor = (e.getWheelRotation() < 0) ? 1.1 : 0.9;
             double scale = stepperHandler.scaleX * factor;
             scale = Math.max(stepperHandler.MIN_ZOOM, scale);
@@ -64,7 +68,7 @@ public class StepperMouse extends MouseAdapter {
         x = e.getX() * stepperHandler.scaleX;
         y = e.getY() * stepperHandler.scaleY;
 
-        System.out.println(x +"," + y);
+        //System.out.println(x +"," + y);
 
         stepperHandler.mouseX = x;
         stepperHandler.mouseY = y;
@@ -77,6 +81,7 @@ public class StepperMouse extends MouseAdapter {
             if(selectedObject!=null){
                 stepper.clickToNextMarquage(selectedObject);
                 stepperHandler.repaint();
+                selectedObject = null;
             }
         }
     }

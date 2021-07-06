@@ -74,15 +74,19 @@ public class StepperWindow extends Window{
 
     public void build(){
 
-        StepperHandler stepperHandler = new StepperHandler(this,model);
+        Stepper stepper = new Stepper(model);
+
+        StepperHandler stepperHandler = new StepperHandler(this, stepper);
+        stepper.setStepperHandler(stepperHandler);
+
+        //System.out.println("stepper from window hash : "+stepper.hashCode());
+
         stepperHandler.applyPanel();
 
         StepperMouse stepperMouse = new StepperMouse(stepperHandler);
 
-        StepperToolbar stepperToolbar = new StepperToolbar(this,model,stepperMouse, stepperHandler);
+        StepperToolbar stepperToolbar = new StepperToolbar(this,stepperMouse);
         stepperToolbar.applyToolbar();
-
-        Stepper stepper = new Stepper(model,stepperHandler);
 
     }
 }

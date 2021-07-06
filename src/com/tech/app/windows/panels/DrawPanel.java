@@ -351,7 +351,7 @@ public class DrawPanel extends JPanel {
         }
         for (Transition t : model.transitionVector) {
             for (Arc a : t.getChildren()) {
-                System.out.println("Pt1 > " + a.getPointCtr1());
+                //System.out.println("Pt1 > " + a.getPointCtr1());
                 if(a.containsControlPoint1(x,y)) {
                     a.getPointCtr1().setMoved(true);
                     return a.getPointCtr1();

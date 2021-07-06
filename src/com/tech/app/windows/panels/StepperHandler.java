@@ -4,6 +4,7 @@ import com.tech.app.functions.FUtils;
 import com.tech.app.models.Model;
 import com.tech.app.models.Place;
 import com.tech.app.models.Transition;
+import com.tech.app.models.stepper.Stepper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,16 +28,22 @@ public class StepperHandler extends JPanel {
 
     public AffineTransform transform;
 
+    public final Stepper stepper;
 
-    public StepperHandler(JFrame frame, Model model){
+
+    public StepperHandler(JFrame frame, Stepper stepper){
         this.scaleFactor = FUtils.Screen.getScaleFactor();
         this.scaleX = scaleFactor;
         this.scaleY = scaleFactor;
 
         this.frame = frame;
-        this.model=model;
+        this.model=stepper.model;
+        this.stepper=stepper;
 
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
+
+        //System.out.println("stepper from handler hash : "+stepper.hashCode());
+
 
     }
 
@@ -81,6 +88,12 @@ public class StepperHandler extends JPanel {
             g.drawString("Le RdP a atteint un blocage",(int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-80)*scaleFactor/scaleY));
             g.setColor(color);
         }
+
+
+        if(!stepper.getSequenceTransition().isEmpty()) {
+            drawSequence(g);
+        }
+
     }
 
     public void updatePositions(double scaleX, double scaleY, double dx, double dy) {
@@ -109,4 +122,8 @@ public class StepperHandler extends JPanel {
         }
         return null;
     }
+
+    private void drawSequence(Graphics g){
+        g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX*scaleFactor)));
+        g.drawString(stepper.getSequenceTransitionToString(),(int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-60)*scaleFactor/scaleY));    }
 }
