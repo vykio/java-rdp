@@ -28,11 +28,13 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
-    - uses: pCYSl5EDgo/cat@master
+    - name: Get version
+      uses: pCYSl5EDgo/cat@master
       id: version
       with:
         path: /home/runner/work/java-rdp/java-rdp/target/version.txt
-    - uses: pCYSl5EDgo/cat@master
+    - name: Get changelog
+      uses: pCYSl5EDgo/cat@master
       id: changelog
       with:
         path: /home/runner/work/java-rdp/java-rdp/target/changelog.txt
