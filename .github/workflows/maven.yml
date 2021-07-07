@@ -11,7 +11,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -28,19 +28,3 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
-    - name: Get version
-      uses: pCYSl5EDgo/cat@master
-      id: version
-      with:
-        path: /home/runner/work/java-rdp/java-rdp/target/version.txt
-    - name: Get changelog
-      uses: pCYSl5EDgo/cat@master
-      id: changelog
-      with:
-        path: /home/runner/work/java-rdp/java-rdp/target/changelog.txt
-    - run: echo $TEXT
-      env:
-        TEXT: ${{ steps.version.outputs.text }}
-    - run: echo $TEXT
-      env:
-        TEXT: ${{ steps.changelog.outputs.text }}
