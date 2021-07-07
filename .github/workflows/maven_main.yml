@@ -37,6 +37,14 @@ jobs:
       id: changelog
       with:
         path: /home/runner/work/java-rdp/java-rdp/target/changelog.txt
+    - name: Version found
+      run: echo $TEXT
+      env:
+        TEXT: ${{ steps.version.outputs.text }}
+    - name: Changelog found
+      run: echo $TEXT
+      env:
+        TEXT: ${{ steps.changelog.outputs.text }}
     - name: Install zip
       uses: montudor/action-zip@v1
     - name: Zip output
