@@ -44,18 +44,17 @@ jobs:
         split-by: '.'
     - name: Zip output
       run: 7z a -tzip D:\a\java-rdp\java-rdp\target\output.zip D:\a\java-rdp\java-rdp\target\lib D:\a\java-rdp\java-rdp\target\runtime D:\a\java-rdp\java-rdp\target\java-rdp-${{ steps.version.outputs.text }}.exe
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@latest
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Release
+      uses: softprops/action-gh-release@v1
       with:
         tag_name: '${{ steps.split.outputs._0 }}.${{ steps.split.outputs._1 }}'
-        release_name: JRDP – ${{ steps.version.outputs.text }}
+        name: JRDP – ${{ steps.version.outputs.text }}
         body: |
           ${{ steps.changelog.outputs.text }}
         draft: false
         prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Upload Release Asset
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
