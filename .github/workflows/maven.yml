@@ -28,3 +28,10 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
+    - uses: pCYSl5EDgo/cat@master
+      id: version
+      with:
+        path: /home/runner/work/java-rdp/java-rdp/target/version.txt
+    - run: echo $TEXT
+      env:
+        TEXT: ${{ steps.version.outputs.text }}
