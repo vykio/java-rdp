@@ -37,18 +37,13 @@ jobs:
       id: changelog
       with:
         path: D:\a\java-rdp\java-rdp\target\changelog.txt
-    - uses: rishabhgupta/split-by@v1
-      id: split
-      with:
-        string: '${{ steps.version.outputs.text }}'
-        split-by: '.'
     - name: Zip output
       run: 7z a -tzip D:\a\java-rdp\java-rdp\target\output.zip D:\a\java-rdp\java-rdp\target\lib D:\a\java-rdp\java-rdp\target\runtime D:\a\java-rdp\java-rdp\target\java-rdp-${{ steps.version.outputs.text }}.exe
     - name: Release
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: '${{ steps.split.outputs._0 }}.${{ steps.split.outputs._1 }}'
+        tag_name: ${{ steps.version.outputs.text }}
         name: JRDP – ${{ steps.version.outputs.text }}
         body: |
           ${{ steps.changelog.outputs.text }}
