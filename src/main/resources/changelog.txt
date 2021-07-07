@@ -1,4 +1,6 @@
-# ${shownVersion}
+# Description
+
+## ${shownVersion}
 
 Le projet utilise maintenant Maven!
 
