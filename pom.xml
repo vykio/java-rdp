@@ -26,6 +26,14 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <filtering>true</filtering><!-- if it is neccessary -->
+                <directory>${project.basedir}/src/main/resources</directory><!-- from -->
+                <targetPath>${project.build.directory}</targetPath><!-- to -->
+                <includes><!-- what -->
+                    <include>version.txt</include>
+                </includes>
+            </resource>
         </resources>
 
         <plugins>
