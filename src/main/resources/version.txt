@@ -1,0 +1,3 @@
+version=${shownVersion}
+jreFolder=${jreFolderName}
+libFolder=${libFolderName}
