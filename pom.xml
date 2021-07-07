@@ -13,7 +13,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <shownVersion>v${maven.build.timestamp}</shownVersion>
         <timestamp>${maven.build.timestamp}</timestamp>
-        <maven.build.timestamp.format>yyyy.MM.dd</maven.build.timestamp.format>
+        <maven.build.timestamp.format>yyyy.MM.dd-HHmm</maven.build.timestamp.format>
         <jreFolderName>runtime</jreFolderName>
         <libFolderName>lib</libFolderName>
         <mainClassName>com.tech.app.App</mainClassName>
