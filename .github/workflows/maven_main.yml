@@ -45,10 +45,8 @@ jobs:
       run: echo $TEXT
       env:
         TEXT: ${{ steps.changelog.outputs.text }}
-    - name: Install zip
-      uses: montudor/action-zip@v1
     - name: Zip output
-      run: zip -qq -r output.zip lib runtime java-rdp-${{ steps.version.outputs.text }}.exe
+      run: 7z a output.zip lib runtime java-rdp-${{ steps.version.outputs.text }}.exe
       working-directory: /home/runner/work/java-rdp/java-rdp/target/
     - name: Create Release
       id: create_release
