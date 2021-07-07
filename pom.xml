@@ -32,6 +32,7 @@
                 <targetPath>${project.build.directory}</targetPath><!-- to -->
                 <includes><!-- what -->
                     <include>version.txt</include>
+                    <include>changelog.txt</include>
                 </includes>
             </resource>
         </resources>
