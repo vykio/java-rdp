@@ -31,12 +31,12 @@ jobs:
       uses: pCYSl5EDgo/cat@master
       id: version
       with:
-        path: /home/runner/work/java-rdp/java-rdp/target/version.txt
+        path: D:\a\java-rdp\java-rdp\target\version.txt
     - name: Get changelog
       uses: pCYSl5EDgo/cat@master
       id: changelog
       with:
-        path: /home/runner/work/java-rdp/java-rdp/target/changelog.txt
+        path: D:\a\java-rdp\java-rdp\target\changelog.txt
     - name: Version found
       run: echo $TEXT
       env:
@@ -46,8 +46,8 @@ jobs:
       env:
         TEXT: ${{ steps.changelog.outputs.text }}
     - name: Zip output
-      run: 7z a -tzip /home/runner/work/java-rdp/java-rdp/target/output.zip /home/runner/work/java-rdp/java-rdp/target/lib /home/runner/work/java-rdp/java-rdp/target/runtime /home/runner/work/java-rdp/java-rdp/target/java-rdp-${{ steps.version.outputs.text }}.exe
-      working-directory: /home/runner/work/java-rdp/java-rdp/target/
+      run: 7z a -tzip D:\a\java-rdp\java-rdp\target\output.zip D:\a\java-rdp\java-rdp\target\lib D:\a\java-rdp\java-rdp\target\runtime D:\a\java-rdp\java-rdp\target\java-rdp-${{ steps.version.outputs.text }}.exe
+      working-directory: D:\a\java-rdp\java-rdp\target\target
     - name: Create Release
       id: create_release
       uses: actions/create-release@latest
@@ -67,6 +67,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: /home/runner/work/java-rdp/java-rdp/target/output.zip
+        asset_path: D:\a\java-rdp\java-rdp\target\output.zip
         asset_name: jrdp-${{ steps.version.outputs.text }}.zip
         asset_content_type: application/zip
