@@ -76,7 +76,7 @@ public class StepperMouse extends MouseAdapter {
         if(mouseEntered){
             if(SwingUtilities.isLeftMouseButton(e)){
                 selectedObject = stepperHandler.getSelectedObject(x/stepperHandler.scaleX, y/stepperHandler.scaleY);
-                System.out.println(selectedObject);
+                System.out.println(selectedObject + "x "+ x + " y "+y);
             }
             if(selectedObject!=null){
                 stepper.clickToNextMarquage(selectedObject);
@@ -84,6 +84,7 @@ public class StepperMouse extends MouseAdapter {
                 selectedObject = null;
             }
         }
+        mousePressed = true;
     }
 
     @Override
@@ -103,12 +104,12 @@ public class StepperMouse extends MouseAdapter {
     }
 
     public void mouseDragged(MouseEvent e) {
-        double dx = e.getX()*stepperHandler.scaleX - x;
-        double dy = e.getY()*stepperHandler.scaleY - y;
+        double dx = e.getX()*stepperHandler.scaleFactor - x;
+        double dy = e.getY()*stepperHandler.scaleFactor - y;
 
         if (SwingUtilities.isMiddleMouseButton(e)) {
 
-            stepperHandler.updatePositions(stepperHandler.scaleX, stepperHandler.scaleY, dx, dy);
+            stepperHandler.updatePositions(stepperHandler.scaleFactor, stepperHandler.scaleFactor, dx, dy);
 
         }
 

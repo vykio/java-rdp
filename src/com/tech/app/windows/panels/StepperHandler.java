@@ -53,6 +53,16 @@ public class StepperHandler extends JPanel {
         repaint();
     }
 
+    public void updateInitPositions(){
+        for(Place p : model.placeVector){
+            p.updatePosition(p.getX(),p.getY() + 20);
+        }
+
+        for(Transition t : model.transitionVector){
+            t.updatePosition(t.getX(),t.getY() + 20);
+        }
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // clear
 
@@ -68,9 +78,11 @@ public class StepperHandler extends JPanel {
 
         /* Afficher chaque places et transitions, qui ne sont pas sélectionnées */
         for (Place p:model.placeVector) {
+            //p.updatePosition(p.getX(),p.getY() + 40);
             p.draw(g);
         }
         for (Transition t:model.transitionVector) {
+            //t.updatePosition(t.getX(),t.getY() + 40);
             if(!t.estFranchissable()){
                 t.drawParents(g);
                 t.drawChildren(g);

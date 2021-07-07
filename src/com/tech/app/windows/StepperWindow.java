@@ -13,8 +13,7 @@ import com.tech.app.windows.toolbars.StepperToolbar;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 
 public class StepperWindow extends Window{
 
@@ -72,7 +71,7 @@ public class StepperWindow extends Window{
 
     }
 
-    public void build(){
+    public void build() {
 
         Stepper stepper = new Stepper(model);
 
@@ -81,12 +80,30 @@ public class StepperWindow extends Window{
 
         //System.out.println("stepper from window hash : "+stepper.hashCode());
 
-        stepperHandler.applyPanel();
-
         StepperMouse stepperMouse = new StepperMouse(stepperHandler);
 
         StepperToolbar stepperToolbar = new StepperToolbar(this,stepperMouse);
         stepperToolbar.applyToolbar();
 
+        stepperHandler.applyPanel();
+        /*
+        try {
+            shiftPanelDown(stepperHandler);
+        } catch (AWTException e){
+            e.printStackTrace();
+        }
+
+
+
+         */
+        //stepperHandler.updateInitPositions();
+    }
+
+    private static void shiftPanelDown(StepperHandler stepperHandler) throws AWTException {
+        Robot robot = new Robot();
+        robot.mouseMove(stepperHandler.getWidth()/2, stepperHandler.getHeight()/2);
+        stepperHandler.updatePositions(stepperHandler.scaleX,stepperHandler.scaleY,(double) (stepperHandler.getWidth()/2)+1, (double)(stepperHandler.getHeight()/2)+1);
+        //robot.mouseMove((stepperHandler.getWidth()/2)+1,(stepperHandler.getHeight()/2)+1);
+        //robot.mouseRelease(MouseEvent.MOUSE_WHEEL);
     }
 }
