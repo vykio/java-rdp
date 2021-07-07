@@ -50,7 +50,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: '${{ steps.split.outputs._0 }}.{{ steps.split.outputs._1 }}'
+        tag_name: '${{ steps.split.outputs._0 }}.${{ steps.split.outputs._1 }}'
         release_name: JRDP – ${{ steps.version.outputs.text }}
         body: |
           ${{ steps.changelog.outputs.text }}
