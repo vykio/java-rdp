@@ -1,0 +1,3 @@
+# ${shownVersion}
+
+Moving to Maven !
