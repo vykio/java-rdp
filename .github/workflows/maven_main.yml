@@ -46,7 +46,7 @@ jobs:
       env:
         TEXT: ${{ steps.changelog.outputs.text }}
     - name: Zip output
-      run: 7z a output.zip lib runtime java-rdp-${{ steps.version.outputs.text }}.exe
+      run: 7z a -tzip /home/runner/work/java-rdp/java-rdp/target/output.zip /home/runner/work/java-rdp/java-rdp/target/lib /home/runner/work/java-rdp/java-rdp/target/runtime /home/runner/work/java-rdp/java-rdp/target/java-rdp-${{ steps.version.outputs.text }}.exe
       working-directory: /home/runner/work/java-rdp/java-rdp/target/
     - name: Create Release
       id: create_release
