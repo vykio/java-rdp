@@ -41,7 +41,7 @@ jobs:
       id: split
       with:
         string: '${{ steps.version.outputs.text }}'
-        split-by: '-'
+        split-by: '.'
     - name: Zip output
       run: 7z a -tzip D:\a\java-rdp\java-rdp\target\output.zip D:\a\java-rdp\java-rdp\target\lib D:\a\java-rdp\java-rdp\target\runtime D:\a\java-rdp\java-rdp\target\java-rdp-${{ steps.version.outputs.text }}.exe
     - name: Create Release
@@ -50,7 +50,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.split.outputs._0 }}
+        tag_name: ${{ steps.split.outputs._0 }}.{{ steps.split.outputs._1 }}
         release_name: JRDP – ${{ steps.version.outputs.text }}
         body: |
           ${{ steps.changelog.outputs.text }}
