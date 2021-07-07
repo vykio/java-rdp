@@ -1,6 +1,6 @@
-![](https://badgen.net/github/release/vykio/java-rdp/stable?label=latest%20version)
-![](https://img.shields.io/github/workflow/status/vykio/java-rdp/Create%20release?label=release%20build)
-![](https://img.shields.io/github/issues/vykio/java-rdp)
+![aaaaaaa](https://badgen.net/github/release/vykio/java-rdp/stable?label=latest%20version)
+![bbbbbbb](https://img.shields.io/github/workflow/status/vykio/java-rdp/Create%20release?label=release%20build)
+![ccccccc](https://img.shields.io/github/issues/vykio/java-rdp)
 
 
 # java-rdp
