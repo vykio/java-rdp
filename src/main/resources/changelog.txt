@@ -1,3 +1,4 @@
 # ${shownVersion}
 
 Moving to Maven !
+Je fais un test
