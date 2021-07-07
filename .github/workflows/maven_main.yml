@@ -37,12 +37,11 @@ jobs:
       id: changelog
       with:
         path: /home/runner/work/java-rdp/java-rdp/target/changelog.txt
-    - name: Create ZIP with release
-      uses: papeloto/action-zip@v1
-      with:
-        files: /home/runner/work/java-rdp/java-rdp/target/lib /home/runner/work/java-rdp/java-rdp/target/runtime /home/runner/work/java-rdp/java-rdp/target/java-rdp-${{ steps.version.outputs.text }}.exe
-        recursive: false
-        dest: ./output.zip
+    - name: Install zip
+      uses: montudor/action-zip@v1
+    - name: Zip output
+      run: zip -qq -r output.zip lib runtime java-rdp-${{ steps.version.outputs.text }}.exe
+      working-directory: /home/runner/work/java-rdp/java-rdp/target/
     - name: Create Release
       id: create_release
       uses: actions/create-release@latest
@@ -62,6 +61,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./output.zip
+        asset_path: /home/runner/work/java-rdp/java-rdp/target/output.zip
         asset_name: jrdp-${{ steps.version.outputs.text }}.zip
         asset_content_type: application/zip
