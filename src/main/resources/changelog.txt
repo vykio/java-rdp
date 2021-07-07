@@ -1,5 +1,5 @@
 # ${shownVersion}
 
-Moving to Maven !
-Je fais un test
-Un deuxieme !!!
+Le projet utilise maintenant Maven!
+
+(Voir les changelogs précédents)
