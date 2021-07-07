@@ -32,6 +32,13 @@ jobs:
       id: version
       with:
         path: /home/runner/work/java-rdp/java-rdp/target/version.txt
+    - uses: pCYSl5EDgo/cat@master
+      id: changelog
+      with:
+        path: /home/runner/work/java-rdp/java-rdp/target/changelog.txt
     - run: echo $TEXT
       env:
         TEXT: ${{ steps.version.outputs.text }}
+    - run: echo $TEXT
+      env:
+        TEXT: ${{ steps.changelog.outputs.text }}
