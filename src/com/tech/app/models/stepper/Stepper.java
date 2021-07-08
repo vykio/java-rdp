@@ -47,11 +47,29 @@ public class Stepper{
         return sequenceTransition;
     }
 
-    public String getSequenceTransitionToString(){
+    public List<String> getLast20FromSequence(){
+        List<String> res = new ArrayList<>();
+
+        if(getSequenceTransition().size() > 20) {
+            for (int i = getSequenceTransition().size() - 20; i < getSequenceTransition().size(); i++) {
+                res.add(getSequenceTransition().get(i));
+            }
+        } else {
+            res.addAll(getSequenceTransition());
+        }
+
+        return res;
+    }
+
+    public String getSequenceTransitionToString(List<String> sequenceTransition){
         StringBuilder msg = new StringBuilder();
-        msg.append("Séquence : ");
-        for(String t : getSequenceTransition()){
-                msg.append(t).append(", ");
+        msg.append("Séquence : {");
+        for(int i =0; i< sequenceTransition.size(); i++){
+            if(i == sequenceTransition.size() - 1){
+                msg.append(sequenceTransition.get(i)).append("}");
+            } else {
+                msg.append(sequenceTransition.get(i)).append(", ");
+            }
         }
         return msg.toString();
     }
