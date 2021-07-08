@@ -100,7 +100,7 @@ public class Stepper{
 
     public void clickToNextMarquage(Object selectedObject){
 
-        int indexOfT = model.transitionVector.indexOf((Transition) selectedObject);
+        int indexOfT = model.transitionVector.indexOf(selectedObject);
 
         Vector<Integer> nextMarquage = addVector(model.getMarquage(), model.getC(), indexOfT);
 
@@ -136,7 +136,7 @@ public class Stepper{
 
     public void goToPreviousMarquage(){
 
-        int indexOfCurrentMarquage = marquagesPasse.indexOf(findMarquage(marquagesPasse, model.getMarquage()));
+        int indexOfCurrentMarquage = marquagesPasse.lastIndexOf(findMarquage(marquagesPasse, model.getMarquage()));
 
         // Si le marquage précédent est au moins le premier marquage
         if(indexOfCurrentMarquage -1 >= 0) {
