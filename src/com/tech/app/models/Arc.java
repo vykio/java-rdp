@@ -91,9 +91,11 @@ public class Arc implements Serializable {
     /* Partie Graphique */
 
     public Line2D.Double forme;
+    public QuadCurve2D.Double courbe;
     public AffineTransform at;
     public AffineTransform reverse;
-    public Rectangle2D.Double hitbox;
+    public Path2D.Double hitbox;
+    public Path2D arrowHead;
 
     /**
      * Méthode qui permet de dessiner un arc.
@@ -139,25 +141,23 @@ public class Arc implements Serializable {
         /*point de controle*/
         //pointCtr1.draw(g2);
 
-        QuadCurve2D.Double courbe = new QuadCurve2D.Double(start, 0, this.pointCtr1.getX(), this.pointCtr1.getY(), len, 0);
-        /* Référentiel */
-
+        courbe = new QuadCurve2D.Double(start, 0, this.pointCtr1.getX(), this.pointCtr1.getY(), len, 0);
         g2.draw(courbe);
 
-        hitbox = new Rectangle2D.Double(0,- ARR_SIZE/2.0 ,len,ARR_SIZE);
-        //hitbox = new Rectangle2D.Double(transition.getX() - transition.WIDTH/2.0,transition.getY() - ARR_SIZE/2.0 , Math.sqrt(Math.pow(place.getX() - transition.getX(),2) + Math.pow(place.getY() - transition.getY(), 2)) ,ARR_SIZE);
+
+        hitbox = new Path2D.Double(arcHitbox(len));
         g2.draw(hitbox);
 
         /* Fléche */
-        Path2D path = new Path2D.Double();
+        arrowHead = new Path2D.Double();
         double[] xval = {len, len-ARR_SIZE, len-ARR_SIZE, len};
         double[] yval = {0, -ARR_SIZE, ARR_SIZE, 0};
-        path.moveTo(xval[0], yval[0]);
+        arrowHead.moveTo(xval[0], yval[0]);
         for(int i = 1; i < xval.length; ++i) {
-            path.lineTo(xval[i], yval[i]);
+            arrowHead.lineTo(xval[i], yval[i]);
         }
-        path.closePath();
-        g2.fill(path);
+        arrowHead.closePath();
+        g2.fill(arrowHead);
 
         /* Affichage du poids */
         if(this.poids > 1 ) {
@@ -200,6 +200,18 @@ public class Arc implements Serializable {
         //g2.draw(new Line2D.Double(this.forme.x1, this.forme.y1, this.place.getX(), this.place.getY()));
         this.drawArrow(g2, oX, oY, dX, dY);
 
+    }
+
+    public Path2D.Double arcHitbox(double len){
+        int ecart = 7;
+        Path2D.Double hitbox = new Path2D.Double();
+        hitbox.moveTo(this.place.forme.width/2,-ecart);
+        hitbox.quadTo(this.pointCtr1.getX(),this.pointCtr1.getY() -ecart,len,-ecart);
+        hitbox.lineTo(len,+ecart);
+        hitbox.quadTo(this.pointCtr1.getX(),this.pointCtr1.getY()+ecart, this.place.forme.width/2,+ecart);
+        hitbox.lineTo(this.place.forme.width/2,-ecart);
+        hitbox.closePath();
+        return hitbox;
     }
 
     /**

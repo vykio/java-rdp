@@ -360,7 +360,8 @@ public class DrawPanel extends JPanel {
             Point2D.Double src = new Point2D.Double(x,y);
             Point2D.Double dest = new Point2D.Double();
             a.reverse.transform(src,dest);
-            if(a.hitbox.contains(dest)){
+            // Si on click autour de la courbe ou sur la tete de la fleche
+            if(a.hitbox.contains(dest) || a.arrowHead.contains(dest)){
                 return a;
             }
         }
