@@ -5,6 +5,7 @@ import com.tech.app.models.Model;
 import com.tech.app.windows.GCWindow;
 import com.tech.app.models.ModelProperties;
 import com.tech.app.windows.GMAWindow;
+import com.tech.app.windows.StepperWindow;
 import com.tech.app.windows.handlers.SaveManager;
 import com.tech.app.windows.panels.DrawPanel;
 
@@ -179,7 +180,8 @@ public class Menu extends MenuBar {
         JMenuItem mnuStepper = new JMenuItem("Simulation pas à pas");
         mnuStepper.setMnemonic('F');
         mnuStepper.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
-        mnuStepper.setEnabled(false);
+        //mnuStepper.setEnabled(false);
+        mnuStepper.addActionListener(this::openStepperWindow);
         mnuTools.add(mnuStepper);
 
         toolbar.add(mnuTools);
@@ -269,6 +271,19 @@ public class Menu extends MenuBar {
                     try {
                         new GCWindow(900,500, model);
                     } catch (UnsupportedLookAndFeelException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+    }
+
+    private void openStepperWindow(ActionEvent actionEvent){
+        EventQueue.invokeLater(
+                () -> {
+                    try{
+                        Model stepperModel = new Model(model);
+                        new StepperWindow(900,500,stepperModel);
+                    } catch(UnsupportedLookAndFeelException e){
                         e.printStackTrace();
                     }
                 }

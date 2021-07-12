@@ -106,7 +106,7 @@ public class DrawMouse extends MouseAdapter {
         //System.out.println("Mouse pressed");
         x = mouseEvent.getX() * drawPanel.scaleFactor;
         y = mouseEvent.getY() * drawPanel.scaleFactor;
-        System.out.println(drawPanel.scaleFactor);
+        //System.out.println(drawPanel.scaleFactor);
 
         drawPanel.mouseX = x;
         drawPanel.mouseY = y;
