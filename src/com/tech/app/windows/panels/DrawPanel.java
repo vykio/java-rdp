@@ -443,8 +443,12 @@ public class DrawPanel extends JPanel {
 
         if(obj instanceof Arc){
             try{
-                String result = JOptionPane.showInputDialog("Poids de l'arc :");
+                String result = JOptionPane.showInputDialog("Poids de l'arc :", ((Arc) obj).getPoids());
                 int poids = Integer.parseInt(result);
+                if(poids < 1){
+                    JOptionPane.showMessageDialog(frame.getContentPane(),"Error: only integers are allowed");
+
+                }
                 ((Arc)obj).setPoids(poids);
             } catch (Exception e){
                 JOptionPane.showMessageDialog(frame.getContentPane(),"Error: only integers are allowed");

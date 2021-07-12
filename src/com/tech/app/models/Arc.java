@@ -70,7 +70,11 @@ public class Arc implements Serializable {
      * Méthode qui permet de donner/modifier le poids d'un arc.
      * @param poids Poids de l'arc
      */
-    public void setPoids(int poids) { this.poids = poids; }
+    public void setPoids(int poids) {
+        if(poids >= 1) {
+            this.poids = poids;
+        }
+    }
 
     /**
      * Méthode qui permet d'afficher les caractéristiques de l'arc : {place,poids}.
@@ -156,9 +160,14 @@ public class Arc implements Serializable {
         g2.fill(path);
 
         /* Affichage du poids */
-        if(this.poids > 1) {
-            g2.setFont(new Font("Console", Font.PLAIN, 10));
-            g2.drawString(Integer.toString(poids), (int) courbe.getX1() + 30, (int) courbe.getY1() + 15);
+        if(this.poids > 1 ) {
+            if(placeToTransition) {
+                g2.setFont(new Font("Console", Font.PLAIN, 12));
+                g2.drawString(Integer.toString(poids), (int) courbe.getX1() + 30, (int) courbe.getY1() + 15);
+            } else {
+                g2.setFont(new Font("Console", Font.PLAIN, 12));
+                g2.drawString(Integer.toString(poids), (int) courbe.getX2() - 30, (int) courbe.getY2() + 15);
+            }
         }
     }
 
