@@ -76,7 +76,7 @@ public class StepperMouse extends MouseAdapter {
         if(mouseEntered){
             if(SwingUtilities.isLeftMouseButton(e)){
                 selectedObject = stepperHandler.getSelectedObject(x/stepperHandler.scaleX, y/stepperHandler.scaleY);
-                System.out.println(selectedObject + "x "+ x + " y "+y);
+                //System.out.println(selectedObject + "x "+ x + " y "+y);
             }
             if(selectedObject!=null){
                 stepper.clickToNextMarquage(selectedObject);

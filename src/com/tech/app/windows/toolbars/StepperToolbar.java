@@ -89,17 +89,9 @@ public class StepperToolbar extends Toolbar{
 
         toolBar.addSeparator();
 
-        /*
-        JRadioButton btnSequence = new JRadioButton();
-        btnSequence.setText("Affichage de la séquence");
-        btnSequence.setToolTipText("Affichage de la séquence de transition de la simulation en cours");
-        btnSequence.addActionListener(this::btnSequenceListener);
-        toolBar.add(btnSequence);
-         */
-
         JToggleButton btnSequence = new JToggleButton();
         btnSequence.setText("Affichage de la séquence");
-        btnSequence.setToolTipText("Affichage de la séquence de transition de la simulation en cours");
+        btnSequence.setToolTipText("Affichage des 20 dernières transitions franchies lors de la simulation en cours");
         btnSequence.addActionListener(this::btnSequenceListener);
         toolBar.add(btnSequence);
 
@@ -110,8 +102,6 @@ public class StepperToolbar extends Toolbar{
                 stepper.randomize();
             } else {
                 ((Timer)e.getSource()).stop();
-                //btnAutoON.setEnabled(true);
-                //btnAutoOFF.setEnabled(false);
                 btnAuto.setText("Début du mode Auto");
                 btnAuto.setSelected(false);
             }
@@ -139,35 +129,11 @@ public class StepperToolbar extends Toolbar{
             }
         });
 
-
-/*
-        btnAutoON.addActionListener(e -> {
-            if(btnAutoON.getText().equals("Automatique : Début")){
-                timer.start();
-                btnAutoON.setEnabled(false);
-                btnAutoOFF.setEnabled(true);
-            }
-        });
-
-        btnAutoOFF.addActionListener(e -> {
-            timer.stop();
-            btnAutoON.setEnabled(true);
-            btnAutoOFF.setEnabled(false);
-        });
-
- */
-
         ButtonGroup  playerGroup = new ButtonGroup();
         playerGroup.add(btnOrigin);
         playerGroup.add(btnPrevious);
         playerGroup.add(btnNext);
         playerGroup.add(btnLast);
-
-
-        ButtonGroup autoGroup = new ButtonGroup();
-        //autoGroup.add(btnAutoON);
-        //autoGroup.add(btnAutoOFF);
-        autoGroup.add(btnAuto);
 
 
         Image imageOrigin = null;
@@ -202,43 +168,36 @@ public class StepperToolbar extends Toolbar{
         frame.getContentPane();
         frame.add( this.getToolbar(), BorderLayout.PAGE_START);
         this.frame.setVisible(true);
-
     }
 
     public void btnOriginListener(ActionEvent event){
         if(!stepper.marquagesPasse.isEmpty()) {
             stepper.goToFirstMarquage();
         }
+        ((JButton) event.getSource()).setSelected(false);
     }
 
     public void btnPreviousListener(ActionEvent event){
         if(!stepper.marquagesPasse.isEmpty()){
             stepper.goToPreviousMarquage();
         }
+        ((JButton) event.getSource()).setSelected(false);
     }
 
     public void btnNextListener(ActionEvent event){
-        if(!stepper.marquagesPasse.get(stepper.marquagesPasse.size() -1).equals(model.getMarquage())) {
-            stepper.goToNextMarquage();
-        }
+        stepper.goToNextMarquage();
+        ((JButton) event.getSource()).setSelected(false);
+
     }
 
     public void btnLastListener(ActionEvent event){
         if(!stepper.marquagesPasse.isEmpty()) {
             stepper.goToLastMarquage();
         }
-    }
-
-    public void btnAutoONListener(ActionEvent event){
-
-    }
-
-    public void btnAutoOFFListener(ActionEvent event){
-
+        ((JButton) event.getSource()).setSelected(false);
     }
 
     public void btnSequenceListener(ActionEvent event){
-        //stepper.setShowSequence(((JRadioButton) event.getSource()).isSelected());
         stepper.setShowSequence(((JToggleButton) event.getSource()).isSelected());
     }
 

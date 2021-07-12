@@ -18,6 +18,7 @@ public class Stepper{
     public List<String> sequenceTransition;
 
     public boolean showSequence = false;
+    public int currentMarquageIndex;
 
     public Stepper(Model model, StepperHandler stepperHandler){
         this.model = model;
@@ -32,6 +33,7 @@ public class Stepper{
         this.marquagesPasse = new ArrayList<>();
         this.sequenceTransition = new ArrayList<>();
         marquagesPasse.add(model.getM0());
+        currentMarquageIndex=0;
     }
 
     public void setStepperHandler(StepperHandler stepperHandler){
@@ -105,6 +107,8 @@ public class Stepper{
         Vector<Integer> nextMarquage = addVector(model.getMarquage(), model.getC(), indexOfT);
 
         marquagesPasse.add(nextMarquage);
+        currentMarquageIndex++;
+
         sequenceTransition.add(model.transitionVector.get(indexOfT).getName());
 
         model.setMarquage(nextMarquage);
@@ -117,17 +121,16 @@ public class Stepper{
 
     public void goToLastMarquage(){
         model.setMarquage(getMarquagesPasse().get(getMarquagesPasse().size() -1));
+        currentMarquageIndex = getMarquagesPasse().size()-1;
         stepperHandler.repaint();
 
     }
 
     public void goToNextMarquage() {
 
-        int indexOfCurrentMarquage = marquagesPasse.indexOf(findMarquage(marquagesPasse, model.getMarquage()));
-
-        // Si le prochain est au plus le dernier marquage
-        if(indexOfCurrentMarquage +1 <= marquagesPasse.size() -1) {
-            Vector<Integer> nextMarquage = getMarquagesPasse().get(indexOfCurrentMarquage + 1);
+        if(currentMarquageIndex < marquagesPasse.size()-1){
+            currentMarquageIndex++;
+            Vector<Integer> nextMarquage = getMarquagesPasse().get(currentMarquageIndex);
             model.setMarquage(nextMarquage);
         }
 
@@ -136,11 +139,9 @@ public class Stepper{
 
     public void goToPreviousMarquage(){
 
-        int indexOfCurrentMarquage = marquagesPasse.lastIndexOf(findMarquage(marquagesPasse, model.getMarquage()));
-
-        // Si le marquage précédent est au moins le premier marquage
-        if(indexOfCurrentMarquage -1 >= 0) {
-            Vector<Integer> previousMarquage = getMarquagesPasse().get(indexOfCurrentMarquage - 1);
+        if(currentMarquageIndex -1 >= 0) {
+            currentMarquageIndex--;
+            Vector<Integer> previousMarquage = getMarquagesPasse().get(currentMarquageIndex);
             model.setMarquage(previousMarquage);
         }
 
@@ -148,6 +149,7 @@ public class Stepper{
     }
 
     public void goToFirstMarquage(){
+        currentMarquageIndex = 0;
         model.setMarquage(getMarquagesPasse().get(0));
         stepperHandler.repaint();
     }
@@ -162,17 +164,14 @@ public class Stepper{
             if (!transitionList.isEmpty()) {
                 int indexOfT = model.transitionVector.indexOf(transitionList.get(random.nextInt(transitionList.size())));
 
-                //System.out.println(model.transitionVector.get(indexOfT));
-
                 Vector<Integer> nextMarquage = addVector(model.getMarquage(), model.getC(), indexOfT);
 
                 marquagesPasse.add(nextMarquage);
+                currentMarquageIndex++;
+
                 sequenceTransition.add(model.transitionVector.get(indexOfT).getName());
 
-                //System.out.println(sequenceTransition);
-
                 model.setMarquage(nextMarquage);
-                //System.out.println(marquagesPasse);
                 stepperHandler.repaint();
             }
         } catch (Exception e){
