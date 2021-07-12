@@ -339,8 +339,7 @@ public class DrawPanel extends JPanel {
 
         if(selectedObject !=null && selectedObject instanceof Arc){
             Arc a = (Arc) selectedObject;
-            System.out.println("oui");
-            System.out.println("{x : "+x+", y : "+y+"}");
+            //System.out.println("{x : "+x+", y : "+y+"}");
             if(a.containsControlPoint1(x,y)){
                a.getPointCtr1().setMoved(true);
                return a.getPointCtr1();
@@ -430,7 +429,8 @@ public class DrawPanel extends JPanel {
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only integers are allowed");
             }
 
-        } else {
+        }
+        if(obj instanceof Transition) {
             try {
                 Object[] orientation = { "Verticale", "Horizontale" };
                 JComboBox comboBox = new JComboBox(orientation);
@@ -440,6 +440,17 @@ public class DrawPanel extends JPanel {
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error...");
             }
         }
+
+        if(obj instanceof Arc){
+            try{
+                String result = JOptionPane.showInputDialog("Poids de l'arc :");
+                int poids = Integer.parseInt(result);
+                ((Arc)obj).setPoids(poids);
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(frame.getContentPane(),"Error: only integers are allowed");
+            }
+        }
+
         repaint();
     }
 
@@ -459,7 +470,6 @@ public class DrawPanel extends JPanel {
              label.add (new JLabel("Label : ", SwingConstants.RIGHT));
              label.add (new JLabel("Position :", SwingConstants.LEFT));
              panel.add(label, BorderLayout.WEST);
-
              ImageIcon icon = new ImageIcon (getClass().getResource("/icons/position.png"));
 
             JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
