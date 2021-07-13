@@ -52,6 +52,19 @@ jobs:
     - name: Zip output (Linux)
       run: zip -r ${{matrix.BUILD_PATH}}output.zip ${{matrix.BUILD_PATH}}lib ${{matrix.BUILD_PATH}}runtime ${{matrix.BUILD_PATH}}java-rdp-${{ steps.version.outputs.text }}.exe
       if: matrix.os == 'ubuntu-latest'
+    
+  create-release:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            BUILD_PATH: /home/runner/work/java-rdp/java-rdp/target/
+          - os: windows-latest
+            BUILD_PATH: D:\a\java-rdp\java-rdp\target\
+    steps:
     - name: Create Release
       id: create_release
       if: matrix.os == 'ubuntu-latest'
