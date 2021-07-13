@@ -61,10 +61,10 @@ jobs:
         name: changelog_output
         path: changelog_output.txt
     - name: Zip output (Windows)
-      run: 7z a -tzip ${{matrix.BUILD_PATH}}output.zip ${{matrix.BUILD_PATH}}lib ${{matrix.BUILD_PATH}}runtime ${{matrix.BUILD_PATH}}java-rdp-${{ steps.version.outputs.text }}.exe
+      run: 7z a -tzip ${{matrix.BUILD_PATH}}output-${{matrix.os}}.zip ${{matrix.BUILD_PATH}}lib ${{matrix.BUILD_PATH}}runtime ${{matrix.BUILD_PATH}}java-rdp-${{ steps.version.outputs.text }}.exe
       if: matrix.os == 'windows-latest'
     - name: Zip output (Linux)
-      run: zip -r ${{matrix.BUILD_PATH}}output.zip ${{matrix.BUILD_PATH}}lib ${{matrix.BUILD_PATH}}runtime ${{matrix.BUILD_PATH}}java-rdp-${{ steps.version.outputs.text }}.exe
+      run: zip -r ${{matrix.BUILD_PATH}}output-${{matrix.os}}.zip ${{matrix.BUILD_PATH}}lib ${{matrix.BUILD_PATH}}runtime ${{matrix.BUILD_PATH}}java-rdp-${{ steps.version.outputs.text }}.jar
       if: matrix.os == 'ubuntu-latest'
     
   create-release:
@@ -154,6 +154,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_release_info.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ${{matrix.BUILD_PATH}}output.zip
+        asset_path: ${{matrix.BUILD_PATH}}output-${{matrix.os}}.zip
         asset_name: jrdp-${{ steps.get_version.outputs.text }}-${{matrix.os}}.zip
         asset_content_type: application/zip
