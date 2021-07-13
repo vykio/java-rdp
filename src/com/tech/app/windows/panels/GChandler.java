@@ -39,6 +39,8 @@ public class GChandler {
      */
     public void init() {
         // create a visualization using JGraph, via an adapter
+        System.out.println("Liste de noeuds qui vont être affichés :" + liste_nodes);
+
         for (Node n: liste_nodes) {
             g.addVertex(n.getMarquage());
         }
