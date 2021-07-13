@@ -133,7 +133,7 @@ jobs:
     
     - uses: actions/download-artifact@master
       with:
-        name: ${{matrix-os}}-artifact
+        name: ${{matrix.os}}-artifact
         path: ${{matrix.BUILD_PATH}}
     
     - name: Load Version URL File from previous job
