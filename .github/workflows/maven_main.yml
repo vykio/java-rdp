@@ -66,6 +66,11 @@ jobs:
     - name: Zip output (Linux)
       run: zip -r ${{matrix.BUILD_PATH}}output-${{matrix.os}}.zip ${{matrix.BUILD_PATH}}lib ${{matrix.BUILD_PATH}}runtime ${{matrix.BUILD_PATH}}java-rdp-${{ steps.version.outputs.text }}.jar
       if: matrix.os == 'ubuntu-latest'
+    - uses: actions/upload-artifact@master
+      with:
+        name: ${{matrix.os}}-artifact
+        path: ${{matrix.BUILD_PATH}}
+    
     
   create-release:
     needs: build
@@ -125,6 +130,11 @@ jobs:
           - os: windows-latest
             BUILD_PATH: D:\a\java-rdp\java-rdp\target\
     steps:
+    
+    - uses: actions/download-artifact@master
+      with:
+        name: ${{matrix-os}}-artifact
+        path: ${{matrix.BUILD_PATH}}
     
     - name: Load Version URL File from previous job
       uses: actions/download-artifact@v1
