@@ -315,7 +315,6 @@ public class Menu extends MenuBar {
             System.out.println(choix.getSelectedFile().getName());
             System.out.println(choix.getSelectedFile().getAbsolutePath());
             model = saveManager.load(f, model);
-            model.updateMatrices();
             if (model != null) {
                 dp.model = model;
                 dp.printModel();
@@ -329,7 +328,6 @@ public class Menu extends MenuBar {
         } else {
             JOptionPane.showMessageDialog(this, "Aucun fichier choisi !");
         }
-        dp.repaint();
     }
 
     /**
