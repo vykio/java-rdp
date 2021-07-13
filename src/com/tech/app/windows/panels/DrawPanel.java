@@ -10,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,6 @@ public class DrawPanel extends JPanel {
     /* Variables de départ pour indexation P et T */
     private int idPlace=0;
     private int idTransition = 0;
-    private int idArc = 0;
 
 
     /**
@@ -137,11 +135,13 @@ public class DrawPanel extends JPanel {
                 Place p = (Place) obj;
                 p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
             } else if (obj instanceof PointControle) {
-                PointControle point = (PointControle) obj;
-                point.updatePosition(point.getX() + dx * 1 / scaleX, point.getY() + dy * 1 / scaleY);
+                PointControle pt = (PointControle) obj;
+                pt.updatePosition(pt.getX() + dx * 1 / scaleX, pt.getY() + dy * 1 / scaleY);
+                //System.out.println("test");
+                System.out.println(model);
             } else {
-                Transition t = (Transition) obj;
-                t.updatePosition(t.getX() + dx * 1 / scaleX, t.getY() + dy * 1 / scaleY);
+                Transition p = (Transition) obj;
+                    p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
             }
             repaint();
         }
@@ -203,16 +203,6 @@ public class DrawPanel extends JPanel {
                 ((Transition) selectedObject).draw(g);
                 ((Transition) selectedObject).estFranchissable();
                 System.out.println("est Franchissable ? :"+ ((Transition) selectedObject).estFranchissable());
-            } else if (selectedObject instanceof Arc){
-                Arc a = ((Arc) selectedObject);
-                a.draw(g);
-                Point2D src = new Point2D.Double(a.getPointCtr1().getX(),a.getPointCtr1().getY());
-                Point2D dest = new Point2D.Double();
-                a.at.transform(src, dest);
-                a.getPointCtr1().setX(dest.getX());
-                a.getPointCtr1().setY(dest.getY());
-                a.getPointCtr1().draw((Graphics2D) g);
-                System.out.println(a.getPointCtr1());
             }
             g.setColor(co);
 
@@ -288,19 +278,18 @@ public class DrawPanel extends JPanel {
                 this.clickError = false;
                 if (obj1 instanceof Transition) {
                     Arc a = new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1);
-                    ((Transition) obj1).addParent(a);
+                    ((Transition) obj1).addChildren(a);
                     model.addArc(a);
-                    idArc++;
                 } else {
                     Arc b = new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2);
-                    ((Transition) obj2).addChildren(b);
+                    ((Transition) obj2).addParent(b);
                     model.addArc(b);
-                    idArc++;
                 }
 
             } else {
                 this.clickError = true;
             }
+
         }
         repaint();
 
@@ -356,16 +345,6 @@ public class DrawPanel extends JPanel {
      * @return Objet
      */
     public Object getSelectedObject(double x, double y) {
-
-        if(selectedObject !=null && selectedObject instanceof Arc){
-            Arc a = (Arc) selectedObject;
-            //System.out.println("{x : "+x+", y : "+y+"}");
-            if(a.containsControlPoint1(x,y)){
-               a.getPointCtr1().setMoved(true);
-               return a.getPointCtr1();
-            }
-        }
-
         for (Place p:model.placeVector) {
             if (p.forme.contains(x,y)) {
                 return p;
@@ -376,16 +355,16 @@ public class DrawPanel extends JPanel {
                 return t;
             }
         }
-        for (Arc a : model.arcVector){
-            Point2D.Double src = new Point2D.Double(x,y);
-            Point2D.Double dest = new Point2D.Double();
-            a.reverse.transform(src,dest);
-            // Si on click autour de la courbe ou sur la tete de la fleche
-            if(a.hitbox.contains(dest) || a.arrowHead.contains(dest)){
-                return a;
+        for (Transition t : model.transitionVector) {
+            for (Arc a : t.getChildren()) {
+                //System.out.println("Pt1 > " + a.getPointCtr1());
+                if(a.containsControlPoint1(x,y)) {
+                    a.getPointCtr1().setMoved(true);
+                    return a.getPointCtr1();
+                }
             }
         }
-       return null;
+        return null;
     }
 
     /**
@@ -462,8 +441,7 @@ public class DrawPanel extends JPanel {
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only integers are allowed");
             }
 
-        }
-        if(obj instanceof Transition) {
+        } else {
             try {
                 Object[] orientation = { "Verticale", "Horizontale" };
                 JComboBox comboBox = new JComboBox(orientation);
@@ -473,21 +451,6 @@ public class DrawPanel extends JPanel {
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error...");
             }
         }
-
-        if(obj instanceof Arc){
-            try{
-                String result = JOptionPane.showInputDialog("Poids de l'arc :", ((Arc) obj).getPoids());
-                int poids = Integer.parseInt(result);
-                if(poids < 1){
-                    JOptionPane.showMessageDialog(frame.getContentPane(),"Error: only integers are allowed");
-
-                }
-                ((Arc)obj).setPoids(poids);
-            } catch (Exception e){
-                JOptionPane.showMessageDialog(frame.getContentPane(),"Error: only integers are allowed");
-            }
-        }
-
         repaint();
     }
 

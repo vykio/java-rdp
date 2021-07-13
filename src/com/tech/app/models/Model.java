@@ -1,8 +1,6 @@
 package com.tech.app.models;
 
 import com.tech.app.functions.FList;
-import com.tech.app.models.gma.CoverabilityGraph;
-import com.tech.app.models.gma.Marquage;
 
 import java.io.Serializable;
 import java.util.*;
@@ -20,6 +18,7 @@ public class Model implements Serializable {
     public List<Transition> transitionVector;
     public List<Arc> arcVector;
 
+
     Vector<Integer> M0;
     Vector<Vector<Integer>> w_plus, w_moins, C;
 
@@ -29,7 +28,7 @@ public class Model implements Serializable {
     public Model() {
         this.nbPlace = 0;
         this.nbTransition = 0;
-        this.nbArc=0;
+        this.nbArc = 0;
 
         this.placeVector = new ArrayList<>();
         this.transitionVector = new ArrayList<>();
@@ -140,7 +139,6 @@ public class Model implements Serializable {
     public void addArc(Arc a){
         this.arcVector.add(a);
         this.nbArc++;
-        this.updateMatrices();
     }
 
     /**
@@ -242,7 +240,7 @@ public class Model implements Serializable {
     }
 
     public void removeArcs(List<Arc> arcToDelete){
-
+        //try{*/
             for(int i = arcToDelete.size() - 1; i >= 0;){
                 for(int j = transitionVector.size() - 1; j >= 0;){
 
@@ -263,7 +261,15 @@ public class Model implements Serializable {
                 arcToDelete.remove(i);
                 i--;
             }
+        //}
+        /*
+        catch(ConcurrentModificationException e) {
+            e.printStackTrace();
+        }*/
+        System.out.println(this);
         this.updateMatrices();
+        System.out.println("apres :");
+        System.out.println(this);
     }
 
     /**
@@ -304,10 +310,8 @@ public class Model implements Serializable {
         clearMatrices();
         this.nbPlace = 0;
         this.nbTransition = 0;
-        this.nbArc = 0;
         this.placeVector = new ArrayList<>();
         this.transitionVector = new ArrayList<>();
-        this.arcVector = new ArrayList<>();
     }
 
     /**
@@ -562,12 +566,6 @@ public class Model implements Serializable {
         }
         temp.setMarquage(this.M0);
         return transitionsFranchissables;
-    }
-
-    public List<Marquage> getMarquagesAccessibles(){
-        CoverabilityGraph coverabilityGraph = new CoverabilityGraph(this);
-        coverabilityGraph.calculateCoverabilityGraph();
-        return coverabilityGraph.marquagesAccessibles;
     }
 
 }
