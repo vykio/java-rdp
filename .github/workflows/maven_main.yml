@@ -40,12 +40,26 @@ jobs:
       uses: pCYSl5EDgo/cat@master
       id: version
       with:
-        path: ${{matrix.BUILD_PATH}}version.txt 
+        path: ${{matrix.BUILD_PATH}}version.txt
+    - name: Output Version URL File
+      run: echo "${{ steps.version.outputs.text }}" > version_output.txt
+    - name: Save Version URL File for other workflows
+      uses: actions/upload-artifact@v1
+      with:
+        name: version_output
+        path: version_output.txt
     - name: Get changelog
       uses: pCYSl5EDgo/cat@master
       id: changelog
       with:
         path: ${{matrix.BUILD_PATH}}changelog.txt
+    - name: Output Changelog URL File
+      run: echo "${{ steps.changelog.outputs.text }}" > changelog_output.txt
+    - name: Save Changelog URL File for other workflows
+      uses: actions/upload-artifact@v1
+      with:
+        name: changelog_output
+        path: changelog_output.txt
     - name: Zip output (Windows)
       run: 7z a -tzip ${{matrix.BUILD_PATH}}output.zip ${{matrix.BUILD_PATH}}lib ${{matrix.BUILD_PATH}}runtime ${{matrix.BUILD_PATH}}java-rdp-${{ steps.version.outputs.text }}.exe
       if: matrix.os == 'windows-latest'
@@ -57,28 +71,40 @@ jobs:
     needs: build
     runs-on: 'ubuntu-latest'
     steps:
-    - name: Get version
-      uses: pCYSl5EDgo/cat@master
-      id: version
+    
+    - name: Load Version URL File from previous job
+      uses: actions/download-artifact@v1
       with:
-        path: /home/runner/work/java-rdp/java-rdp/target/version.txt 
-    - name: Get changelog
-      uses: pCYSl5EDgo/cat@master
-      id: changelog
+        name: version_output
+    - name: Get Version File Name
+      id: get_version
+      run: |
+        value=`cat version_output/version_output.txt`
+        echo ::set-output name=version_output::$value
+        
+    - name: Load Changelog URL File from previous job
+      uses: actions/download-artifact@v1
       with:
-        path: /home/runner/work/java-rdp/java-rdp/target/changelog.txt
+        name: changelog_output
+    - name: Get Changelog File Name
+      id: get_changelog
+      run: |
+        value=`cat changelog_output/changelog_output.txt`
+        echo ::set-output name=changelog_output::$value
+        
     - name: Create Release
       id: create_release
       uses: actions/create-release@latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.version.outputs.text }}
-        release_name: JRDP – ${{ steps.version.outputs.text }}
+        tag_name: ${{ steps.get_version.outputs.text }}
+        release_name: JRDP – ${{ steps.get_version.outputs.text }}
         body: |
-          ${{ steps.changelog.outputs.text }}
+          ${{ steps.get_changelog.outputs.text }}
         draft: false
         prerelease: false
+        
     - name: Output Release URL File
       run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
     - name: Save Release URL File for publish
@@ -99,11 +125,17 @@ jobs:
           - os: windows-latest
             BUILD_PATH: D:\a\java-rdp\java-rdp\target\
     steps:
-    - name: Get version
-      uses: pCYSl5EDgo/cat@master
-      id: version
+    
+    - name: Load Version URL File from previous job
+      uses: actions/download-artifact@v1
       with:
-        path: ${{matrix.BUILD_PATH}}version.txt
+        name: version_output
+    - name: Get Version File Name
+      id: get_version
+      run: |
+        value=`cat version_output/version_output.txt`
+        echo ::set-output name=version_output::$value
+    
     - name: Load Release URL File from release job
       uses: actions/download-artifact@v1
       with:
@@ -113,6 +145,8 @@ jobs:
       run: |
         value=`cat release_url/release_url.txt`
         echo ::set-output name=upload_url::$value
+        
+        
     - name: Upload Release Asset (Windows)
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
@@ -121,5 +155,5 @@ jobs:
       with:
         upload_url: ${{ steps.get_release_info.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ${{matrix.BUILD_PATH}}output.zip
-        asset_name: jrdp-${{ steps.version.outputs.text }}-ubuntu.zip
+        asset_name: jrdp-${{ steps.get_version.outputs.text }}-ubuntu.zip
         asset_content_type: application/zip
