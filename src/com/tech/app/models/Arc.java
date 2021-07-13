@@ -30,7 +30,7 @@ public class Arc implements Serializable {
         this.placeToTransition = placeToTransition;
         this.transition = transition;
         this.forme = new Line2D.Double(xOrigin, yOrigin, this.place.getX(), this.place.getY());
-        this.pointCtr1 = new PointControle();
+        this.pointCtr1 = new PointControle(0,0, this);
     }
 
     /**
@@ -129,7 +129,7 @@ public class Arc implements Serializable {
         }
 
         /* Ligne */
-        if (this.pointCtr1.getOrigin()) {
+        if (this.pointCtr1.getMoved()) {
             this.pointCtr1.setX((start + len-ARR_SIZE)/2);
             this.pointCtr1.setY(0);
         }
