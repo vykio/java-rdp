@@ -61,10 +61,10 @@ jobs:
         name: changelog_output
         path: changelog_output.txt
     - name: Zip output (Windows)
-      run: 7z a -tzip ${{matrix.BUILD_PATH}}output-${{matrix.os}}.zip ${{matrix.BUILD_PATH}}lib ${{matrix.BUILD_PATH}}runtime ${{matrix.BUILD_PATH}}java-rdp-${{ steps.version.outputs.text }}.exe
+      run: cd ${{matrix.BUILD_PATH}} && 7z a -tzip output-${{matrix.os}}.zip lib runtime java-rdp-${{ steps.version.outputs.text }}.exe
       if: matrix.os == 'windows-latest'
     - name: Zip output (Linux)
-      run: zip -r ${{matrix.BUILD_PATH}}output-${{matrix.os}}.zip ${{matrix.BUILD_PATH}}lib ${{matrix.BUILD_PATH}}runtime ${{matrix.BUILD_PATH}}java-rdp-${{ steps.version.outputs.text }}.jar
+      run: cd ${{matrix.BUILD_PATH}} && zip -r output-${{matrix.os}}.zip lib runtime java-rdp-${{ steps.version.outputs.text }}.jar
       if: matrix.os == 'ubuntu-latest'
     - uses: actions/upload-artifact@master
       with:
@@ -81,21 +81,25 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: version_output
-    - name: Get Version File Name
+    - name: Get version
+      uses: pCYSl5EDgo/cat@master
       id: get_version
-      run: |
-        value=`cat version_output/version_output.txt`
-        echo ::set-output name=text::$value
+      with:
+        path: version_output/version_output.txt
+        
+        
         
     - name: Load Changelog URL File from previous job
       uses: actions/download-artifact@v1
       with:
         name: changelog_output
-    - name: Get Changelog File Name
+    - name: Get changelog
+      uses: pCYSl5EDgo/cat@master
       id: get_changelog
-      run: |
-        value=`cat changelog_output/changelog_output.txt`
-        echo ::set-output name=text::$value
+      with:
+        path: changelog_output/changelog_output.txt
+        
+        
         
     - name: Create Release
       id: create_release
@@ -118,6 +122,8 @@ jobs:
         name: release_url
         path: release_url.txt
         
+        
+        
   upload-assets:
     needs: create-release
     runs-on: ${{matrix.os}}
@@ -136,25 +142,28 @@ jobs:
         name: ${{matrix.os}}-artifact
         path: ${{matrix.BUILD_PATH}}
     
+    
     - name: Load Version URL File from previous job
       uses: actions/download-artifact@v1
       with:
         name: version_output
-    - name: Get Version File Name
+        path: version_output/version_output.txt
+    - name: Get version
+      uses: pCYSl5EDgo/cat@master
       id: get_version
-      run: |
-        value=`cat version_output/version_output.txt`
-        echo ::set-output name=text::$value
+      with:
+        path: version_output/version_output.txt
+        
     
     - name: Load Release URL File from release job
       uses: actions/download-artifact@v1
       with:
         name: release_url
-    - name: Get Release File Name & Upload URL
+    - name: Get version
+      uses: pCYSl5EDgo/cat@master
       id: get_release_info
-      run: |
-        value=`cat release_url/release_url.txt`
-        echo ::set-output name=upload_url::$value
+      with:
+        path: release_url/release_url.txt
         
         
     - name: Upload Release Asset (Windows)
@@ -163,7 +172,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.get_release_info.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        upload_url: ${{ steps.get_release_info.outputs.text }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ${{matrix.BUILD_PATH}}output-${{matrix.os}}.zip
         asset_name: jrdp-${{ steps.get_version.outputs.text }}-${{matrix.os}}.zip
         asset_content_type: application/zip
