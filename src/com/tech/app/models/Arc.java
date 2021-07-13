@@ -30,7 +30,7 @@ public class Arc implements Serializable {
         this.placeToTransition = placeToTransition;
         this.transition = transition;
         this.forme = new Line2D.Double(xOrigin, yOrigin, this.place.getX(), this.place.getY());
-        this.pointCtr1 = new PointControle();
+        this.pointCtr1 = new PointControle(0,0,this);
     }
 
     /**
@@ -146,7 +146,7 @@ public class Arc implements Serializable {
 
 
         hitbox = new Path2D.Double(arcHitbox(len));
-        g2.draw(hitbox);
+        //g2.draw(hitbox);
 
         /* Fléche */
         arrowHead = new Path2D.Double();
@@ -161,13 +161,8 @@ public class Arc implements Serializable {
 
         /* Affichage du poids */
         if(this.poids > 1 ) {
-            if(placeToTransition) {
-                g2.setFont(new Font("Console", Font.PLAIN, 12));
-                g2.drawString(Integer.toString(poids), (int) courbe.getX1() + 30, (int) courbe.getY1() + 15);
-            } else {
-                g2.setFont(new Font("Console", Font.PLAIN, 12));
-                g2.drawString(Integer.toString(poids), (int) courbe.getX2() - 30, (int) courbe.getY2() + 15);
-            }
+            g2.setFont(new Font("Console", Font.PLAIN, 15));
+            g2.drawString(Integer.toString(poids), (int) courbe.getCtrlX(), (int) courbe.getCtrlY() + 15);
         }
     }
 
@@ -242,11 +237,9 @@ public class Arc implements Serializable {
         Point.Double point = new Point.Double(pointCtr1.getX(),pointCtr1.getY());
         Point2D.Double pointDest = new Point.Double();
 
-        at.transform(point, pointDest);
+        getAt().transform(point, pointDest);
 
         System.out.println("PtCtrlTRANSFORM:(" + pointDest.getX() + ":" + pointDest.getY() + ") PtCtrl:(" + pointCtr1.getX() + ":" + pointCtr1.getY()+ ")");
-
-
 
         boolean res = containing(pointDest, pointCtr1.getSize()+ pointCtr1.getSize()/2, new Point.Double(x,y));
 
@@ -264,6 +257,15 @@ public class Arc implements Serializable {
     }
 
     public AffineTransform getAt() { return at; }
+
+    public AffineTransform getReverseAt() {
+        try{
+            return at.createInverse();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * Méthode qui permet de mettre à jour les coordonnées de l'arc.

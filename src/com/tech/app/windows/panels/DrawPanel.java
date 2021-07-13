@@ -462,7 +462,8 @@ public class DrawPanel extends JPanel {
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only integers are allowed");
             }
 
-        } else {
+        }
+        if(obj instanceof Transition) {
             try {
                 Object[] orientation = { "Verticale", "Horizontale" };
                 JComboBox comboBox = new JComboBox(orientation);
