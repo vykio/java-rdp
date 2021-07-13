@@ -120,17 +120,6 @@ public class CoverabilityGraph {
         return m.stream().anyMatch(a -> a.getMarquage().equals(marquage));
     }
 
-    public void tryToAddOmegas(final List<Node> nodes, final Marquage m) {
-
-        for (Node node : nodes) {
-            for (int i = 0; i < node.getM().getMarquage().size(); i++) {
-                if (m.getMarquage().get(i) > node.getM().getMarquage().get(i)) {
-                    m.getMarquage().set(i, Integer.MAX_VALUE);
-                }
-            }
-        }
-    }
-
     public void tryToAddOmegas(final Marquage m, final Marquage m1) {
 
         for (int i = 0; i < m.getMarquage().size(); i++) {
@@ -171,21 +160,13 @@ public class CoverabilityGraph {
 
                     M1 = addVector(M, this.model.getC(), t);
 
-                    /*
-                    if(couverture(M, M1)){
-                        tryToAddOmegas(liste_node,M1);
-                    }
-                     */
-
                     if (couverture(M, M1)) {
-                        //tryToAddOmegas(liste_node,M1);
                         tryToAddOmegas(M, M1);
                     } else {
                         for (Node n : liste_node) {
                             if (couverture(n.getM(), M1)) {
                                 if(!containsMarquage(marquagesAccessibles,M1.getMarquage()))
                                 tryToAddOmegas(n.getM(), M1);
-                                //tryToAddOmegas(liste_node,M1);
                             }
                         }
                     }

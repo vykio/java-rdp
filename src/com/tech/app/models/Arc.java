@@ -13,7 +13,7 @@ public class Arc implements Serializable {
     private int poids;
     private final boolean placeToTransition;
     private final Transition transition;
-    private final PointControle pointCtr1;
+    private PointControle pointCtr1;
 
     /**
      * Constructeur d'arc utilisé dans DrawPanel lorsque l'utilisateur clique sur la zone de dessin en ayant selectionné l'outil arc.
@@ -41,6 +41,9 @@ public class Arc implements Serializable {
     public Arc(Place place, int poids){
         this(place, poids, 0,0, false, null);
     }
+
+    public Arc(Place place, int poids, boolean placeToTransition, Transition t){ this(place, poids, 0,0, placeToTransition, t); }
+
 
     /**
      * Constructeur d'arc utilisé dans la classe Transition.
@@ -81,6 +84,8 @@ public class Arc implements Serializable {
         return "Arc{" +
                 "place=" + place +
                 ", poids=" + poids +
+                ", placeToTransition = "+ placeToTransition+
+                ", "+ pointCtr1+
                 '}';
     }
 
@@ -88,6 +93,7 @@ public class Arc implements Serializable {
 
     public Line2D.Double forme;
     public AffineTransform at;
+    public AffineTransform reverse;
 
     /**
      * Méthode qui permet de dessiner un arc.
@@ -116,8 +122,14 @@ public class Arc implements Serializable {
         at.concatenate(AffineTransform.getRotateInstance(angle));
         g2.transform(at);
 
+        try {
+            reverse = at.createInverse();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
         /* Ligne */
-        if (!this.pointCtr1.getMoved()) {
+        if (this.pointCtr1.getOrigin()) {
             this.pointCtr1.setX((start + len-ARR_SIZE)/2);
             this.pointCtr1.setY(0);
         }
@@ -217,6 +229,8 @@ public class Arc implements Serializable {
     public PointControle getPointCtr1() {
         return pointCtr1;
     }
+
+    public void setPointCtr1(PointControle pt){ this.pointCtr1 = pt;}
 
     /**
      * Méthode qui permet de mettre à jour les coordonnées de l'arc.
