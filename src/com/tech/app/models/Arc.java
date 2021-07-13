@@ -70,7 +70,11 @@ public class Arc implements Serializable {
      * Méthode qui permet de donner/modifier le poids d'un arc.
      * @param poids Poids de l'arc
      */
-    public void setPoids(int poids) { this.poids = poids; }
+    public void setPoids(int poids) {
+        if(poids >= 1) {
+            this.poids = poids;
+        }
+    }
 
     /**
      * Méthode qui permet d'afficher les caractéristiques de l'arc : {place,poids}.
@@ -87,7 +91,11 @@ public class Arc implements Serializable {
     /* Partie Graphique */
 
     public Line2D.Double forme;
+    public QuadCurve2D.Double courbe;
     public AffineTransform at;
+    public AffineTransform reverse;
+    public Path2D.Double hitbox;
+    public Path2D arrowHead;
 
     /**
      * Méthode qui permet de dessiner un arc.
@@ -116,6 +124,14 @@ public class Arc implements Serializable {
         at.concatenate(AffineTransform.getRotateInstance(angle));
         g2.transform(at);
 
+
+
+        try {
+            reverse = at.createInverse();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         /* Ligne */
         if (!this.pointCtr1.getMoved()) {
             this.pointCtr1.setX((start + len-ARR_SIZE)/2);
@@ -123,23 +139,36 @@ public class Arc implements Serializable {
         }
 
         /*point de controle*/
-        pointCtr1.draw(g2);
+        //pointCtr1.draw(g2);
 
-        QuadCurve2D.Double courbe = new QuadCurve2D.Double(start, 0, this.pointCtr1.getX(), this.pointCtr1.getY(), len, 0);
-        /* Référentiel */
-
+        courbe = new QuadCurve2D.Double(start, 0, this.pointCtr1.getX(), this.pointCtr1.getY(), len, 0);
         g2.draw(courbe);
 
+
+        hitbox = new Path2D.Double(arcHitbox(len));
+        g2.draw(hitbox);
+
         /* Fléche */
-        Path2D path = new Path2D.Double();
+        arrowHead = new Path2D.Double();
         double[] xval = {len, len-ARR_SIZE, len-ARR_SIZE, len};
         double[] yval = {0, -ARR_SIZE, ARR_SIZE, 0};
-        path.moveTo(xval[0], yval[0]);
+        arrowHead.moveTo(xval[0], yval[0]);
         for(int i = 1; i < xval.length; ++i) {
-            path.lineTo(xval[i], yval[i]);
+            arrowHead.lineTo(xval[i], yval[i]);
         }
-        path.closePath();
-        g2.fill(path);
+        arrowHead.closePath();
+        g2.fill(arrowHead);
+
+        /* Affichage du poids */
+        if(this.poids > 1 ) {
+            if(placeToTransition) {
+                g2.setFont(new Font("Console", Font.PLAIN, 12));
+                g2.drawString(Integer.toString(poids), (int) courbe.getX1() + 30, (int) courbe.getY1() + 15);
+            } else {
+                g2.setFont(new Font("Console", Font.PLAIN, 12));
+                g2.drawString(Integer.toString(poids), (int) courbe.getX2() - 30, (int) courbe.getY2() + 15);
+            }
+        }
     }
 
     /**
@@ -171,6 +200,18 @@ public class Arc implements Serializable {
         //g2.draw(new Line2D.Double(this.forme.x1, this.forme.y1, this.place.getX(), this.place.getY()));
         this.drawArrow(g2, oX, oY, dX, dY);
 
+    }
+
+    public Path2D.Double arcHitbox(double len){
+        int ecart = 7;
+        Path2D.Double hitbox = new Path2D.Double();
+        hitbox.moveTo(this.place.forme.width/2,-ecart);
+        hitbox.quadTo(this.pointCtr1.getX(),this.pointCtr1.getY() -ecart,len,-ecart);
+        hitbox.lineTo(len,+ecart);
+        hitbox.quadTo(this.pointCtr1.getX(),this.pointCtr1.getY()+ecart, this.place.forme.width/2,+ecart);
+        hitbox.lineTo(this.place.forme.width/2,-ecart);
+        hitbox.closePath();
+        return hitbox;
     }
 
     /**
@@ -205,9 +246,13 @@ public class Arc implements Serializable {
 
         System.out.println("PtCtrlTRANSFORM:(" + pointDest.getX() + ":" + pointDest.getY() + ") PtCtrl:(" + pointCtr1.getX() + ":" + pointCtr1.getY()+ ")");
 
-        boolean res = containing(pointDest, pointCtr1.getSize(), new Point.Double(x,y));
-        System.out.println(res);
-        return res;
+
+
+        boolean res = containing(pointDest, pointCtr1.getSize()+ pointCtr1.getSize()/2, new Point.Double(x,y));
+
+        boolean result = pointCtr1.contains(x,y);
+        System.out.println(result);
+        return result;
     }
 
     /**
@@ -217,6 +262,8 @@ public class Arc implements Serializable {
     public PointControle getPointCtr1() {
         return pointCtr1;
     }
+
+    public AffineTransform getAt() { return at; }
 
     /**
      * Méthode qui permet de mettre à jour les coordonnées de l'arc.
