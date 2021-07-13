@@ -55,20 +55,20 @@ jobs:
     
   create-release:
     needs: build
-    runs-on: ${{ matrix.os }}
-    
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        include:
-          - os: ubuntu-latest
-            BUILD_PATH: /home/runner/work/java-rdp/java-rdp/target/
-          - os: windows-latest
-            BUILD_PATH: D:\a\java-rdp\java-rdp\target\
+    runs-on: 'ubuntu-latest'
     steps:
+    - name: Get version
+      uses: pCYSl5EDgo/cat@master
+      id: version
+      with:
+        path: /home/runner/work/java-rdp/java-rdp/target/version.txt 
+    - name: Get changelog
+      uses: pCYSl5EDgo/cat@master
+      id: changelog
+      with:
+        path: /home/runner/work/java-rdp/java-rdp/target/changelog.txt
     - name: Create Release
       id: create_release
-      if: matrix.os == 'ubuntu-latest'
       uses: actions/create-release@latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -79,13 +79,47 @@ jobs:
           ${{ steps.changelog.outputs.text }}
         draft: false
         prerelease: false
-    - name: Upload Release Asset
+    - name: Output Release URL File
+      run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+    - name: Save Release URL File for publish
+      uses: actions/upload-artifact@v1
+      with:
+        name: release_url
+        path: release_url.txt
+        
+  upload-assets:
+    needs: create-release
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            BUILD_PATH: /home/runner/work/java-rdp/java-rdp/target/
+          - os: windows-latest
+            BUILD_PATH: D:\a\java-rdp\java-rdp\target\
+    steps:
+    - name: Get version
+      uses: pCYSl5EDgo/cat@master
+      id: version
+      with:
+        path: ${{matrix.BUILD_PATH}}version.txt
+    - name: Load Release URL File from release job
+      uses: actions/download-artifact@v1
+      with:
+        name: release_url
+    - name: Get Release File Name & Upload URL
+      id: get_release_info
+      run: |
+        value=`cat release_url/release_url.txt`
+        echo ::set-output name=upload_url::$value
+    - name: Upload Release Asset (Windows)
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        upload_url: ${{ steps.get_release_info.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ${{matrix.BUILD_PATH}}output.zip
-        asset_name: jrdp-${{ steps.version.outputs.text }}-${{matrix.os}}.zip
+        asset_name: jrdp-${{ steps.version.outputs.text }}-ubuntu.zip
         asset_content_type: application/zip
