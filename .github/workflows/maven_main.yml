@@ -41,8 +41,12 @@ jobs:
       id: version
       with:
         path: ${{matrix.BUILD_PATH}}version.txt
-    - name: Output Version URL File
-      run: echo "${{ steps.version.outputs.text }}" > version_output.txt
+    - name: Output Version URL File (Linux)
+      run: echo -n "${{ steps.version.outputs.text }}" > version_output.txt
+      if: matrix.os == 'ubuntu-latest'
+    - name: Output Version URL File (Windows)
+      run: echo | set /p="${{ steps.version.outputs.text }}" > version_output.txt
+      if: matrix.os == 'windows-latest'
     - name: Save Version URL File for other workflows
       uses: actions/upload-artifact@v1
       with:
