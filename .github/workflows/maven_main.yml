@@ -80,7 +80,7 @@ jobs:
       id: get_version
       run: |
         value=`cat version_output/version_output.txt`
-        echo ::set-output name=version_output::$value
+        echo ::set-output name=text::$value
         
     - name: Load Changelog URL File from previous job
       uses: actions/download-artifact@v1
@@ -90,7 +90,7 @@ jobs:
       id: get_changelog
       run: |
         value=`cat changelog_output/changelog_output.txt`
-        echo ::set-output name=changelog_output::$value
+        echo ::set-output name=text::$value
         
     - name: Create Release
       id: create_release
@@ -134,7 +134,7 @@ jobs:
       id: get_version
       run: |
         value=`cat version_output/version_output.txt`
-        echo ::set-output name=version_output::$value
+        echo ::set-output name=text::$value
     
     - name: Load Release URL File from release job
       uses: actions/download-artifact@v1
@@ -155,5 +155,5 @@ jobs:
       with:
         upload_url: ${{ steps.get_release_info.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ${{matrix.BUILD_PATH}}output.zip
-        asset_name: jrdp-${{ steps.get_version.outputs.text }}-ubuntu.zip
+        asset_name: jrdp-${{ steps.get_version.outputs.text }}-${{matrix.os}}.zip
         asset_content_type: application/zip
