@@ -1,8 +1,6 @@
 package com.tech.app.models;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
@@ -13,10 +11,8 @@ public class PointControle implements Serializable {
 
     private double x, y;
     private boolean moved;
-    private final int size;
-    private Arc parent;
-
     private boolean origin;
+    private int size;
 
     /**
      * Constructeur d'un point de controle en (0,0).
@@ -30,20 +26,16 @@ public class PointControle implements Serializable {
      * @param x : x
      * @param y : y
      */
-    public PointControle(double x, double y){
-        this.x = x;
-        this.y = y;
-        this.moved = false;
-        this.size = 5;
-        this.parent = null;
+    public PointControle (double x, double y) {
+
     }
 
-    public PointControle (double x, double y, Arc a) {
+    public PointControle(double x, double y, boolean origin){
         this.x = x;
         this.y = y;
+        this.origin = origin;
         this.moved = false;
         this.size = 5;
-        this.parent = a;
     }
 
     /**
@@ -52,18 +44,9 @@ public class PointControle implements Serializable {
      * @param y : nouvelle coordonnée y
      */
     public void updatePosition(double x, double y) {
-
-        /*
-        AffineTransform reverse = parent.getReverseAt();
-
-        Point2D.Double src = new Point2D.Double(x,y);
-        Point2D.Double dest = new Point2D.Double();
-
-        reverse.transform(src,dest);
-        */
-
         this.x = x;
         this.y = y;
+        this.origin = false;
     }
 
     /**
@@ -149,7 +132,6 @@ public class PointControle implements Serializable {
                 ", origin=" +origin +
                 ", moved=" + moved +
                 ", size=" + size +
-                ", parent= " + parent +
                 '}';
     }
 }
