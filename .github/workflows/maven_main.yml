@@ -54,6 +54,7 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
     
   create-release:
+    needs: build
     runs-on: ${{ matrix.os }}
     
     strategy:
