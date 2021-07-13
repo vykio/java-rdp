@@ -45,7 +45,7 @@ jobs:
       run: echo -n "${{ steps.version.outputs.text }}" > version_output.txt
       if: matrix.os == 'ubuntu-latest'
     - name: Output Version URL File (Windows)
-      run: echo|set /p="${{ steps.version.outputs.text }}" > version_output.txt
+      run: <NUL set /p dummyName="${{ steps.version.outputs.text }}" > version_output.txt
       if: matrix.os == 'windows-latest'
     - name: Save Version URL File for other workflows
       uses: actions/upload-artifact@v1
@@ -73,7 +73,7 @@ jobs:
     - uses: actions/upload-artifact@master
       with:
         name: ${{matrix.os}}-artifact
-        path: ${{matrix.BUILD_PATH}}
+        path: ${{matrix.BUILD_PATH}}output-${{matrix.os}}.zip
     
     
   create-release:
@@ -144,7 +144,7 @@ jobs:
     - uses: actions/download-artifact@master
       with:
         name: ${{matrix.os}}-artifact
-        path: ${{matrix.BUILD_PATH}}
+        path: ${{matrix.BUILD_PATH}}output-${{matrix.os}}.zip
     
     
     - name: Load Version URL File from previous job
