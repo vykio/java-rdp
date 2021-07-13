@@ -147,7 +147,6 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: version_output
-        path: version_output/version_output.txt
     - name: Get version
       uses: pCYSl5EDgo/cat@master
       id: get_version
