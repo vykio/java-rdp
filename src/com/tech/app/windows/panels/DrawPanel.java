@@ -190,7 +190,7 @@ public class DrawPanel extends JPanel {
         drawTooltips(g);
 
         /* Afficher l'objet sélectionné au dessus des autres:
-        * donc affichage en dernier */
+         * donc affichage en dernier */
         if (selectedObject != null) {
             Color co = g.getColor();
             g.setColor(Color.BLUE);
@@ -202,7 +202,6 @@ public class DrawPanel extends JPanel {
                 ((Transition) selectedObject).drawChildren(g);
                 ((Transition) selectedObject).draw(g);
                 ((Transition) selectedObject).estFranchissable();
-                System.out.println("est Franchissable ? :"+ ((Transition) selectedObject).estFranchissable());
             } else if (selectedObject instanceof Arc){
                 Arc a = ((Arc) selectedObject);
                 a.draw(g);
@@ -361,8 +360,8 @@ public class DrawPanel extends JPanel {
             Arc a = (Arc) selectedObject;
             //System.out.println("{x : "+x+", y : "+y+"}");
             if(a.containsControlPoint1(x,y)){
-               a.getPointCtr1().setMoved(true);
-               return a.getPointCtr1();
+                a.getPointCtr1().setMoved(true);
+                return a.getPointCtr1();
             }
         }
 

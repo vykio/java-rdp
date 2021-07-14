@@ -14,7 +14,9 @@ public class PointControle implements Serializable {
     private double x, y;
     private boolean moved;
     private final int size;
-    private Arc parent;
+
+    private final Arc parent;
+
 
     /**
      * Constructeur d'un point de controle en (0,0).
@@ -53,7 +55,6 @@ public class PointControle implements Serializable {
 
         /*
         AffineTransform reverse = parent.getReverseAt();
-
         Point2D.Double src = new Point2D.Double(x,y);
         Point2D.Double dest = new Point2D.Double();
 
