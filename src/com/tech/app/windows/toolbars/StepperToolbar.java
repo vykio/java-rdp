@@ -33,9 +33,9 @@ public class StepperToolbar extends Toolbar{
 
         toolBar.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        //System.out.println("stepper from toolbar hash : "+stepper.hashCode());
 
         JButton btnReset = new JButton();
+        btnReset.setText("Reset");
         btnReset.setToolTipText("Réinitialiser le simulateur");
         btnReset.addActionListener(this::btnResetListener);
         toolBar.add(btnReset);
@@ -62,18 +62,6 @@ public class StepperToolbar extends Toolbar{
         toolBar.add(btnLast);
 
         toolBar.addSeparator();
-
-        /*
-        JButton btnAutoON = new JButton();
-        btnAutoON.setText("Automatique : Début");
-        btnAutoON.setToolTipText("On franchit aléatoirement les transitions franchissables");
-        toolBar.add(btnAutoON);
-        JButton btnAutoOFF = new JButton();
-        btnAutoOFF.setText("Automatique : Fin");
-        btnAutoOFF.setToolTipText("Arret de la simulation aléatoire.");
-        btnAutoOFF.setEnabled(false);
-        toolBar.add(btnAutoOFF);
-         */
 
         JButton btnAuto = new JButton();
         btnAuto.setText("Début du mode Auto");
@@ -181,14 +169,14 @@ public class StepperToolbar extends Toolbar{
         });
 
 
-        Image imageReset = null;
+        //Image imageReset = null;
         Image imageOrigin = null;
         Image imagePrevious = null;
         Image imageNext = null;
         Image imageLast = null;
 
         try {
-            imageReset = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/reset.png")));
+            //imageReset = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/reset.png")));
             imageOrigin = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/origin.png")));
             imagePrevious = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/previous.png")));
             imageNext = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/next.png")));
@@ -197,13 +185,13 @@ public class StepperToolbar extends Toolbar{
             e.printStackTrace();
         }
 
-        assert imageReset != null;
+        //assert imageReset != null;
         assert imageOrigin != null;
         assert imagePrevious != null;
         assert imageNext != null;
         assert imageLast != null;
 
-        btnReset.setIcon(new ImageIcon(imageReset));
+        //btnReset.setIcon(new ImageIcon(imageReset));
         btnOrigin.setIcon(new ImageIcon(imageOrigin));
         btnPrevious.setIcon(new ImageIcon(imagePrevious));
         btnNext.setIcon(new ImageIcon(imageNext));
