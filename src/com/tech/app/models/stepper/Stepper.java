@@ -65,7 +65,6 @@ public class Stepper{
 
     public String getSequenceTransitionToString(List<String> sequenceTransition){
         StringBuilder msg = new StringBuilder();
-        msg.append("Séquence : {");
         for(int i =0; i< sequenceTransition.size(); i++){
             if(i == sequenceTransition.size() - 1){
                 msg.append(sequenceTransition.get(i)).append("}");
@@ -87,7 +86,7 @@ public class Stepper{
     private Vector<Integer> addVector(Vector<Integer> v, Vector<Vector<Integer>> u, int t) {
         Vector<Integer> v_temp = new Vector<>();
         for (int i = 0; i < v.size(); i++) {
-                v_temp.add(i, (v.get(i) + u.get(i).get(t)));
+            v_temp.add(i, (v.get(i) + u.get(i).get(t)));
         }
         return v_temp;
     }
@@ -177,5 +176,14 @@ public class Stepper{
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void reset(){
+        model.setMarquage(marquagesPasse.get(0));
+        this.marquagesPasse = new ArrayList<>();
+        this.sequenceTransition = new ArrayList<>();
+        this.currentMarquageIndex = 0;
+        this.showSequence = false;
+        stepperHandler.repaint();
     }
 }

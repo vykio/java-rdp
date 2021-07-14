@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -292,7 +293,6 @@ public class DrawPanel extends JPanel {
                     ((Transition) obj2).addParent(b);
                     model.addArc(b);
                 }
-
             } else {
                 this.clickError = true;
             }
@@ -352,7 +352,7 @@ public class DrawPanel extends JPanel {
      * @return Objet
      */
     public Object getSelectedObject(double x, double y) {
-      
+
         if(selectedObject !=null && selectedObject instanceof Arc){
             Arc a = (Arc) selectedObject;
             //System.out.println("{x : "+x+", y : "+y+"}");
@@ -361,7 +361,7 @@ public class DrawPanel extends JPanel {
                 return a.getPointCtr1();
             }
         }
-      
+
         for (Place p:model.placeVector) {
             if (p.forme.contains(x,y)) {
                 return p;
@@ -372,13 +372,13 @@ public class DrawPanel extends JPanel {
                 return t;
             }
         }
-        for (Transition t : model.transitionVector) {
-            for (Arc a : t.getChildren()) {
-                //System.out.println("Pt1 > " + a.getPointCtr1());
-                if(a.containsControlPoint1(x,y)) {
-                    a.getPointCtr1().setMoved(true);
-                    return a.getPointCtr1();
-                }
+        for (Arc a : model.arcVector){
+            Point2D.Double src = new Point2D.Double(x,y);
+            Point2D.Double dest = new Point2D.Double();
+            a.reverse.transform(src,dest);
+            // Si on click autour de la courbe ou sur la tete de la fleche
+            if(a.hitbox.contains(dest) || a.arrowHead.contains(dest)){
+                return a;
             }
         }
         return null;
