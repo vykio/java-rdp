@@ -47,6 +47,9 @@ public class Place implements Serializable {
      */
     public Place(String name, double x, double y) { this(name, x, y, 0,"",0); }
 
+    public Place(String name, double x, double y, int marquage) { this(name, x, y, marquage,"",0); }
+
+
     /**
      * Constructeur d'une place.
      * @param name : nom de la place.
@@ -111,11 +114,15 @@ public class Place implements Serializable {
      */
     public void resetlabel() { this.label = " "; }
 
+    public String getLabel() {return label;}
+
     /**
      * Méthode qui permet de donner la position du label de la place.
      * @param convert : position
      */
     public void addPosition(int convert) { this.position = convert; }
+
+    public int getPosition(){return position;}
 
     /**
      * Méthode qui permet de remettre la position du label à 1.

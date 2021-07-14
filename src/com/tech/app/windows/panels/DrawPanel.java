@@ -188,7 +188,7 @@ public class DrawPanel extends JPanel {
         drawTooltips(g);
 
         /* Afficher l'objet sélectionné au dessus des autres:
-        * donc affichage en dernier */
+         * donc affichage en dernier */
         if (selectedObject != null) {
             Color co = g.getColor();
             g.setColor(Color.BLUE);
@@ -200,7 +200,16 @@ public class DrawPanel extends JPanel {
                 ((Transition) selectedObject).drawChildren(g);
                 ((Transition) selectedObject).draw(g);
                 ((Transition) selectedObject).estFranchissable();
-                System.out.println("est Franchissable ? :"+ ((Transition) selectedObject).estFranchissable());
+            } else if (selectedObject instanceof Arc){
+                Arc a = ((Arc) selectedObject);
+                a.draw(g);
+                Point2D src = new Point2D.Double(a.getPointCtr1().getX(),a.getPointCtr1().getY());
+                Point2D dest = new Point2D.Double();
+                a.at.transform(src, dest);
+                a.getPointCtr1().setX(dest.getX());
+                a.getPointCtr1().setY(dest.getY());
+                a.getPointCtr1().draw((Graphics2D) g);
+                System.out.println(a.getPointCtr1());
             }
             g.setColor(co);
 
@@ -343,6 +352,16 @@ public class DrawPanel extends JPanel {
      * @return Objet
      */
     public Object getSelectedObject(double x, double y) {
+      
+        if(selectedObject !=null && selectedObject instanceof Arc){
+            Arc a = (Arc) selectedObject;
+            //System.out.println("{x : "+x+", y : "+y+"}");
+            if(a.containsControlPoint1(x,y)){
+                a.getPointCtr1().setMoved(true);
+                return a.getPointCtr1();
+            }
+        }
+      
         for (Place p:model.placeVector) {
             if (p.forme.contains(x,y)) {
                 return p;
