@@ -35,7 +35,7 @@ public class StepperToolbar extends Toolbar{
 
 
         JButton btnReset = new JButton();
-        btnReset.setText("Reset");
+        //btnReset.setText("Reset");
         btnReset.setToolTipText("Réinitialiser le simulateur");
         btnReset.addActionListener(this::btnResetListener);
         toolBar.add(btnReset);
@@ -169,14 +169,14 @@ public class StepperToolbar extends Toolbar{
         });
 
 
-        //Image imageReset = null;
+        Image imageReset = null;
         Image imageOrigin = null;
         Image imagePrevious = null;
         Image imageNext = null;
         Image imageLast = null;
 
         try {
-            //imageReset = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/reset.png")));
+            imageReset = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/reset.png")));
             imageOrigin = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/origin.png")));
             imagePrevious = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/previous.png")));
             imageNext = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/next.png")));
@@ -185,13 +185,13 @@ public class StepperToolbar extends Toolbar{
             e.printStackTrace();
         }
 
-        //assert imageReset != null;
+        assert imageReset != null;
         assert imageOrigin != null;
         assert imagePrevious != null;
         assert imageNext != null;
         assert imageLast != null;
 
-        //btnReset.setIcon(new ImageIcon(imageReset));
+        btnReset.setIcon(new ImageIcon(imageReset));
         btnOrigin.setIcon(new ImageIcon(imageOrigin));
         btnPrevious.setIcon(new ImageIcon(imagePrevious));
         btnNext.setIcon(new ImageIcon(imageNext));

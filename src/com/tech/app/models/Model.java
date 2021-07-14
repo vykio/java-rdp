@@ -310,8 +310,10 @@ public class Model implements Serializable {
         clearMatrices();
         this.nbPlace = 0;
         this.nbTransition = 0;
+        this.nbArc = 0;
         this.placeVector = new ArrayList<>();
         this.transitionVector = new ArrayList<>();
+        this.arcVector = new ArrayList<>();
     }
 
     /**

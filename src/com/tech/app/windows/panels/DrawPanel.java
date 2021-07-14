@@ -42,6 +42,7 @@ public class DrawPanel extends JPanel {
     /* Variables de départ pour indexation P et T */
     private int idPlace=0;
     private int idTransition = 0;
+    private int idArc = 0;
 
 
     /**
@@ -135,12 +136,14 @@ public class DrawPanel extends JPanel {
             if (obj instanceof Place) {
                 Place p = (Place) obj;
                 p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
-            } else if (obj instanceof PointControle) {
-                PointControle pt = (PointControle) obj;
-                pt.updatePosition(pt.getX() + dx * 1 / scaleX, pt.getY() + dy * 1 / scaleY);
-            } else {
-                Transition p = (Transition) obj;
-                    p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
+            }
+            if (obj instanceof PointControle) {
+                PointControle point = (PointControle) obj;
+                point.updatePosition(point.getX() + dx * 1 / scaleX, point.getY() + dy * 1 / scaleY);
+            }
+            if(obj instanceof Transition){
+                Transition t = (Transition) obj;
+                t.updatePosition(t.getX() + dx * 1 / scaleX, t.getY() + dy * 1 / scaleY);
             }
             repaint();
         }
@@ -251,6 +254,7 @@ public class DrawPanel extends JPanel {
         selectedObject = null;
         idTransition = 0;
         idPlace = 0;
+        idArc = 0;
         repaint();
     }
 
@@ -288,15 +292,17 @@ public class DrawPanel extends JPanel {
                     Arc a = new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1);
                     ((Transition) obj1).addChildren(a);
                     model.addArc(a);
+                    idArc++;
                 } else {
                     Arc b = new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2);
                     ((Transition) obj2).addParent(b);
                     model.addArc(b);
+                    idArc++;
                 }
+
             } else {
                 this.clickError = true;
             }
-
         }
         repaint();
 
@@ -458,7 +464,8 @@ public class DrawPanel extends JPanel {
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only integers are allowed");
             }
 
-        } else {
+        }
+        if(obj instanceof Transition) {
             try {
                 Object[] orientation = { "Verticale", "Horizontale" };
                 JComboBox comboBox = new JComboBox(orientation);
@@ -468,6 +475,21 @@ public class DrawPanel extends JPanel {
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error...");
             }
         }
+
+        if(obj instanceof Arc){
+            try{
+                String result = JOptionPane.showInputDialog("Poids de l'arc :", ((Arc) obj).getPoids());
+                int poids = Integer.parseInt(result);
+                if(poids < 1){
+                    JOptionPane.showMessageDialog(frame.getContentPane(),"Error: only integers are allowed");
+
+                }
+                ((Arc)obj).setPoids(poids);
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(frame.getContentPane(),"Error: only integers are allowed");
+            }
+        }
+
         repaint();
     }
 
@@ -482,26 +504,26 @@ public class DrawPanel extends JPanel {
         if (obj instanceof Place || obj instanceof Transition ) {
             try {
 
-             JPanel panel = new JPanel(new BorderLayout(5, 5));
-             JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
-             label.add (new JLabel("Label : ", SwingConstants.RIGHT));
-             label.add (new JLabel("Position :", SwingConstants.LEFT));
-             panel.add(label, BorderLayout.WEST);
+                JPanel panel = new JPanel(new BorderLayout(5, 5));
+                JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
+                label.add (new JLabel("Label : ", SwingConstants.RIGHT));
+                label.add (new JLabel("Position :", SwingConstants.LEFT));
+                panel.add(label, BorderLayout.WEST);
 
-             ImageIcon icon = new ImageIcon (getClass().getResource("/icons/position.png"));
+                ImageIcon icon = new ImageIcon (getClass().getResource("/icons/position.png"));
 
-            JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
-            JTextField Label = new JTextField();
-            controls.add(Label);
-            JTextField Position = new JTextField("4");
-            controls.add(Position);
-            panel.add(controls, BorderLayout.CENTER);
+                JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
+                JTextField Label = new JTextField();
+                controls.add(Label);
+                JTextField Position = new JTextField("4");
+                controls.add(Position);
+                panel.add(controls, BorderLayout.CENTER);
 
-            JOptionPane.showMessageDialog(frame, panel, "Label / Position", JOptionPane.QUESTION_MESSAGE, icon);
+                JOptionPane.showMessageDialog(frame, panel, "Label / Position", JOptionPane.QUESTION_MESSAGE, icon);
 
-            convert = Integer.parseInt(Position.getText());
-            System.out.println(Label.getText());
-            System.out.println(Position.getText());
+                convert = Integer.parseInt(Position.getText());
+                System.out.println(Label.getText());
+                System.out.println(Position.getText());
 
                 if (obj instanceof Place) {
                     ((Place) obj).addLabel(Label.getText());
