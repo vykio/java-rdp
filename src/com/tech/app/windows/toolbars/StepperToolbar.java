@@ -11,9 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 public class StepperToolbar extends Toolbar{
 
@@ -35,10 +33,6 @@ public class StepperToolbar extends Toolbar{
 
         //System.out.println("stepper from toolbar hash : "+stepper.hashCode());
 
-        JButton btnReset = new JButton();
-        btnReset.setToolTipText("Réinitialiser le simulateur");
-        btnReset.addActionListener(this::btnResetListener);
-        toolBar.add(btnReset);
 
         JButton btnOrigin = new JButton();
         btnOrigin.setToolTipText("Retourner au marquage d'origine");
@@ -88,7 +82,7 @@ public class StepperToolbar extends Toolbar{
         toolBar.add(textVitesse);
 
         int[] vitesse = new int[]{1000};
-        String[] v = {"10","100","200","300","400","500","600","700","800","900","1000"};
+        String[] v = {"0","100","200","300","400","500","600","700","800","900","1000"};
         JComboBox<String> vitesses =  new JComboBox<>(v);
         vitesses.setSelectedItem(v[v.length-1]);
         toolBar.add(vitesses);
@@ -96,24 +90,10 @@ public class StepperToolbar extends Toolbar{
         toolBar.addSeparator();
 
         JToggleButton btnSequence = new JToggleButton();
-        btnSequence.setText("Séquence (max 20)");
+        btnSequence.setText("Affichage de la séquence");
         btnSequence.setToolTipText("Affichage des 20 dernières transitions franchies lors de la simulation en cours");
         btnSequence.addActionListener(this::btnSequenceListener);
         toolBar.add(btnSequence);
-
-        JButton btnFullSequence = new JButton();
-        btnFullSequence.setText("Séquence complète");
-        btnFullSequence.setToolTipText("Affichage de toutes les transitions franchies lors de la simulation en cours. Ce bouton arrête le mode automatique.");
-        btnFullSequence.addActionListener(this::btnFullSequenceListener);
-        toolBar.add(btnFullSequence);
-
-        ButtonGroup  playerGroup = new ButtonGroup();
-        playerGroup.add(btnOrigin);
-        playerGroup.add(btnPrevious);
-        playerGroup.add(btnNext);
-        playerGroup.add(btnLast);
-        playerGroup.add(btnReset);
-        Enumeration<AbstractButton> playerGroupEnum = playerGroup.getElements();
 
         /* Gestion du mode automatique*/
 
@@ -124,12 +104,6 @@ public class StepperToolbar extends Toolbar{
                 ((Timer)e.getSource()).stop();
                 btnAuto.setText("Début du mode Auto");
                 btnAuto.setSelected(false);
-
-                btnLast.setEnabled(true);
-                btnOrigin.setEnabled(true);
-                btnNext.setEnabled(true);
-                btnPrevious.setEnabled(true);
-                btnReset.setEnabled(true);
             }
         });
 
@@ -147,50 +121,27 @@ public class StepperToolbar extends Toolbar{
                 btnAuto.setText("Arret du mode Auto");
                 btnAuto.setToolTipText("Arret de la simulation aléatoire.");
                 btnAuto.setSelected(false);
-
-                btnLast.setEnabled(false);
-                btnOrigin.setEnabled(false);
-                btnNext.setEnabled(false);
-                btnPrevious.setEnabled(false);
-                btnReset.setEnabled(false);
             } else {
                 timer.stop();
                 btnAuto.setText("Début du mode Auto");
                 btnAuto.setToolTipText("On franchit aléatoirement les transitions franchissables");
                 btnAuto.setSelected(false);
-
-                btnLast.setEnabled(true);
-                btnOrigin.setEnabled(true);
-                btnNext.setEnabled(true);
-                btnPrevious.setEnabled(true);
-                btnReset.setEnabled(true);
             }
         });
 
-        btnFullSequence.addActionListener(e -> {
-            if(btnAuto.getText().equals("Arret du mode Auto")){
-                timer.stop();
-                btnAuto.setText("Début du mode Auto");
-                btnAuto.setToolTipText("On franchit aléatoirement les transitions franchissables");
-                btnAuto.setSelected(false);
-
-                btnLast.setEnabled(true);
-                btnOrigin.setEnabled(true);
-                btnNext.setEnabled(true);
-                btnPrevious.setEnabled(true);
-                btnReset.setEnabled(true);
-            }
-        });
+        ButtonGroup  playerGroup = new ButtonGroup();
+        playerGroup.add(btnOrigin);
+        playerGroup.add(btnPrevious);
+        playerGroup.add(btnNext);
+        playerGroup.add(btnLast);
 
 
-        Image imageReset = null;
         Image imageOrigin = null;
         Image imagePrevious = null;
         Image imageNext = null;
         Image imageLast = null;
 
         try {
-            imageReset = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/reset.png")));
             imageOrigin = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/origin.png")));
             imagePrevious = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/previous.png")));
             imageNext = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icons/next.png")));
@@ -199,13 +150,11 @@ public class StepperToolbar extends Toolbar{
             e.printStackTrace();
         }
 
-        assert imageReset != null;
         assert imageOrigin != null;
         assert imagePrevious != null;
         assert imageNext != null;
         assert imageLast != null;
 
-        btnReset.setIcon(new ImageIcon(imageReset));
         btnOrigin.setIcon(new ImageIcon(imageOrigin));
         btnPrevious.setIcon(new ImageIcon(imagePrevious));
         btnNext.setIcon(new ImageIcon(imageNext));
@@ -219,10 +168,6 @@ public class StepperToolbar extends Toolbar{
         frame.getContentPane();
         frame.add( this.getToolbar(), BorderLayout.PAGE_START);
         this.frame.setVisible(true);
-    }
-
-    public void btnResetListener(ActionEvent event){
-        stepper.reset();
     }
 
     public void btnOriginListener(ActionEvent event){
@@ -254,22 +199,6 @@ public class StepperToolbar extends Toolbar{
 
     public void btnSequenceListener(ActionEvent event){
         stepper.setShowSequence(((JToggleButton) event.getSource()).isSelected());
-    }
-
-    public void btnFullSequenceListener(ActionEvent event){
-        if(!stepper.sequenceTransition.isEmpty()) {
-
-            String msg = stepper.getSequenceTransitionToString(stepper.getSequenceTransition());
-            String message = "<html><body width ='%1s'> <center>" +
-                    "<p> Séquence : <br> { " + msg +
-                    "<center/>";
-
-            int w = (int) (1.5 * msg.length());
-            int h = (int) (0.7 * msg.length());
-
-            //UIManager.put("OptionPane.minimumSize",new Dimension(w,h));
-            JOptionPane.showMessageDialog(this, String.format(message, w), "Séquence complète de simulation", JOptionPane.PLAIN_MESSAGE);
-        }
     }
 
 
