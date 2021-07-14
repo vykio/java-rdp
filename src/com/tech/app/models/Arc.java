@@ -13,7 +13,7 @@ public class Arc implements Serializable {
     private int poids;
     private final boolean placeToTransition;
     private final Transition transition;
-    private PointControle pointCtr1;
+    private final PointControle pointCtr1;
 
     /**
      * Constructeur d'arc utilisé dans DrawPanel lorsque l'utilisateur clique sur la zone de dessin en ayant selectionné l'outil arc.
@@ -30,7 +30,7 @@ public class Arc implements Serializable {
         this.placeToTransition = placeToTransition;
         this.transition = transition;
         this.forme = new Line2D.Double(xOrigin, yOrigin, this.place.getX(), this.place.getY());
-        this.pointCtr1 = new PointControle(0,0, this);
+        this.pointCtr1 = new PointControle(0,0,this);
     }
 
     /**
@@ -41,9 +41,6 @@ public class Arc implements Serializable {
     public Arc(Place place, int poids){
         this(place, poids, 0,0, false, null);
     }
-
-    public Arc(Place place, int poids, boolean placeToTransition, Transition t){ this(place, poids, 0,0, placeToTransition, t); }
-
 
     /**
      * Constructeur d'arc utilisé dans la classe Transition.
@@ -73,7 +70,11 @@ public class Arc implements Serializable {
      * Méthode qui permet de donner/modifier le poids d'un arc.
      * @param poids Poids de l'arc
      */
-    public void setPoids(int poids) { this.poids = poids; }
+    public void setPoids(int poids) {
+        if(poids >= 1) {
+            this.poids = poids;
+        }
+    }
 
     /**
      * Méthode qui permet d'afficher les caractéristiques de l'arc : {place,poids}.
@@ -84,16 +85,17 @@ public class Arc implements Serializable {
         return "Arc{" +
                 "place=" + place +
                 ", poids=" + poids +
-                ", placeToTransition = "+ placeToTransition+
-                ", "+ pointCtr1+
                 '}';
     }
 
     /* Partie Graphique */
 
     public Line2D.Double forme;
+    public QuadCurve2D.Double courbe;
     public AffineTransform at;
     public AffineTransform reverse;
+    public Path2D.Double hitbox;
+    public Path2D arrowHead;
 
     /**
      * Méthode qui permet de dessiner un arc.
@@ -122,36 +124,46 @@ public class Arc implements Serializable {
         at.concatenate(AffineTransform.getRotateInstance(angle));
         g2.transform(at);
 
+
+
         try {
             reverse = at.createInverse();
-        } catch(Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
 
         /* Ligne */
-        if (this.pointCtr1.getMoved()) {
+        if (!this.pointCtr1.getMoved()) {
             this.pointCtr1.setX((start + len-ARR_SIZE)/2);
             this.pointCtr1.setY(0);
         }
 
         /*point de controle*/
-        pointCtr1.draw(g2);
+        //pointCtr1.draw(g2);
 
-        QuadCurve2D.Double courbe = new QuadCurve2D.Double(start, 0, this.pointCtr1.getX(), this.pointCtr1.getY(), len, 0);
-        /* Référentiel */
-
+        courbe = new QuadCurve2D.Double(start, 0, this.pointCtr1.getX(), this.pointCtr1.getY(), len, 0);
         g2.draw(courbe);
 
+
+        hitbox = new Path2D.Double(arcHitbox(len));
+        //g2.draw(hitbox);
+
         /* Fléche */
-        Path2D path = new Path2D.Double();
+        arrowHead = new Path2D.Double();
         double[] xval = {len, len-ARR_SIZE, len-ARR_SIZE, len};
         double[] yval = {0, -ARR_SIZE, ARR_SIZE, 0};
-        path.moveTo(xval[0], yval[0]);
+        arrowHead.moveTo(xval[0], yval[0]);
         for(int i = 1; i < xval.length; ++i) {
-            path.lineTo(xval[i], yval[i]);
+            arrowHead.lineTo(xval[i], yval[i]);
         }
-        path.closePath();
-        g2.fill(path);
+        arrowHead.closePath();
+        g2.fill(arrowHead);
+
+        /* Affichage du poids */
+        if(this.poids > 1 ) {
+            g2.setFont(new Font("Console", Font.PLAIN, 15));
+            g2.drawString(Integer.toString(poids), (int) courbe.getCtrlX(), (int) courbe.getCtrlY() + 15);
+        }
     }
 
     /**
@@ -185,6 +197,18 @@ public class Arc implements Serializable {
 
     }
 
+    public Path2D.Double arcHitbox(double len){
+        int ecart = 7;
+        Path2D.Double hitbox = new Path2D.Double();
+        hitbox.moveTo(this.place.forme.width/2,-ecart);
+        hitbox.quadTo(this.pointCtr1.getX(),this.pointCtr1.getY() -ecart,len,-ecart);
+        hitbox.lineTo(len,+ecart);
+        hitbox.quadTo(this.pointCtr1.getX(),this.pointCtr1.getY()+ecart, this.place.forme.width/2,+ecart);
+        hitbox.lineTo(this.place.forme.width/2,-ecart);
+        hitbox.closePath();
+        return hitbox;
+    }
+
     /**
      * Retourne true lorsque la différence absolue entre les coordonnées du point
      * d'origine et du point à comparer (toCompare) est inférieur à la valeur size
@@ -213,13 +237,15 @@ public class Arc implements Serializable {
         Point.Double point = new Point.Double(pointCtr1.getX(),pointCtr1.getY());
         Point2D.Double pointDest = new Point.Double();
 
-        at.transform(point, pointDest);
+        getAt().transform(point, pointDest);
 
         System.out.println("PtCtrlTRANSFORM:(" + pointDest.getX() + ":" + pointDest.getY() + ") PtCtrl:(" + pointCtr1.getX() + ":" + pointCtr1.getY()+ ")");
 
-        boolean res = containing(pointDest, pointCtr1.getSize(), new Point.Double(x,y));
-        System.out.println(res);
-        return res;
+        boolean res = containing(pointDest, pointCtr1.getSize()+ pointCtr1.getSize()/2, new Point.Double(x,y));
+
+        boolean result = pointCtr1.contains(x,y);
+        System.out.println(result);
+        return result;
     }
 
     /**
@@ -230,7 +256,16 @@ public class Arc implements Serializable {
         return pointCtr1;
     }
 
-    public void setPointCtr1(PointControle pt){ this.pointCtr1 = pt;}
+    public AffineTransform getAt() { return at; }
+
+    public AffineTransform getReverseAt() {
+        try{
+            return at.createInverse();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * Méthode qui permet de mettre à jour les coordonnées de l'arc.

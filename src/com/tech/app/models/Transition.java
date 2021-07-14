@@ -293,6 +293,18 @@ public class Transition implements Serializable {
         }
     }
 
+    public void drawParents(Graphics g){
+        for (Arc a : this.parents) {
+            a.draw(g);
+        }
+    }
+
+    public void drawChildren(Graphics g){
+        for (Arc a : this.children) {
+            a.draw(g);
+        }
+    }
+
     /**
      * Méthode qui permet de mettre à jour les coordonnées de la transition et de ses arcs (on appelle updatePosition de la classe Arc).
      * @param x : nouvelle coordonnée x.

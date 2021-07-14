@@ -191,7 +191,6 @@ public class DrawingToolbar extends Toolbar {
      */
     public void btnPlaceListener(ActionEvent event){
         drawMouse.action(DrawMouse.MODE.PLACE);
-        MouseInfo.getPointerInfo().getLocation().getX();
     }
 
     /**

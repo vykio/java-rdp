@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -137,11 +138,9 @@ public class DrawPanel extends JPanel {
             } else if (obj instanceof PointControle) {
                 PointControle pt = (PointControle) obj;
                 pt.updatePosition(pt.getX() + dx * 1 / scaleX, pt.getY() + dy * 1 / scaleY);
-                //System.out.println("test");
-                System.out.println(model);
             } else {
-                Transition p = (Transition) obj;
-                    p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
+                Transition t = (Transition) obj;
+                t.updatePosition(t.getX() + dx * 1 / scaleX, t.getY() + dy * 1 / scaleY);
             }
             repaint();
         }
@@ -181,6 +180,8 @@ public class DrawPanel extends JPanel {
         }
         for (Transition t:model.transitionVector) {
             if (t != selectedObject) {
+                t.drawParents(g);
+                t.drawChildren(g);
                 t.draw(g);
             }
         }
@@ -188,7 +189,7 @@ public class DrawPanel extends JPanel {
         drawTooltips(g);
 
         /* Afficher l'objet sélectionné au dessus des autres:
-        * donc affichage en dernier */
+         * donc affichage en dernier */
         if (selectedObject != null) {
             Color co = g.getColor();
             g.setColor(Color.BLUE);
@@ -196,9 +197,21 @@ public class DrawPanel extends JPanel {
             if (selectedObject instanceof Place) {
                 ((Place) selectedObject).draw(g);
             } else if (selectedObject instanceof Transition) {
+                ((Transition) selectedObject).drawParents(g);
+                ((Transition) selectedObject).drawChildren(g);
                 ((Transition) selectedObject).draw(g);
                 ((Transition) selectedObject).estFranchissable();
-                System.out.println("est Franchissable ? :"+ ((Transition) selectedObject).estFranchissable());
+
+            } else if (selectedObject instanceof Arc){
+                Arc a = ((Arc) selectedObject);
+                a.draw(g);
+                Point2D src = new Point2D.Double(a.getPointCtr1().getX(),a.getPointCtr1().getY());
+                Point2D dest = new Point2D.Double();
+                a.at.transform(src, dest);
+                a.getPointCtr1().setX(dest.getX());
+                a.getPointCtr1().setY(dest.getY());
+                a.getPointCtr1().draw((Graphics2D) g);
+                System.out.println(a.getPointCtr1());
             }
             g.setColor(co);
 
@@ -341,6 +354,16 @@ public class DrawPanel extends JPanel {
      * @return Objet
      */
     public Object getSelectedObject(double x, double y) {
+
+        if(selectedObject !=null && selectedObject instanceof Arc){
+            Arc a = (Arc) selectedObject;
+            //System.out.println("{x : "+x+", y : "+y+"}");
+            if(a.containsControlPoint1(x,y)){
+                a.getPointCtr1().setMoved(true);
+                return a.getPointCtr1();
+            }
+        }
+
         for (Place p:model.placeVector) {
             if (p.forme.contains(x,y)) {
                 return p;
@@ -351,13 +374,13 @@ public class DrawPanel extends JPanel {
                 return t;
             }
         }
-        for (Transition t : model.transitionVector) {
-            for (Arc a : t.getChildren()) {
-                System.out.println("Pt1 > " + a.getPointCtr1());
-                if(a.containsControlPoint1(x,y)) {
-                    a.getPointCtr1().setMoved(true);
-                    return a.getPointCtr1();
-                }
+        for (Arc a : model.arcVector){
+            Point2D.Double src = new Point2D.Double(x,y);
+            Point2D.Double dest = new Point2D.Double();
+            a.reverse.transform(src,dest);
+            // Si on click autour de la courbe ou sur la tete de la fleche
+            if(a.hitbox.contains(dest) || a.arrowHead.contains(dest)){
+                return a;
             }
         }
         return null;
