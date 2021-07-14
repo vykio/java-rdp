@@ -234,13 +234,6 @@ public class Transition implements Serializable {
      * @param g : Graphics.
      */
     public void draw(Graphics g) {
-        for (Arc a : this.parents) {
-            a.draw(g);
-        }
-
-        for (Arc a : this.children) {
-            a.draw(g);
-        }
 
         /* Afficher le carré de transition au dessus de l'arc */
         Graphics2D g2 = (Graphics2D) g;

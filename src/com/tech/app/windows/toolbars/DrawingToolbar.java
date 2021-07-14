@@ -165,9 +165,7 @@ public class DrawingToolbar extends Toolbar {
      * Listener exécuté quand on fait l'action d'ouvrir un fichier
      * @param event ActionEvent
      */
-    public void btnOpenListener(ActionEvent event) {
-        menu.mnuOpenListener(event);
-    }
+    public void btnOpenListener(ActionEvent event) { menu.mnuOpenListener(event); }
 
     /**
      * Listener exécuté quand on fait l'action de sauvegarder sous, un fichier
@@ -189,9 +187,7 @@ public class DrawingToolbar extends Toolbar {
      * Listener exécuté quand on fait choisit le mode Création de Place
      * @param event ActionEvent
      */
-    public void btnPlaceListener(ActionEvent event){
-        drawMouse.action(DrawMouse.MODE.PLACE);
-    }
+    public void btnPlaceListener(ActionEvent event){ drawMouse.action(DrawMouse.MODE.PLACE); }
 
     /**
      * Listener exécuté quand on fait choisit le mode Création de Transition

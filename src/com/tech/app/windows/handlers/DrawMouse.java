@@ -1,5 +1,6 @@
 package com.tech.app.windows.handlers;
 
+import com.tech.app.models.PointControle;
 import com.tech.app.windows.panels.DrawPanel;
 
 import javax.swing.*;
@@ -106,7 +107,7 @@ public class DrawMouse extends MouseAdapter {
         //System.out.println("Mouse pressed");
         x = mouseEvent.getX() * drawPanel.scaleFactor;
         y = mouseEvent.getY() * drawPanel.scaleFactor;
-        System.out.println(drawPanel.scaleFactor);
+        //System.out.println(drawPanel.scaleFactor);
 
         drawPanel.mouseX = x;
         drawPanel.mouseY = y;
@@ -206,6 +207,10 @@ public class DrawMouse extends MouseAdapter {
 
         } else if (SwingUtilities.isLeftMouseButton(e)) {
             if (mode == MODE.SELECT) {
+
+                if(objectDragged instanceof PointControle){
+                    drawPanel.updatePosition(objectDragged,drawPanel.scaleX, drawPanel.scaleY, e.getX() - x, e.getY() - y);
+                }
 
                 drawPanel.updatePosition(objectDragged ,drawPanel.scaleX, drawPanel.scaleY, dx, dy);
             }
