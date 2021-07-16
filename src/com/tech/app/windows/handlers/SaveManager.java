@@ -147,9 +147,10 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
                         //Ici on cherche à récupérer l'indice où se trouve le "c" qui va nous permettre de savoir si la transition a un label et une position ou non.
                         List<String> l = Arrays.asList(words);
                         int indexofC = l.indexOf("c");
+                        int indexofP = l.indexOf("p");
 
                         // si l'indice de c est de 5 alors la transition a un label et une position.
-                        if(indexofC == 5) {
+                        if(indexofC == 5 ||indexofP == 5) {
                             t =  new Transition(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]), words[3], Integer.parseInt(words[4]));
                         } else {
                             t =  new Transition(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]));
@@ -159,7 +160,11 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
                         mo.addTransition(t);
 
                         // Pour j commencant à l'indice de c jusqu'a la fin du tableau de mots, on va chercher à ajouter les arcs enfants et parent de la transition.
-                        for(int j = indexofC; j < words.length;){
+                        int loopStartIndex = indexofC;
+                        if(loopStartIndex == -1){
+                            loopStartIndex = indexofP;
+                        }
+                        for(int j = loopStartIndex; j < words.length;){
 
                             boolean actionPerformed = false;
 
@@ -169,6 +174,7 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
                                 Arc a = new Arc(p,Integer.parseInt(words[j+2]),t.getX(), t.getY(), false, t);
                                 PointControle pt = new PointControle(Integer.parseInt(words[j+3]),Integer.parseInt(words[j+4]), a);
                                 t.addChildren(a);
+                                mo.addArc(a);
                                 actionPerformed = true;
                                 j=j+5;
                             }
@@ -179,6 +185,7 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
                                 Arc a = new Arc(p,Integer.parseInt(words[j+2]),t.getX(), t.getY(), true, t);
                                 PointControle pt = new PointControle(Integer.parseInt(words[j+3]),Integer.parseInt(words[j+4]), a);
                                 t.addParent(a);
+                                mo.addArc(a);
                                 actionPerformed = true;
                                 j=j+5;
                             }
@@ -191,6 +198,7 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
                                 Arc a = new Arc(p,Integer.parseInt(words[j+3]),t.getX(), t.getY(),false, t);
                                 PointControle pt = new PointControle(Integer.parseInt(words[j+4]),Integer.parseInt(words[j+5]), a);
                                 t.addChildren(a);
+                                mo.addArc(a);
                                 actionPerformed = true;
                                 j=j+6;
                             }
@@ -203,6 +211,7 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
                                 Arc a  = new Arc(p,Integer.parseInt(words[j+3]),t.getX(), t.getY(),true, t);
                                 PointControle pt = new PointControle(Integer.parseInt(words[j+4]),Integer.parseInt(words[j+5]), a);
                                 t.addParent(a);
+                                mo.addArc(a);
                                 j=j+6;
                             }
                         }

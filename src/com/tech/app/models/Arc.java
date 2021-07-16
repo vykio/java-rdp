@@ -126,11 +126,7 @@ public class Arc implements Serializable {
 
 
 
-        try {
-            reverse = at.createInverse();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        reverse = getReverseAt();
 
         /* Ligne */
         if (!this.pointCtr1.getMoved()) {
