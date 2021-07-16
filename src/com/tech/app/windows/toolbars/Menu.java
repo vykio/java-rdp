@@ -311,7 +311,7 @@ public class Menu extends MenuBar {
         int retour = choix.showOpenDialog(this);
         choix.setFileSelectionMode(JFileChooser.FILES_ONLY);
         File f= choix.getSelectedFile();
-        if(retour==JFileChooser.APPROVE_OPTION){
+        if(retour==JFileChooser.APPROVE_OPTION) {
             System.out.println(choix.getSelectedFile().getName());
             System.out.println(choix.getSelectedFile().getAbsolutePath());
             model = saveManager.load(f, model);
@@ -325,9 +325,6 @@ public class Menu extends MenuBar {
                 model = new Model();
                 dp.model = model;
             }
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Aucun fichier choisi !");
         }
         dp.repaint();
     }
@@ -343,8 +340,9 @@ public class Menu extends MenuBar {
         save.showSaveDialog(this);
 
         File f = save.getSelectedFile();
-
-        saveManager.save(f, model);
+        if(f!=null) {
+            saveManager.save(f, model);
+        }
     }
 
     /**

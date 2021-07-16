@@ -161,9 +161,13 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
 
                         // Pour j commencant à l'indice de c jusqu'a la fin du tableau de mots, on va chercher à ajouter les arcs enfants et parent de la transition.
                         int loopStartIndex = indexofC;
-                        if(loopStartIndex == -1){
+                        if(indexofC == -1){
+                            if(indexofP == -1){
+                                return null;
+                            }
                             loopStartIndex = indexofP;
                         }
+
                         for(int j = loopStartIndex; j < words.length;){
 
                             boolean actionPerformed = false;
