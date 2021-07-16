@@ -1,5 +1,6 @@
 package com.tech.app.models;
 
+
 import java.awt.*;
 import java.awt.geom.*;
 import java.io.Serializable;
@@ -124,8 +125,6 @@ public class Arc implements Serializable {
         at.concatenate(AffineTransform.getRotateInstance(angle));
         g2.transform(at);
 
-
-
         reverse = getReverseAt();
 
         /* Ligne */
@@ -144,15 +143,25 @@ public class Arc implements Serializable {
         hitbox = new Path2D.Double(arcHitbox(len));
         //g2.draw(hitbox);
 
+        // Line between control Point and ArrowHead Point
+        Line2D.Double line1 = new Line2D.Double(0,0,len,0);
+        Line2D.Double line2 = new Line2D.Double(pointCtr1.getX(),pointCtr1.getY(),len,0);
+        //g2.draw(line1);
+        //g2.draw(line2);
+
         /* Fléche */
         arrowHead = new Path2D.Double();
-        double[] xval = {len, len-ARR_SIZE, len-ARR_SIZE, len};
-        double[] yval = {0, -ARR_SIZE, ARR_SIZE, 0};
+        double[] xval = {line2.getX2(), line2.getX2()-ARR_SIZE, line2.getX2()-ARR_SIZE, line2.getX2()};
+        double[] yval = {line2.getY2(), -ARR_SIZE, ARR_SIZE, line2.getY2()};
         arrowHead.moveTo(xval[0], yval[0]);
         for(int i = 1; i < xval.length; ++i) {
             arrowHead.lineTo(xval[i], yval[i]);
         }
         arrowHead.closePath();
+
+        AffineTransform rotate = new AffineTransform(AffineTransform.getRotateInstance(Math.toRadians(angleBetween2Lines(line1,line2)),line2.getX2(), line2.getY2()));
+        arrowHead.transform(rotate);
+
         g2.fill(arrowHead);
 
         /* Affichage du poids */
@@ -160,6 +169,13 @@ public class Arc implements Serializable {
             g2.setFont(new Font("Console", Font.PLAIN, 15));
             g2.drawString(Integer.toString(poids), (int) courbe.getCtrlX(), (int) courbe.getCtrlY() + 15);
         }
+    }
+
+    public static double angleBetween2Lines(Line2D.Double line1, Line2D.Double line2)
+    {
+        double angle1 = Math.atan2(line1.getY1() - line1.getY2(), line1.getX1() - line1.getX2());
+        double angle2 = Math.atan2(line2.getY1() - line2.getY2(), line2.getX1() - line2.getX2());
+        return -(Math.toDegrees(Math.abs(angle1-angle2))+360)%360;
     }
 
     /**
