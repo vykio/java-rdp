@@ -14,7 +14,7 @@ public class PointControle implements Serializable {
     private double x, y;
     private boolean moved;
     private final int size;
-    private Arc parent;
+    private final Arc parent;
 
     /**
      * Constructeur d'un point de controle en (0,0).
@@ -117,6 +117,8 @@ public class PointControle implements Serializable {
         this.moved = moved;
     }
 
+    public Arc getParent() { return parent; }
+
     /**
      * Méthode qui permet de dessiner le point de controle.
      * @param g2 : Graphics2D.
@@ -147,7 +149,6 @@ public class PointControle implements Serializable {
                 ", y=" + y +
                 ", moved=" + moved +
                 ", size=" + size +
-                ", parent= " + parent +
                 '}';
     }
 }

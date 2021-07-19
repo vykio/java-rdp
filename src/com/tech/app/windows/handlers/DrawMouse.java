@@ -1,5 +1,8 @@
 package com.tech.app.windows.handlers;
 
+import com.tech.app.models.Place;
+import com.tech.app.models.PointControle;
+import com.tech.app.models.Transition;
 import com.tech.app.windows.panels.DrawPanel;
 
 import javax.swing.*;
@@ -8,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 
 /**
  * Cette classe permet de récupérer les actions de la souris sur l'application, plus particulièrement dans la zone de dessin.
@@ -204,10 +208,15 @@ public class DrawMouse extends MouseAdapter {
 
             drawPanel.updatePositions(drawPanel.scaleX, drawPanel.scaleY, dx, dy);
 
-        } else if (SwingUtilities.isLeftMouseButton(e)) {
+        } else if (SwingUtilities.isLeftMouseButton(e) && objectDragged != null) {
             if (mode == MODE.SELECT) {
-
-                drawPanel.updatePosition(objectDragged ,drawPanel.scaleX, drawPanel.scaleY, dx, dy);
+                if(objectDragged instanceof PointControle) {
+                    System.out.println("x:" + e.getX() + ",y:" + e.getY() + " obj x:" + ((PointControle) objectDragged).getX() + " obj y:" + ((PointControle) objectDragged).getY());
+                    drawPanel.updatePosition(objectDragged, drawPanel.scaleX, drawPanel.scaleY, dx, dy);
+                }
+                if(objectDragged instanceof Place || objectDragged instanceof Transition){
+                    drawPanel.updatePosition(objectDragged, drawPanel.scaleX, drawPanel.scaleY, dx, dy);
+                }
             }
         }
 

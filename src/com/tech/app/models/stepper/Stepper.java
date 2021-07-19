@@ -179,7 +179,7 @@ public class Stepper{
     }
 
     public void reset(){
-        model.setMarquage(marquagesPasse.get(0));
+        model.setMarquage(model.getM0());
         this.marquagesPasse = new ArrayList<>();
         this.sequenceTransition = new ArrayList<>();
         this.currentMarquageIndex = 0;

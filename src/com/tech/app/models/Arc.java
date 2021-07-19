@@ -86,6 +86,7 @@ public class Arc implements Serializable {
         return "Arc{" +
                 "place=" + place +
                 ", poids=" + poids +
+                ", ptctrl= "+ pointCtr1+
                 '}';
     }
 
