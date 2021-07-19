@@ -220,13 +220,11 @@ public class Model implements Serializable {
                 if(t.getChildren().contains(a)) {
                     System.out.println(t.getChildren());
                     t.removeChildren(a);
-                    System.out.println("Child arc removed : " + t);
                 }
 
                 if(t.getParents().contains(a)) {
                     System.out.println(t.getParents());
                     t.removeParent(a);
-                    System.out.println("Parent arc removed : " + t);
                 }
 
             }

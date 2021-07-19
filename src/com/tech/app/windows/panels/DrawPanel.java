@@ -416,7 +416,7 @@ public class DrawPanel extends JPanel {
                 // Suppression des arcs liés à la place supprimée
                 List<Arc> arcToDelete = new ArrayList<>();
                 for(Arc a : this.model.arcVector){
-                    if(((Place) selectedObject) == a.getPlace()){
+                    if(selectedObject == a.getPlace()){
                         arcToDelete.add(a);
                     }
                 }
@@ -428,6 +428,11 @@ public class DrawPanel extends JPanel {
             if (selectedObject instanceof Transition){
                 this.model.removeTransition((Transition) selectedObject);
             }
+
+            if(selectedObject instanceof Arc){
+                this.model.removeArc(((Arc) selectedObject));
+            }
+
             selectedObject = null;
             repaint();
         }
