@@ -16,6 +16,7 @@ public class Place implements Serializable {
     private double x;
     private double y;
     private int marquage;
+    private int capacite;
     private String label;
     private int position;
     private final static int WIDTH = 40, HEIGHT = 40;
@@ -35,6 +36,7 @@ public class Place implements Serializable {
         this.y = y;
         this.marquage = marquage;
         this.label = label;
+        this.capacite = Integer.MAX_VALUE;
         this.position = position;
         this.forme = new Ellipse2D.Float((float)(this.x-(WIDTH/2)), (float)(this.y-(HEIGHT/2)), WIDTH ,HEIGHT);
     }
@@ -103,6 +105,10 @@ public class Place implements Serializable {
      */
     public void resetMarquage() { this.marquage = 0; }
 
+    public int getCapacite() { return capacite; }
+
+    public void setCapacite(int capacite) { this.capacite = capacite; }
+
     /**
      * Métholde qui permet d'ajouter un label à la place.
      * @param label : label
@@ -160,6 +166,10 @@ public class Place implements Serializable {
         g2.draw(new Ellipse2D.Float((float)this.x-(forme.width)/2, (float)this.y-(forme.height)/2, (int)forme.width, (int)forme.height));
 
         g.drawString(this.name, (int)(x-(forme.width)/4) ,(int)(y-25));
+
+        if(this.capacite!=Integer.MAX_VALUE){
+            g.drawString("Cap=("+this.capacite+")",(int) (x-(forme.width)/2),(int)(y+35));
+        }
 
         //Gestion de l'affichage des marquages
         if (marquage == 1) {

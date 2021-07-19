@@ -204,6 +204,7 @@ public class DrawPanel extends JPanel {
                 ((Transition) selectedObject).drawChildren(g);
                 ((Transition) selectedObject).draw(g);
                 ((Transition) selectedObject).estFranchissable();
+                System.out.println(((Transition) selectedObject).estFranchissable());
             } else if (selectedObject instanceof Arc){
                 Arc a = ((Arc) selectedObject);
                 a.draw(g);
@@ -463,14 +464,53 @@ public class DrawPanel extends JPanel {
     public void showOptions(Object obj) {
         if (obj instanceof Place) {
             try {
-                String result = JOptionPane.showInputDialog("Marquage :");
-                int num = Integer.parseInt(result);
-                ((Place)obj).setMarquage(num);
+
+                JPanel panel = new JPanel(new BorderLayout(5, 5));
+                JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
+                label.add (new JLabel("Marquage : ", SwingConstants.RIGHT));
+                label.add (new JLabel("Capacité :", SwingConstants.LEFT));
+                panel.add(label, BorderLayout.WEST);
+
+
+                JPanel inputs = new JPanel(new GridLayout(0, 1, 2, 2));
+                JTextField inputMarquage = new JTextField(""+((Place) obj).getMarquage());
+
+                String placeholder = "";
+
+                if(((Place) obj).getCapacite() == Integer.MAX_VALUE) {
+                    placeholder = "+inf";
+                } else {
+                    placeholder += ((Place) obj).getCapacite();
+                }
+
+                JTextField inputCapacite = new JTextField(placeholder);
+                inputs.add(inputMarquage);
+                inputs.add(inputCapacite);
+                panel.add(inputs, BorderLayout.CENTER);
+
+                JOptionPane.showMessageDialog(frame, panel, "Attributs de la place " + ((Place) obj).getName(), JOptionPane.QUESTION_MESSAGE);
+
+                int newMarquage = Integer.parseInt(inputMarquage.getText());
+                int newCapacite;
+
+                if(Integer.parseInt(inputMarquage.getText()) > 0){
+                    ((Place)obj).setMarquage(newMarquage);
+                }
+
+                if(inputCapacite.getText().equals("+inf")){
+                    newCapacite = Integer.MAX_VALUE;
+                    ((Place)obj).setCapacite(newCapacite);
+                } else if(Integer.parseInt(inputCapacite.getText()) > 0) {
+                    newCapacite = Integer.parseInt(inputCapacite.getText());
+                    ((Place)obj).setCapacite(newCapacite);
+                }
+
+
             } catch (Exception e){
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only integers are allowed");
             }
-
         }
+
         if(obj instanceof Transition) {
             try {
                 Object[] orientation = { "Verticale", "Horizontale" };

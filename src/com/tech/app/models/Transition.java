@@ -182,13 +182,18 @@ public class Transition implements Serializable {
             return false;
         }
 
-        for(Arc a : this.getParents()){
-            // créer un vecteur pour récup les marques de chacune des places parents et faire un test comme dans couvre
-            marques.add(a.place.getMarquage());
-        }
-        for(int i = 0 ; i < marques.size() ; i++){
-            if(marques.get(i) < 1)
+        for(Arc parent : this.getParents()){
+            // Si on a suffisamment de marques dans la place en prenant en compte le poids de l'arc parent .
+            if(parent.getPlace().getMarquage() - parent.getPoids() < 0){
                 return false;
+            }
+        }
+
+        for(Arc child : this.getChildren()){
+            // Si il y a suffisamment de capacité dans la place pour recevoir les marques correspondant au poids de l'arc sans dépasser la limite.
+            if(child.getPlace().getCapacite()-(child.getPlace().getMarquage() + child.getPoids()) < 0){
+                return false;
+            }
         }
         return true;
     }
