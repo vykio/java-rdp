@@ -42,10 +42,10 @@ public class SaveManager {
                 // Si la place n'a pas de label
                 if(model.placeVector.get(i).getLabel().equals("")){
                     // name x y marquage
-                    out.write(model.placeVector.get(i).getName()+" "+ (int) model.placeVector.get(i).getX()+" "+ (int) model.placeVector.get(i).getY()+" "+model.placeVector.get(i).getMarquage()+"\n");
+                    out.write(model.placeVector.get(i).getName()+" "+ (int) model.placeVector.get(i).getX()+" "+ (int) model.placeVector.get(i).getY()+" "+ model.placeVector.get(i).getMarquage()+" "+ model.placeVector.get(i).getCapacite()+"\n");
                 } else {
                     // name x y marquage label position
-                    out.write(model.placeVector.get(i).getName() + " " + (int) model.placeVector.get(i).getX() + " " + (int) model.placeVector.get(i).getY() + " " + model.placeVector.get(i).getMarquage() + " " + model.placeVector.get(i).getLabel() + " " + model.placeVector.get(i).getPosition() + "\n");
+                    out.write(model.placeVector.get(i).getName()+" "+ (int) model.placeVector.get(i).getX()+" "+ (int) model.placeVector.get(i).getY()+" "+ model.placeVector.get(i).getMarquage()+" "+ model.placeVector.get(i).getCapacite()+" "+ model.placeVector.get(i).getLabel()+" "+ model.placeVector.get(i).getPosition()+"\n");
                 }
             }
 
@@ -133,10 +133,10 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
                     //Si la ligne commence par un P alors on va créer une place.
                     if(line.startsWith("P")){
                         //Si il y a 6 mots dans la ligne alors la place à un label et une position.
-                        if(words.length == 6){
-                            mo.addPlace(new Place(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]), Integer.parseInt(words[3]), words[4], Integer.parseInt(words[5])));
+                        if(words.length == 7){
+                            mo.addPlace(new Place(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]), Integer.parseInt(words[3]), Integer.parseInt(words[4]), words[5], Integer.parseInt(words[6])));
                         } else {
-                            mo.addPlace(new Place(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]), Integer.parseInt(words[3])));
+                            mo.addPlace(new Place(words[0], Double.parseDouble(words[1]),Double.parseDouble(words[2]), Integer.parseInt(words[3]), Integer.parseInt(words[4])));
                         }
                     }
 
