@@ -30,13 +30,13 @@ public class Place implements Serializable {
      * @param label : label de la place.
      * @param position : position du label.
      */
-    public Place(String name, double x, double y, int marquage, String label, int position) {
+    public Place(String name, double x, double y, int marquage, int capacite, String label, int position) {
         this.name = name;
         this.x = x;
         this.y = y;
         this.marquage = marquage;
         this.label = label;
-        this.capacite = Integer.MAX_VALUE;
+        this.capacite = capacite;
         this.position = position;
         this.forme = new Ellipse2D.Float((float)(this.x-(WIDTH/2)), (float)(this.y-(HEIGHT/2)), WIDTH ,HEIGHT);
     }
@@ -47,16 +47,12 @@ public class Place implements Serializable {
      * @param x : coordonnée x du centre de la place.
      * @param y : coordonnée y du centre de la place.
      */
-    public Place(String name, double x, double y) { this(name, x, y, 0,"",0); }
+    public Place(String name, double x, double y) { this(name, x, y, 0,Integer.MAX_VALUE,"",0); }
 
-    public Place(String name, double x, double y, int marquage) { this(name, x, y, marquage,"",0); }
+    public Place(String name, double x, double y, int marquage) { this(name, x, y, marquage,Integer.MAX_VALUE,"",0); }
 
+    public Place(String name, double x, double y, int marquage, int capacite) { this(name, x, y, marquage,capacite,"",0); }
 
-    /**
-     * Constructeur d'une place.
-     * @param name : nom de la place.
-     */
-    public Place(String name) { this(name, 0, 0, 0,"",0); }
 
     /**
      * Méthode qui permet de récupérer le nom de la place.

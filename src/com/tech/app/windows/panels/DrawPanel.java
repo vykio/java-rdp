@@ -271,7 +271,7 @@ public class DrawPanel extends JPanel {
      * @param y Coordonnée Y du nouvel objet
      */
     public void addPlace(double x, double y){
-        model.addPlace(new Place("P" + idPlace, x, y));
+        model.addPlace(new Place("P" + model.nbPlace, x, y));
         this.idPlace++;
         repaint();
     }
