@@ -55,6 +55,10 @@ public class Arc implements Serializable {
      */
     public Place getPlace() { return this.place; }
 
+    public Transition getTransition() { return transition; }
+
+    public boolean isPlaceToTransition() { return placeToTransition; }
+
     /**
      * Méthode qui permet de récupérer le poids de l'arc.
      * @return poids.

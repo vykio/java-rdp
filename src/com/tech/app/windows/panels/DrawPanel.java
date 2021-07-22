@@ -276,6 +276,20 @@ public class DrawPanel extends JPanel {
         repaint();
     }
 
+    private Transition findTransition(List<Transition> transitions, Object selectedObject){
+        return transitions.stream().filter(t -> t.equals(selectedObject)).findFirst().orElse(null);
+    }
+
+    private boolean arcAlreadyExist(List<Arc> arcs, Arc arc){
+        return arcs.stream().anyMatch(a -> a.getPlace().equals(arc.getPlace()) && a.getTransition().equals(arc.getTransition()) && a.isPlaceToTransition() == arc.isPlaceToTransition());
+    }
+
+    private Arc getAlreadyExistingArc(List<Arc> arcs, Arc arc){
+        // Si un arc du vecteur a le meme sens, la meme transition et la meme place, on le retourne.
+        return arcs.stream().filter(a -> a.getPlace().equals(arc.getPlace()) && a.getTransition().equals(arc.getTransition()) && a.isPlaceToTransition() == arc.isPlaceToTransition()).findFirst().orElse(null);
+    }
+
+
     /**
      * Ajouter une arc au système d'un point d'origine
      * (x1, y1) au point d'arrivée (x2, y2). Ne fonctionne
@@ -296,23 +310,33 @@ public class DrawPanel extends JPanel {
             if (obj1.getClass() != obj2.getClass()) {
                 this.clickError = false;
                 if (obj1 instanceof Transition) {
-                    Arc a = new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1);
-                    ((Transition) obj1).addChildren(a);
-                    model.addArc(a);
-                    idArc++;
+                    Arc arc = new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1);
+                    if(arcAlreadyExist(model.arcVector, arc)){
+                        Arc alreadyExistingArc = getAlreadyExistingArc(model.arcVector, arc);
+                        alreadyExistingArc.setPoids(alreadyExistingArc.getPoids() + arc.getPoids());
+                    } else {
+                        ((Transition) obj1).addChildren(arc);
+                        model.addArc(arc);
+                        idArc++;
+                    }
                 } else {
                     Arc b = new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2);
-                    ((Transition) obj2).addParent(b);
-                    model.addArc(b);
-                    idArc++;
+                    if(arcAlreadyExist(model.arcVector, b)){
+                        Arc alreadyExistingArc = getAlreadyExistingArc(model.arcVector, b);
+                        alreadyExistingArc.setPoids(alreadyExistingArc.getPoids() + b.getPoids());
+                    }else {
+                        ((Transition) obj2).addParent(b);
+                        model.addArc(b);
+                        idArc++;
+                    }
                 }
-
             } else {
                 this.clickError = true;
             }
         }
-        repaint();
+        System.out.println(model.arcVector);
 
+        repaint();
     }
 
     /**
