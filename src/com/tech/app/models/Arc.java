@@ -90,6 +90,7 @@ public class Arc implements Serializable {
         return "Arc{" +
                 "place=" + place +
                 ", poids=" + poids +
+                ", placetoTransition=" + placeToTransition +
                 ", ptctrl= "+ pointCtr1+
                 '}';
     }
@@ -172,7 +173,13 @@ public class Arc implements Serializable {
         /* Affichage du poids */
         if(this.poids > 1 ) {
             g2.setFont(new Font("Console", Font.PLAIN, 15));
-            g2.drawString(Integer.toString(poids), (int) courbe.getCtrlX(), (int) courbe.getCtrlY() + 15);
+            if(this.placeToTransition && this.transition.getX() < this.place.getX() || !this.placeToTransition && this.place.getX() < this.transition.getX()){
+                g2.scale(-1,-1);
+                g2.drawString(Integer.toString(poids), (int) -courbe.getCtrlX(), (int) -(courbe.getCtrlY() - 15));
+                g2.scale(1,1);
+            }else {
+                g2.drawString(Integer.toString(poids), (int) courbe.getCtrlX(), (int) courbe.getCtrlY() + 15);
+            }
         }
     }
 
