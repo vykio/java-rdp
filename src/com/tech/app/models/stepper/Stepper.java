@@ -17,8 +17,10 @@ public class Stepper{
     public List<Vector<Integer>> marquagesPasse;
     public List<String> sequenceTransition;
 
+
     public boolean showSequence = false;
     public int currentMarquageIndex;
+    public int lastTransitionFranchieIndex;
 
     public Stepper(Model model, StepperHandler stepperHandler){
         this.model = model;
@@ -52,12 +54,13 @@ public class Stepper{
     public List<String> getLast20FromSequence(){
         List<String> res = new ArrayList<>();
 
-        if(getSequenceTransition().size() > 20) {
-            for (int i = getSequenceTransition().size() - 20; i < getSequenceTransition().size(); i++) {
+        if(lastTransitionFranchieIndex > 20) {
+            for (int i = lastTransitionFranchieIndex - 20; i < lastTransitionFranchieIndex; i++) {
                 res.add(getSequenceTransition().get(i));
             }
         } else {
-            res.addAll(getSequenceTransition());
+            for(int i = 0; i < lastTransitionFranchieIndex; i ++)
+            res.add(getSequenceTransition().get(i));
         }
 
         return res;
@@ -74,6 +77,21 @@ public class Stepper{
         }
         return msg.toString();
     }
+
+    /*
+    public String getSequenceMarquageTransition(List<String> sequenceTransition, List<Vector<Integer>> marquagesPasse){
+        StringBuilder msg = new StringBuilder();
+        //msg.append("M0");
+        for(int i =0; i < marquagesPasse.size() - 1; i++){
+            msg.append("M").append(i);
+            msg.append("->");
+            msg.append(sequenceTransition.get(i));
+            msg.append("->");
+        }
+        return msg.toString();
+    }
+
+     */
 
     /**
      * Méthode qui nous permet de faire une addition entre un vecteur et une colonne d'une matrice.
@@ -107,6 +125,8 @@ public class Stepper{
 
         marquagesPasse.add(nextMarquage);
         currentMarquageIndex++;
+        lastTransitionFranchieIndex++;
+        System.out.println(lastTransitionFranchieIndex);
 
         sequenceTransition.add(model.transitionVector.get(indexOfT).getName());
 
@@ -121,6 +141,7 @@ public class Stepper{
     public void goToLastMarquage(){
         model.setMarquage(getMarquagesPasse().get(getMarquagesPasse().size() -1));
         currentMarquageIndex = getMarquagesPasse().size()-1;
+        lastTransitionFranchieIndex = sequenceTransition.size()-1;
         stepperHandler.repaint();
 
     }
@@ -129,6 +150,9 @@ public class Stepper{
 
         if(currentMarquageIndex < marquagesPasse.size()-1){
             currentMarquageIndex++;
+            lastTransitionFranchieIndex++;
+            System.out.println(lastTransitionFranchieIndex);
+
             Vector<Integer> nextMarquage = getMarquagesPasse().get(currentMarquageIndex);
             model.setMarquage(nextMarquage);
         }
@@ -140,6 +164,9 @@ public class Stepper{
 
         if(currentMarquageIndex -1 >= 0) {
             currentMarquageIndex--;
+            lastTransitionFranchieIndex--;
+            System.out.println(lastTransitionFranchieIndex);
+
             Vector<Integer> previousMarquage = getMarquagesPasse().get(currentMarquageIndex);
             model.setMarquage(previousMarquage);
         }
@@ -149,6 +176,9 @@ public class Stepper{
 
     public void goToFirstMarquage(){
         currentMarquageIndex = 0;
+        lastTransitionFranchieIndex=0;
+        System.out.println(lastTransitionFranchieIndex);
+
         model.setMarquage(getMarquagesPasse().get(0));
         stepperHandler.repaint();
     }
@@ -167,6 +197,9 @@ public class Stepper{
 
                 marquagesPasse.add(nextMarquage);
                 currentMarquageIndex++;
+                lastTransitionFranchieIndex++;
+                System.out.println(lastTransitionFranchieIndex);
+
 
                 sequenceTransition.add(model.transitionVector.get(indexOfT).getName());
 
@@ -183,6 +216,7 @@ public class Stepper{
         this.marquagesPasse = new ArrayList<>();
         this.sequenceTransition = new ArrayList<>();
         this.currentMarquageIndex = 0;
+        lastTransitionFranchieIndex = 0;
         this.showSequence = false;
         stepperHandler.repaint();
     }

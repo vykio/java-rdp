@@ -144,5 +144,7 @@ public class StepperHandler extends JPanel {
 
     private void drawSequence(Graphics g){
         g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX*scaleFactor)));
-        g.drawString("Séquence : {"+stepper.getSequenceTransitionToString(stepper.getLast20FromSequence()),(int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-60)*scaleFactor/scaleY));    }
+        //g.drawString("Séquence : {"+stepper.getSequenceMarquageTransition(stepper.getSequenceTransition(),stepper.getMarquagesPasse()),(int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-90)*scaleFactor/scaleY));
+        g.drawString("Séquence : {"+stepper.getSequenceTransitionToString(stepper.getLast20FromSequence()),(int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-60)*scaleFactor/scaleY));
+    }
 }
