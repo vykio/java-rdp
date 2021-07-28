@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /*
  * Ordre d'affichage :
  *  1. Places
@@ -43,6 +44,7 @@ public class DrawPanel extends JPanel {
     private int idPlace=0;
     private int idTransition = 0;
     private int idArc = 0;
+
 
 
     /**
@@ -79,7 +81,6 @@ public class DrawPanel extends JPanel {
         this.frame = frame;
         this.model = model;
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
-
         this.getInputMap(IFW).put(KeyStroke.getKeyStroke("DELETE"), DELETE);
         this.getActionMap().put(DELETE, new AbstractAction() {
             @Override
@@ -289,7 +290,6 @@ public class DrawPanel extends JPanel {
         return arcs.stream().filter(a -> a.getPlace().equals(arc.getPlace()) && a.getTransition().equals(arc.getTransition()) && a.isPlaceToTransition() == arc.isPlaceToTransition()).findFirst().orElse(null);
     }
 
-
     /**
      * Ajouter une arc au système d'un point d'origine
      * (x1, y1) au point d'arrivée (x2, y2). Ne fonctionne
@@ -389,7 +389,6 @@ public class DrawPanel extends JPanel {
      * @return Objet
      */
     public Object getSelectedObject(double x, double y) {
-
         if(selectedObject !=null && selectedObject instanceof Arc){
             Arc a = (Arc) selectedObject;
             //System.out.println("{x : "+x+", y : "+y+"}");
@@ -493,7 +492,6 @@ public class DrawPanel extends JPanel {
     public void showOptions(Object obj) {
         if (obj instanceof Place) {
             try {
-
                 JPanel panel = new JPanel(new BorderLayout(5, 5));
                 JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
                 label.add (new JLabel("Marquage : ", SwingConstants.RIGHT));

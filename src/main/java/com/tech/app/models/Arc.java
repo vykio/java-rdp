@@ -1,6 +1,5 @@
 package com.tech.app.models;
 
-
 import java.awt.*;
 import java.awt.geom.*;
 import java.io.Serializable;
@@ -81,6 +80,7 @@ public class Arc implements Serializable {
         }
     }
 
+
     /**
      * Méthode qui permet d'afficher les caractéristiques de l'arc : {place,poids}.
      * @return caractéristiques de l'arc.
@@ -103,6 +103,7 @@ public class Arc implements Serializable {
     public AffineTransform reverse;
     public Path2D.Double hitbox;
     public Path2D arrowHead;
+
 
     /**
      * Méthode qui permet de dessiner un arc.
@@ -270,6 +271,7 @@ public class Arc implements Serializable {
         boolean result = pointCtr1.contains(x,y);
         System.out.println(result);
         return result;
+
     }
 
     /**

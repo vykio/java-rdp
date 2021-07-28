@@ -18,7 +18,6 @@ public class Model implements Serializable {
     public List<Transition> transitionVector;
     public List<Arc> arcVector;
 
-
     Vector<Integer> M0;
     Vector<Vector<Integer>> w_plus, w_moins, C;
 
@@ -176,47 +175,8 @@ public class Model implements Serializable {
     }
 
     public void removeArc(Arc a){
-
-        // Test pour éviter l'exception ConcurrentModificationException (n'enlève pas l'exception)
-
-        /*for(Iterator<Transition> transitionIterator = transitionVector.iterator(); transitionIterator.hasNext();) {
-            Transition t = transitionIterator.next();
-            if (t.getChildren().contains(a)) {
-                for (Iterator<Arc> arcIterator = t.getChildren().iterator(); arcIterator.hasNext(); ) {
-                    Arc arc = arcIterator.next();
-                    if (arc.equals(a)) {
-                        arcIterator.remove();
-                    }
-                }
-            }
-            if (t.getParents().contains(a)) {
-                for (Iterator<Arc> arcIterator = t.getParents().iterator(); arcIterator.hasNext(); ) {
-                    Arc arc = arcIterator.next();
-                    if (arc.equals(a)) {
-                        arcIterator.remove();
-                    }
-                }
-            }
-        }*/
-
         try {
-            for (Transition t : transitionVector) {
-                /*
-                for(int i = 0; i<t.getChildren().size();i++){
-                    if(t.getChildren().get(i).equals(a)){
-                        t.removeChildren(a);
-                        i--;
-                    }
-                }
-
-                for(int i = 0; i<t.getParents().size();i++){
-                    if(t.getParents().get(i).equals(a)){
-                        t.removeParent(a);
-                        i--;
-                    }
-                }
-                */
-
+            for (Transition t : transitionVector) {             
                 if(t.getChildren().contains(a)) {
                     System.out.println(t.getChildren());
                     t.removeChildren(a);
@@ -259,11 +219,7 @@ public class Model implements Serializable {
                 arcToDelete.remove(i);
                 i--;
             }
-        //}
-        /*
-        catch(ConcurrentModificationException e) {
-            e.printStackTrace();
-        }*/
+     
         System.out.println(this);
         this.updateMatrices();
         System.out.println("apres :");
@@ -312,6 +268,7 @@ public class Model implements Serializable {
         this.placeVector = new ArrayList<>();
         this.transitionVector = new ArrayList<>();
         this.arcVector = new ArrayList<>();
+
     }
 
     /**
@@ -567,5 +524,4 @@ public class Model implements Serializable {
         temp.setMarquage(this.M0);
         return transitionsFranchissables;
     }
-
 }

@@ -1,9 +1,11 @@
 package com.tech.app.windows.toolbars;
 
 import com.tech.app.functions.FUtils;
+
 import com.tech.app.models.Model;
-import com.tech.app.windows.GCWindow;
 import com.tech.app.models.ModelProperties;
+
+import com.tech.app.windows.GCWindow;
 import com.tech.app.windows.StepperWindow;
 import com.tech.app.windows.handlers.SaveManager;
 import com.tech.app.windows.panels.DrawPanel;
@@ -28,7 +30,6 @@ public class Menu extends MenuBar {
     /* Construction de l'interface graphique pour tester à part*/
     private Model model;
     private ModelProperties modelProperties;
-
     private SaveManager saveManager;
     private DrawPanel dp;
 
@@ -176,11 +177,12 @@ public class Menu extends MenuBar {
         mnuGC.addActionListener( this::openGCWindow );
         mnuTools.add(mnuGC);
 
+
         JMenuItem mnuStepper = new JMenuItem("Simulation pas à pas");
         mnuStepper.setMnemonic('F');
         mnuStepper.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
-        //mnuStepper.setEnabled(false);
         mnuStepper.addActionListener(this::openStepperWindow);
+
         mnuTools.add(mnuStepper);
 
         toolbar.add(mnuTools);
@@ -249,20 +251,6 @@ public class Menu extends MenuBar {
 
         return toolbar;
     }
-
-    /*
-    private void openGMAWindow(ActionEvent actionEvent) {
-        EventQueue.invokeLater(
-                () -> {
-                    try {
-                        new GMAWindow(900,500, model);
-                    } catch (UnsupportedLookAndFeelException e) {
-                        e.printStackTrace();
-                    }
-                }
-        );
-    }
-    */
 
     private void openGCWindow(ActionEvent actionEvent) {
         EventQueue.invokeLater(
@@ -393,6 +381,7 @@ public class Menu extends MenuBar {
         JOptionPane.showMessageDialog(null, message, "A Propos de JRDP", JOptionPane.QUESTION_MESSAGE);
     }
 
+
     public void openPropsPopup(ActionEvent event){
 
         modelProperties = new ModelProperties(model);
@@ -403,5 +392,4 @@ public class Menu extends MenuBar {
         panel.setPreferredSize(new Dimension(300,500));
         JOptionPane.showMessageDialog(panel, message, "Propriétés du RdP", JOptionPane.PLAIN_MESSAGE);
     }
-
 }

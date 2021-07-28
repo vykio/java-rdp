@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  * Classe qui gère la sauvegarde et le chargement de fichier.
  */
@@ -103,6 +104,7 @@ public static Place findPlaceByName(List<Place> placeVector, String name){
         //permet de recupérer une place de la liste de place du model par son attribut nom
         return placeVector.stream().filter(place -> name.equals(place.getName())).findFirst().orElse(null);
 }
+
 
     /**
      * Méthode qui permet de charger le modèle enregisté dans un fichier .jrdp.

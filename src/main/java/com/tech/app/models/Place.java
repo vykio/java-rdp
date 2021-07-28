@@ -31,6 +31,7 @@ public class Place implements Serializable {
      * @param position : position du label.
      */
     public Place(String name, double x, double y, int marquage, int capacite, String label, int position) {
+
         this.name = name;
         this.x = x;
         this.y = y;
@@ -52,7 +53,6 @@ public class Place implements Serializable {
     public Place(String name, double x, double y, int marquage) { this(name, x, y, marquage,Integer.MAX_VALUE,"",0); }
 
     public Place(String name, double x, double y, int marquage, int capacite) { this(name, x, y, marquage,capacite,"",0); }
-
 
     /**
      * Méthode qui permet de récupérer le nom de la place.

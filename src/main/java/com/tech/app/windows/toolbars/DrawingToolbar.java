@@ -189,6 +189,7 @@ public class DrawingToolbar extends Toolbar {
      */
     public void btnPlaceListener(ActionEvent event){ drawMouse.action(DrawMouse.MODE.PLACE); }
 
+
     /**
      * Listener exécuté quand on fait choisit le mode Création de Transition
      * @param event ActionEvent

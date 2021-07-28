@@ -3,6 +3,7 @@ package com.tech.app.windows.handlers;
 import com.tech.app.models.Place;
 import com.tech.app.models.PointControle;
 import com.tech.app.models.Transition;
+
 import com.tech.app.windows.panels.DrawPanel;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+
 
 /**
  * Cette classe permet de récupérer les actions de la souris sur l'application, plus particulièrement dans la zone de dessin.
@@ -110,7 +112,6 @@ public class DrawMouse extends MouseAdapter {
         //System.out.println("Mouse pressed");
         x = mouseEvent.getX() * drawPanel.scaleFactor;
         y = mouseEvent.getY() * drawPanel.scaleFactor;
-        //System.out.println(drawPanel.scaleFactor);
 
         drawPanel.mouseX = x;
         drawPanel.mouseY = y;

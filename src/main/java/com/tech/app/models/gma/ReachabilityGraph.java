@@ -15,6 +15,7 @@ public class ReachabilityGraph {
     Marquage M0;
     public List<Marquage> marquagesAccessibles;
     public List<Marquage> marquagesATraiter;
+
     public List<Node> liste_node;
     public int nb_marquages;
 
@@ -42,6 +43,7 @@ public class ReachabilityGraph {
      * @return Vecteur d'entiers
      */
     private Marquage getM0(){ return this.M0; }
+
 
     /**
      * Cette méthode est utilisée dans l'algorithme de création du GMA. Elle permet de vérifier si le marquage du noeud actuel
@@ -95,6 +97,7 @@ public class ReachabilityGraph {
     public boolean containsMarquage(final List<Marquage> m, final Vector<Integer> marquage){
         return m.stream().anyMatch(a -> a.getMarquage().equals(marquage));
     }
+
     /**
      * Méthode qui permet de calculer le GMA. Cette méthode utilise l'algorithme énoncé dans le cours de Systèmes à Evénements Discrets (2020) de Mr LHERBIER.
      * Inconvénient : Il n'y a pas de point d'arret. Si le GMA est non borné, la méthode boucle à l'infini.
@@ -106,6 +109,7 @@ public class ReachabilityGraph {
         marquagesATraiter.add(M0);
         Marquage M;
         Marquage M1;
+
 
         /* On initialise la liste des noeuds */
         liste_node = new ArrayList<>();
@@ -128,6 +132,7 @@ public class ReachabilityGraph {
 
             M0.setOld();
 
+
             /* Pour toutes les transitions du RdP */
             for (int t = 0; t < this.model.transitionVector.size(); t++) {
 
@@ -144,6 +149,7 @@ public class ReachabilityGraph {
                     if (!containsMarquage(marquagesAccessibles, M1.getMarquage())) {
                         /* On ajoute le marquage M1 aux deux listes : marquages accessibles et marquages à traiter. */
                         M1.setOld();
+
                         marquagesAccessibles.add(M1);
                         marquagesATraiter.add(M1);
                     }
