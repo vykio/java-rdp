@@ -20,5 +20,9 @@ public class NodeStruct {
         this.node = node;
         this.transition = transition;
     }
+  
+    public Node getNode() {
+        return node;
+    }
 
 }
