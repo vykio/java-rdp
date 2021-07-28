@@ -8,8 +8,13 @@ import org.scilab.forge.jlatexmath.TeXIcon;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /*
  * Ordre d'affichage :
@@ -27,6 +32,9 @@ public class DrawPanel extends JPanel {
     private final JFrame frame;
     public Model model;
 
+    private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
+    private static final String DELETE = "delete";
+
     private double arcOriginX = 0, arcOriginY =0, arcDestX=0, arcDestY=0;
     private int indexOfClickArc = 0;
     public Object selectedObject = null;
@@ -35,6 +43,8 @@ public class DrawPanel extends JPanel {
     /* Variables de départ pour indexation P et T */
     private int idPlace=0;
     private int idTransition = 0;
+    private int idArc = 0;
+
 
 
     /**
@@ -71,6 +81,13 @@ public class DrawPanel extends JPanel {
         this.frame = frame;
         this.model = model;
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
+        this.getInputMap(IFW).put(KeyStroke.getKeyStroke("DELETE"), DELETE);
+        this.getActionMap().put(DELETE, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteSelectedObject();
+            }
+        });
     }
 
     /**
@@ -120,12 +137,14 @@ public class DrawPanel extends JPanel {
             if (obj instanceof Place) {
                 Place p = (Place) obj;
                 p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
-            } else if (obj instanceof PointControle) {
-                PointControle pt = (PointControle) obj;
-                pt.updatePosition(pt.getX() + dx * 1 / scaleX, pt.getY() + dy * 1 / scaleY);
-            } else {
-                Transition p = (Transition) obj;
-                    p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
+            }
+            if (obj instanceof PointControle) {
+                PointControle point = (PointControle) obj;
+                point.updatePosition(point.getX() + dx * 1 / scaleX, point.getY() + dy * 1 / scaleY);
+            }
+            if(obj instanceof Transition){
+                Transition t = (Transition) obj;
+                t.updatePosition(t.getX() + dx * 1 / scaleX, t.getY() + dy * 1 / scaleY);
             }
             repaint();
         }
@@ -165,6 +184,8 @@ public class DrawPanel extends JPanel {
         }
         for (Transition t:model.transitionVector) {
             if (t != selectedObject) {
+                t.drawParents(g);
+                t.drawChildren(g);
                 t.draw(g);
             }
         }
@@ -172,7 +193,7 @@ public class DrawPanel extends JPanel {
         drawTooltips(g);
 
         /* Afficher l'objet sélectionné au dessus des autres:
-        * donc affichage en dernier */
+         * donc affichage en dernier */
         if (selectedObject != null) {
             Color co = g.getColor();
             g.setColor(Color.BLUE);
@@ -180,7 +201,27 @@ public class DrawPanel extends JPanel {
             if (selectedObject instanceof Place) {
                 ((Place) selectedObject).draw(g);
             } else if (selectedObject instanceof Transition) {
+                ((Transition) selectedObject).drawParents(g);
+                ((Transition) selectedObject).drawChildren(g);
                 ((Transition) selectedObject).draw(g);
+                ((Transition) selectedObject).estFranchissable();
+                System.out.println(((Transition) selectedObject).estFranchissable());
+            } else if (selectedObject instanceof Arc){
+                Arc a = ((Arc) selectedObject);
+                a.draw(g);
+
+
+                Point2D src = new Point2D.Double(a.getPointCtr1().getX(),a.getPointCtr1().getY());
+                Point2D dest = new Point2D.Double();
+                a.at.transform(src, dest);
+                a.getPointCtr1().setX(dest.getX());
+                a.getPointCtr1().setY(dest.getY());
+
+                a.getPointCtr1().draw((Graphics2D) g);
+            } else if(selectedObject instanceof PointControle){
+                PointControle pt = ((PointControle) selectedObject);
+                pt.getParent().draw(g);
+                pt.draw((Graphics2D) g);
             }
             g.setColor(co);
 
@@ -221,6 +262,7 @@ public class DrawPanel extends JPanel {
         selectedObject = null;
         idTransition = 0;
         idPlace = 0;
+        idArc = 0;
         repaint();
     }
 
@@ -230,9 +272,22 @@ public class DrawPanel extends JPanel {
      * @param y Coordonnée Y du nouvel objet
      */
     public void addPlace(double x, double y){
-        model.addPlace(new Place("P" + idPlace, x, y));
+        model.addPlace(new Place("P" + model.nbPlace, x, y));
         this.idPlace++;
         repaint();
+    }
+
+    private Transition findTransition(List<Transition> transitions, Object selectedObject){
+        return transitions.stream().filter(t -> t.equals(selectedObject)).findFirst().orElse(null);
+    }
+
+    private boolean arcAlreadyExist(List<Arc> arcs, Arc arc){
+        return arcs.stream().anyMatch(a -> a.getPlace().equals(arc.getPlace()) && a.getTransition().equals(arc.getTransition()) && a.isPlaceToTransition() == arc.isPlaceToTransition());
+    }
+
+    private Arc getAlreadyExistingArc(List<Arc> arcs, Arc arc){
+        // Si un arc du vecteur a le meme sens, la meme transition et la meme place, on le retourne.
+        return arcs.stream().filter(a -> a.getPlace().equals(arc.getPlace()) && a.getTransition().equals(arc.getTransition()) && a.isPlaceToTransition() == arc.isPlaceToTransition()).findFirst().orElse(null);
     }
 
     /**
@@ -255,18 +310,33 @@ public class DrawPanel extends JPanel {
             if (obj1.getClass() != obj2.getClass()) {
                 this.clickError = false;
                 if (obj1 instanceof Transition) {
-                    ((Transition) obj1).addParent(new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1));
+                    Arc arc = new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1);
+                    if(arcAlreadyExist(model.arcVector, arc)){
+                        Arc alreadyExistingArc = getAlreadyExistingArc(model.arcVector, arc);
+                        alreadyExistingArc.setPoids(alreadyExistingArc.getPoids() + arc.getPoids());
+                    } else {
+                        ((Transition) obj1).addChildren(arc);
+                        model.addArc(arc);
+                        idArc++;
+                    }
                 } else {
-                    ((Transition) obj2).addChildren(new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2));
+                    Arc b = new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2);
+                    if(arcAlreadyExist(model.arcVector, b)){
+                        Arc alreadyExistingArc = getAlreadyExistingArc(model.arcVector, b);
+                        alreadyExistingArc.setPoids(alreadyExistingArc.getPoids() + b.getPoids());
+                    }else {
+                        ((Transition) obj2).addParent(b);
+                        model.addArc(b);
+                        idArc++;
+                    }
                 }
-
             } else {
                 this.clickError = true;
             }
-
         }
-        repaint();
+        System.out.println(model.arcVector);
 
+        repaint();
     }
 
     /**
@@ -319,6 +389,15 @@ public class DrawPanel extends JPanel {
      * @return Objet
      */
     public Object getSelectedObject(double x, double y) {
+        if(selectedObject !=null && selectedObject instanceof Arc){
+            Arc a = (Arc) selectedObject;
+            //System.out.println("{x : "+x+", y : "+y+"}");
+            if(a.containsControlPoint1(x,y)){
+                a.getPointCtr1().setMoved(true);
+                return a.getPointCtr1();
+            }
+        }
+
         for (Place p:model.placeVector) {
             if (p.forme.contains(x,y)) {
                 return p;
@@ -329,13 +408,13 @@ public class DrawPanel extends JPanel {
                 return t;
             }
         }
-        for (Transition t : model.transitionVector) {
-            for (Arc a : t.getChildren()) {
-                System.out.println("Pt1 > " + a.getPointCtr1());
-                if(a.containsControlPoint1(x,y)) {
-                    a.getPointCtr1().setMoved(true);
-                    return a.getPointCtr1();
-                }
+        for (Arc a : model.arcVector){
+            Point2D.Double src = new Point2D.Double(x,y);
+            Point2D.Double dest = new Point2D.Double();
+            a.reverse.transform(src,dest);
+            // Si on click autour de la courbe ou sur la tete de la fleche
+            if(a.hitbox.contains(dest) || a.arrowHead.contains(dest)){
+                return a;
             }
         }
         return null;
@@ -357,10 +436,27 @@ public class DrawPanel extends JPanel {
     public void deleteSelectedObject() {
         if (selectedObject != null) {
             if (selectedObject instanceof Place) {
+                // Suppression des arcs liés à la place supprimée
+                List<Arc> arcToDelete = new ArrayList<>();
+                for(Arc a : this.model.arcVector){
+                    if(selectedObject == a.getPlace()){
+                        arcToDelete.add(a);
+                    }
+                }
+                this.model.removeArcs(arcToDelete);
                 this.model.removePlace((Place) selectedObject);
-            } else {
+                selectedObject = null;
+                repaint();
+            }
+            if (selectedObject instanceof Transition){
                 this.model.removeTransition((Transition) selectedObject);
             }
+
+            if(selectedObject instanceof Arc){
+                this.model.removeArc(((Arc) selectedObject));
+            }
+
+            selectedObject = null;
             repaint();
         }
     }
@@ -396,14 +492,53 @@ public class DrawPanel extends JPanel {
     public void showOptions(Object obj) {
         if (obj instanceof Place) {
             try {
-                String result = JOptionPane.showInputDialog("Marquage :");
-                int num = Integer.parseInt(result);
-                ((Place)obj).setMarquage(num);
+                JPanel panel = new JPanel(new BorderLayout(5, 5));
+                JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
+                label.add (new JLabel("Marquage : ", SwingConstants.RIGHT));
+                label.add (new JLabel("Capacité :", SwingConstants.LEFT));
+                panel.add(label, BorderLayout.WEST);
+
+
+                JPanel inputs = new JPanel(new GridLayout(0, 1, 2, 2));
+                JTextField inputMarquage = new JTextField(""+((Place) obj).getMarquage());
+
+                String placeholder = "";
+
+                if(((Place) obj).getCapacite() == Integer.MAX_VALUE) {
+                    placeholder = "+inf";
+                } else {
+                    placeholder += ((Place) obj).getCapacite();
+                }
+
+                JTextField inputCapacite = new JTextField(placeholder);
+                inputs.add(inputMarquage);
+                inputs.add(inputCapacite);
+                panel.add(inputs, BorderLayout.CENTER);
+
+                JOptionPane.showMessageDialog(frame, panel, "Attributs de la place " + ((Place) obj).getName(), JOptionPane.QUESTION_MESSAGE);
+
+                int newMarquage = Integer.parseInt(inputMarquage.getText());
+                int newCapacite;
+
+                if(Integer.parseInt(inputMarquage.getText()) > 0){
+                    ((Place)obj).setMarquage(newMarquage);
+                }
+
+                if(inputCapacite.getText().equals("+inf")){
+                    newCapacite = Integer.MAX_VALUE;
+                    ((Place)obj).setCapacite(newCapacite);
+                } else if(Integer.parseInt(inputCapacite.getText()) > 0) {
+                    newCapacite = Integer.parseInt(inputCapacite.getText());
+                    ((Place)obj).setCapacite(newCapacite);
+                }
+
+
             } catch (Exception e){
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error: only integers are allowed");
             }
+        }
 
-        } else {
+        if(obj instanceof Transition) {
             try {
                 Object[] orientation = { "Verticale", "Horizontale" };
                 JComboBox comboBox = new JComboBox(orientation);
@@ -413,6 +548,21 @@ public class DrawPanel extends JPanel {
                 JOptionPane.showMessageDialog(frame.getContentPane(), "Error...");
             }
         }
+
+        if(obj instanceof Arc){
+            try{
+                String result = JOptionPane.showInputDialog("Poids de l'arc :", ((Arc) obj).getPoids());
+                int poids = Integer.parseInt(result);
+                if(poids < 1){
+                    JOptionPane.showMessageDialog(frame.getContentPane(),"Error: only integers are allowed");
+
+                }
+                ((Arc)obj).setPoids(poids);
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(frame.getContentPane(),"Error: only integers are allowed");
+            }
+        }
+
         repaint();
     }
 
@@ -427,26 +577,26 @@ public class DrawPanel extends JPanel {
         if (obj instanceof Place || obj instanceof Transition ) {
             try {
 
-             JPanel panel = new JPanel(new BorderLayout(5, 5));
-             JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
-             label.add (new JLabel("Label : ", SwingConstants.RIGHT));
-             label.add (new JLabel("Position :", SwingConstants.LEFT));
-             panel.add(label, BorderLayout.WEST);
+                JPanel panel = new JPanel(new BorderLayout(5, 5));
+                JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
+                label.add (new JLabel("Label : ", SwingConstants.RIGHT));
+                label.add (new JLabel("Position :", SwingConstants.LEFT));
+                panel.add(label, BorderLayout.WEST);
 
-             ImageIcon icon = new ImageIcon (getClass().getResource("/icons/position.png"));
+                ImageIcon icon = new ImageIcon (getClass().getResource("/icons/position.png"));
 
-            JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
-            JTextField Label = new JTextField();
-            controls.add(Label);
-            JTextField Position = new JTextField("4");
-            controls.add(Position);
-            panel.add(controls, BorderLayout.CENTER);
+                JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
+                JTextField Label = new JTextField();
+                controls.add(Label);
+                JTextField Position = new JTextField("4");
+                controls.add(Position);
+                panel.add(controls, BorderLayout.CENTER);
 
-            JOptionPane.showMessageDialog(frame, panel, "Label / Position", JOptionPane.QUESTION_MESSAGE, icon);
+                JOptionPane.showMessageDialog(frame, panel, "Label / Position", JOptionPane.QUESTION_MESSAGE, icon);
 
-            convert = Integer.parseInt(Position.getText());
-            System.out.println(Label.getText());
-            System.out.println(Position.getText());
+                convert = Integer.parseInt(Position.getText());
+                System.out.println(Label.getText());
+                System.out.println(Position.getText());
 
                 if (obj instanceof Place) {
                     ((Place) obj).addLabel(Label.getText());

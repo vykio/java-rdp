@@ -3,9 +3,7 @@ package com.tech.app.models;
 import com.tech.app.functions.FList;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Cette classe est le coeur du RdP. C'est dans cette classe que l'on va stocker les places, transitions et arcs du RdP et que l'on va calculer les matrices du RdP.
@@ -14,9 +12,11 @@ public class Model implements Serializable {
 
     public int nbPlace;
     public int nbTransition;
+    public int nbArc;
 
     public List<Place> placeVector;
     public List<Transition> transitionVector;
+    public List<Arc> arcVector;
 
     Vector<Integer> M0;
     Vector<Vector<Integer>> w_plus, w_moins, C;
@@ -27,14 +27,29 @@ public class Model implements Serializable {
     public Model() {
         this.nbPlace = 0;
         this.nbTransition = 0;
+        this.nbArc = 0;
 
         this.placeVector = new ArrayList<>();
         this.transitionVector = new ArrayList<>();
+        this.arcVector = new ArrayList<>();
 
         this.M0 = new Vector<>();
         this.w_plus = new Vector<>();
         this.w_moins = new Vector<>();
         this.C = new Vector<>();
+    }
+
+    public Model(Model model){
+        this.nbPlace = model.nbPlace;
+        this.nbTransition = model.nbTransition;
+
+        this.placeVector = model.placeVector;
+        this.transitionVector = model.transitionVector;
+
+        this.M0 = model.M0;
+        this.w_plus = model.w_plus;
+        this.w_moins = model.w_moins;
+        this.C = model.C;
     }
 
     /**
@@ -68,15 +83,14 @@ public class Model implements Serializable {
 
                 /* pour chaque arc, on le transforme en place + poids */
 
-
-                if (FList.contains(listParents, this.placeVector.get(k))) {
-                    this.w_plus.get(k).set(i, FList.poids_arc(listParents, this.placeVector.get(k)));
+                if (FList.contains(listChildren, this.placeVector.get(k))) {
+                    this.w_plus.get(k).set(i, FList.poids_arc(listChildren, this.placeVector.get(k)));
                 } else {
                     this.w_plus.get(k).set(i, 0);
                 }
 
-                if (FList.contains(listChildren, this.placeVector.get(k))) {
-                    this.w_moins.get(k).set(i, FList.poids_arc(listChildren, this.placeVector.get(k)));
+                if (FList.contains(listParents, this.placeVector.get(k))) {
+                    this.w_moins.get(k).set(i, FList.poids_arc(listParents, this.placeVector.get(k)));
                 } else {
                     this.w_moins.get(k).set(i, 0);
                 }
@@ -121,6 +135,11 @@ public class Model implements Serializable {
         this.updateMatrices();
     }
 
+    public void addArc(Arc a){
+        this.arcVector.add(a);
+        this.nbArc++;
+    }
+
     /**
      * Supprimer une place
      * @param name : Nom de la place
@@ -153,6 +172,58 @@ public class Model implements Serializable {
         this.transitionVector.remove(transition);
         this.nbTransition--;
         this.updateMatrices();
+    }
+
+    public void removeArc(Arc a){
+        try {
+            for (Transition t : transitionVector) {             
+                if(t.getChildren().contains(a)) {
+                    System.out.println(t.getChildren());
+                    t.removeChildren(a);
+                }
+
+                if(t.getParents().contains(a)) {
+                    System.out.println(t.getParents());
+                    t.removeParent(a);
+                }
+
+            }
+        } catch (ConcurrentModificationException e){
+            e.printStackTrace();
+        }
+
+        this.arcVector.remove(a);
+        this.nbArc--;
+        this.updateMatrices();
+    }
+
+    public void removeArcs(List<Arc> arcToDelete){
+        //try{*/
+            for(int i = arcToDelete.size() - 1; i >= 0;){
+                for(int j = transitionVector.size() - 1; j >= 0;){
+
+                    if(!transitionVector.get(j).getChildren().isEmpty() && transitionVector.get(j).getChildren().contains(arcToDelete.get(i))){
+                        transitionVector.get(j).removeChildren(arcToDelete.get(i));
+                        arcVector.remove(arcToDelete.get(i));
+                        nbArc--;
+
+                    }
+
+                    if(!transitionVector.get(j).getParents().isEmpty() && transitionVector.get(j).getParents().contains(arcToDelete.get(i))){
+                        transitionVector.get(j).removeParent(arcToDelete.get(i));
+                        arcVector.remove(arcToDelete.get(i));
+                        nbArc--;
+                    }
+                    j--;
+                }
+                arcToDelete.remove(i);
+                i--;
+            }
+     
+        System.out.println(this);
+        this.updateMatrices();
+        System.out.println("apres :");
+        System.out.println(this);
     }
 
     /**
@@ -193,8 +264,11 @@ public class Model implements Serializable {
         clearMatrices();
         this.nbPlace = 0;
         this.nbTransition = 0;
+        this.nbArc = 0;
         this.placeVector = new ArrayList<>();
         this.transitionVector = new ArrayList<>();
+        this.arcVector = new ArrayList<>();
+
     }
 
     /**
@@ -407,4 +481,47 @@ public class Model implements Serializable {
      */
     public Vector<Vector<Integer>> getC() { return C; }
 
+    public Vector<Integer> getMarquage(){
+        Vector<Integer> marquage = new Vector<>();
+        for(Place p : placeVector){
+            marquage.add(p.getMarquage());
+        }
+        return marquage;
+    }
+
+    public void setMarquage(Vector<Integer> marquage){
+        if(marquage.size() == placeVector.size()) {
+            for (int i = 0; i < placeVector.size(); i++){
+                placeVector.get(i).setMarquage(marquage.get(i));
+            }
+        } else {
+            System.out.println("La taille du marquage est différente de la taille du vecteur de places.");
+        }
+    }
+
+    public List<Transition> getTransitionFranchissables(){
+        List<Transition> transitionsFranchissables = new ArrayList<>();
+
+        for(Transition t : transitionVector) {
+            if(t.estFranchissable()){
+                transitionsFranchissables.add(t);
+            }
+        }
+
+        return transitionsFranchissables;
+    }
+
+    public List<Transition> getTransitionFranchissables(Vector<Integer> marquage){
+        List<Transition> transitionsFranchissables = new ArrayList<>();
+        Model temp = new Model(this);
+        temp.setMarquage(marquage);
+
+        for(Transition t : transitionVector){
+            if(t.estFranchissable()){
+                transitionsFranchissables.add(t);
+            }
+        }
+        temp.setMarquage(this.M0);
+        return transitionsFranchissables;
+    }
 }

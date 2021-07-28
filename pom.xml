@@ -7,7 +7,6 @@
     <groupId>vykio</groupId>
     <artifactId>java-rdp</artifactId>
     <version>${shownVersion</version>
-
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -205,5 +204,4 @@
             <version>4.1.0</version>
         </dependency>
     </dependencies>
-    
 </project>

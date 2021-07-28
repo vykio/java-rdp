@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Cette classe permet de créer l'objet Transition.
@@ -60,6 +61,8 @@ public class Transition implements Serializable {
      * @param y : coordonnée y de la transition.
      */
     public Transition(String name, double x, double y) { this(name, x, y, new ArrayList<>(), new ArrayList<>(),"",0); }
+
+    public Transition(String name, double x, double y, String label, int position) { this(name, x, y, new ArrayList<>(), new ArrayList<>(),label,position); }
 
     /**
      * Constructeur d'une transition en (0,0)
@@ -151,6 +154,8 @@ public class Transition implements Serializable {
      */
     public void addLabel(String label) { this.label = label; }
 
+    public String getLabel() {return label;}
+
     /**
      * Méthode qui permet de retirer le label de la transition.
      */
@@ -162,10 +167,34 @@ public class Transition implements Serializable {
      */
     public void addPosition(int convert) { this.position = convert; }
 
+    public int getPosition(){return position;}
+
     /**
      * Méthode qui permet de remettre la position du label à 1
      */
     public void resetPosition() { this.position = 1; }
+
+    public boolean estFranchissable(){
+        List<Integer> marques = new ArrayList<>();
+        if(this.getParents() == null || this.getParents().isEmpty()){
+            return false;
+        }
+
+        for(Arc parent : this.getParents()){
+            // Si on a suffisamment de marques dans la place en prenant en compte le poids de l'arc parent .
+            if(parent.getPlace().getMarquage() - parent.getPoids() < 0){
+                return false;
+            }
+        }
+
+        for(Arc child : this.getChildren()){
+            // Si il y a suffisamment de capacité dans la place pour recevoir les marques correspondant au poids de l'arc sans dépasser la limite.
+            if(child.getPlace().getCapacite()-(child.getPlace().getMarquage() + child.getPoids()) < 0){
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * Méthode qui permet d'afficher les caractéristiques de la transition.
@@ -208,13 +237,6 @@ public class Transition implements Serializable {
      * @param g : Graphics.
      */
     public void draw(Graphics g) {
-        for (Arc a : this.parents) {
-            a.draw(g);
-        }
-
-        for (Arc a : this.children) {
-            a.draw(g);
-        }
 
         /* Afficher le carré de transition au dessus de l'arc */
         Graphics2D g2 = (Graphics2D) g;
@@ -264,6 +286,18 @@ public class Transition implements Serializable {
                     break;
             }
             g.setColor(tempColor);
+        }
+    }
+
+    public void drawParents(Graphics g){
+        for (Arc a : this.parents) {
+            a.draw(g);
+        }
+    }
+
+    public void drawChildren(Graphics g){
+        for (Arc a : this.children) {
+            a.draw(g);
         }
     }
 
