@@ -4,7 +4,6 @@ import com.tech.app.functions.FUtils;
 import com.tech.app.models.Model;
 import com.tech.app.windows.GCWindow;
 import com.tech.app.models.ModelProperties;
-import com.tech.app.windows.GMAWindow;
 import com.tech.app.windows.StepperWindow;
 import com.tech.app.windows.handlers.SaveManager;
 import com.tech.app.windows.panels.DrawPanel;

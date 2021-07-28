@@ -3,17 +3,14 @@ package com.tech.app.windows.toolbars;
 import com.tech.app.models.Model;
 import com.tech.app.models.stepper.Stepper;
 import com.tech.app.windows.handlers.StepperMouse;
-import com.tech.app.windows.panels.StepperHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 public class StepperToolbar extends Toolbar{
 
