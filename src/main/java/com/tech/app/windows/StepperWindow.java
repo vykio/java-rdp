@@ -15,10 +15,20 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * Classe qui permet de créer la fenêtre du stepper.
+ */
 public class StepperWindow extends Window{
 
     private final Model model;
 
+    /**
+     * Constructeur de la fenêtre du Stepper.
+     * @param width : largeur.
+     * @param height : hauteur.
+     * @param model : modèle actuel
+     * @throws UnsupportedLookAndFeelException : dans le cas où on ne peut pas récupérer le look du système de l'utilisateur.
+     */
     public StepperWindow (int width, int height, Model model) throws UnsupportedLookAndFeelException {
         super(true, "Simulation pas à pas - Java_RDP - " + FUtils.OS.getOs(), width, height, true, true);
         try {
@@ -71,6 +81,9 @@ public class StepperWindow extends Window{
 
     }
 
+    /**
+     * Méthode qui permet de construire le stepper dans la fenêtre.
+     */
     public void build() {
 
         Stepper stepper = new Stepper(model);
@@ -86,24 +99,6 @@ public class StepperWindow extends Window{
         stepperToolbar.applyToolbar();
 
         stepperHandler.applyPanel();
-        /*
-        try {
-            shiftPanelDown(stepperHandler);
-        } catch (AWTException e){
-            e.printStackTrace();
-        }
 
-
-
-         */
-        //stepperHandler.updateInitPositions();
-    }
-
-    private static void shiftPanelDown(StepperHandler stepperHandler) throws AWTException {
-        Robot robot = new Robot();
-        robot.mouseMove(stepperHandler.getWidth()/2, stepperHandler.getHeight()/2);
-        stepperHandler.updatePositions(stepperHandler.scaleX,stepperHandler.scaleY,(double) (stepperHandler.getWidth()/2)+1, (double)(stepperHandler.getHeight()/2)+1);
-        //robot.mouseMove((stepperHandler.getWidth()/2)+1,(stepperHandler.getHeight()/2)+1);
-        //robot.mouseRelease(MouseEvent.MOUSE_WHEEL);
     }
 }
