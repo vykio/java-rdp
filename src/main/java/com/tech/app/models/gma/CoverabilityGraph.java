@@ -1,23 +1,28 @@
 package com.tech.app.models.gma;
 
-import com.tech.app.App;
 import com.tech.app.models.Model;
-import com.tech.app.models.Transition;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * Cette classe nous permet de calculer l'arbre de couverture. Celui-ci est ensuite converti en graphe de couverture.
+ * Nous n'utilisons plus la classe ReachabilityGraph pour le GMA mais celle-ci. En effet, lorsqu'un RdP est borné, son graphe de couverture
+ * est le GMA.
+ */
 public class CoverabilityGraph {
 
-    private Model model;
+    private final Model model;
     Marquage M0;
     public List<Marquage> marquagesAccessibles;
     public List<Marquage> marquagesATraiter;
     public List<Node> liste_node;
     public int nb_marquages;
 
+    /**
+     * Constructeur
+     * @param model : modèle actuel, au moment du clic sur la fonction "Générer le GMA / Graphe de couverture".
+     */
     public CoverabilityGraph(Model model) {
         this.model = model;
         this.M0 = new Marquage(model.getM0());
@@ -26,15 +31,10 @@ public class CoverabilityGraph {
         this.liste_node = new ArrayList<>();
     }
 
-    // sera utilisé dans le GMA pour prendre le relai en cas de rdp non borné
-    public CoverabilityGraph(Model model, Vector<Integer> M0, List<Vector<Integer>> marquagesAccessibles, List<Vector<Integer>> marquagesATraiter, List<Node> liste_node) {
-        this.model = model;
-        this.M0 = new Marquage(model.getM0());
-        this.marquagesAccessibles = new ArrayList<>();
-        this.marquagesATraiter = new ArrayList<>();
-        this.liste_node = new ArrayList<>();
-    }
-
+    /**
+     * Méthode qui nous permet de récupérer la liste des noeuds
+     * @return List de Node
+     */
     public List<Node> getListe_node() {
         return liste_node;
     }
@@ -65,6 +65,12 @@ public class CoverabilityGraph {
         return m_temp;
     }
 
+    /**
+     * Méthode qui nous permet de faire une soustraction entre deux vecteurs. Utilisé pour le test de couverture.
+     * @param v : vecteur
+     * @param u : vecteur
+     * @return le vecteur de différence.
+     */
     private Marquage subVector(Marquage v, Marquage u) {
         Vector<Integer> v_temp = new Vector<>();
         Marquage m_temp = new Marquage(v_temp);
@@ -80,13 +86,13 @@ public class CoverabilityGraph {
     }
 
     /**
-     * Cette méthode est utilisée dans l'algorithme de création du GMA. Elle permet de vérifier si le marquage du noeud actuel
-     * couvre une colonne de la matrice W_moins ou Pré. On va tester si le marquage du noeud est inférieur à la colonne t de la matrice pré.
+     * Cette méthode permet de vérifier si le marquage du noeud actuel couvre une colonne de la matrice W_moins ou Pré.
+     * On va tester si le marquage du noeud est inférieur à la colonne t de la matrice pré.
      *
      * @param m   : marquage du noeud.
      * @param pre : matrice Pre du modèle.
      * @param t   : indice de la transition.
-     * @return Vrai ou Faux
+     * @return Vrai ou Faux.
      */
     private boolean couvre(Marquage m, Vector<Vector<Integer>> pre, int t) {
 
@@ -99,6 +105,15 @@ public class CoverabilityGraph {
         return true;
     }
 
+    /**
+     * Cette méthode permet de determiner si le marquage M1 couvre le marquage M.
+     * Si M1 = M -> M1 ne couvre pas M.
+     * Si la différence entre M1 et M contient au moins un élément négatif et aucun positif (>0) -> M1 couvre M.
+     *
+     * @param M : marquage actuel.
+     * @param M1 : marquage suivant.
+     * @return Vrai ou Faux.
+     */
     public boolean couverture(Marquage M, Marquage M1) {
 
         if (M.getMarquage().equals(M1.getMarquage())) {
@@ -116,12 +131,22 @@ public class CoverabilityGraph {
         return (a & b);
     }
 
-    public boolean containsMarquage(final List<Marquage> m, final Vector<Integer> marquage) {
-        return m.stream().anyMatch(a -> a.getMarquage().equals(marquage));
+    /**
+     * Méthode qui permet de savoir si un marquage donné est dans la liste de marquages donné.
+     * @param marquageList : liste de marquages.
+     * @param marquage : marquage.
+     * @return Vrai ou Faux.
+     */
+    public boolean containsMarquage(final List<Marquage> marquageList, final Vector<Integer> marquage) {
+        return marquageList.stream().anyMatch(a -> a.getMarquage().equals(marquage));
     }
 
+    /**
+     * Méthode essentiel pour le calcul du graphe de couverture. Elle permet d'ajouter les omegas lorsque M1 couvre M.
+     * @param m : marquage
+     * @param m1 : marquage
+     */
     public void tryToAddOmegas(final Marquage m, final Marquage m1) {
-
         for (int i = 0; i < m.getMarquage().size(); i++) {
             if (m1.getMarquage().get(i) > m.getMarquage().get(i)) {
                 m1.getMarquage().set(i, Integer.MAX_VALUE);
@@ -129,6 +154,9 @@ public class CoverabilityGraph {
         }
     }
 
+    /**
+     * Méthode qui permet de calculer le GMA / graphe de couverture.
+     */
     public void calculateCoverabilityGraph() {
         /* On ajoute le marquage initial aux deux listes */
         marquagesAccessibles.add(M0);
