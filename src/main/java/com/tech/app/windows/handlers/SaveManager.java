@@ -99,8 +99,13 @@ public class SaveManager {
         }
     }
 
-
-public static Place findPlaceByName(List<Place> placeVector, String name){
+    /**
+     * Méthode qui permet de recupérer une place en la recherchant par son nom.
+     * @param placeVector : vecteur de place.
+     * @param name : nom de la place à trouver.
+     * @return place
+     */
+    public static Place findPlaceByName(List<Place> placeVector, String name){
         //permet de recupérer une place de la liste de place du model par son attribut nom
         return placeVector.stream().filter(place -> name.equals(place.getName())).findFirst().orElse(null);
 }
