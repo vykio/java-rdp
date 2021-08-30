@@ -116,8 +116,8 @@ public class Model implements Serializable {
     }
 
     /**
-     * Ajouter une place, et mettre à jour les matrices
-     * @param p : Place à ajouter
+     * Ajouter une place, et mettre à jour les matrices.
+     * @param p : Place à ajouter.
      */
     public void addPlace(Place p) {
         this.placeVector.add(p);
@@ -126,8 +126,8 @@ public class Model implements Serializable {
     }
 
     /**
-     * Ajouter une transition, puis mettre à jour les matrices
-     * @param t : Transition à ajouter
+     * Ajouter une transition, puis mettre à jour les matrices.
+     * @param t : Transition à ajouter.
      */
     public void addTransition(Transition t) {
         this.transitionVector.add(t);
@@ -135,6 +135,10 @@ public class Model implements Serializable {
         this.updateMatrices();
     }
 
+    /**
+     * Ajouter un arc.
+     * @param a : arc à ajouter.
+     */
     public void addArc(Arc a){
         this.arcVector.add(a);
         this.nbArc++;
@@ -174,6 +178,10 @@ public class Model implements Serializable {
         this.updateMatrices();
     }
 
+    /**
+     * Méthode qui permet de supprimer un arc.
+     * @param a : arc à supprimer.
+     */
     public void removeArc(Arc a){
         try {
             for (Transition t : transitionVector) {             
@@ -197,6 +205,10 @@ public class Model implements Serializable {
         this.updateMatrices();
     }
 
+    /**
+     * Méthode qui permet de supprimer une liste d'arcs. Utile lors de la suppression d'une place ou d'une transition.
+     * @param arcToDelete liste des arcs à supprimer.
+     */
     public void removeArcs(List<Arc> arcToDelete){
         //try{*/
             for(int i = arcToDelete.size() - 1; i >= 0;){
@@ -481,6 +493,10 @@ public class Model implements Serializable {
      */
     public Vector<Vector<Integer>> getC() { return C; }
 
+    /**
+     * Méthode qui permet de récupérer le marquage actuel du model.
+     * @return vecteur de marquage.
+     */
     public Vector<Integer> getMarquage(){
         Vector<Integer> marquage = new Vector<>();
         for(Place p : placeVector){
@@ -489,6 +505,10 @@ public class Model implements Serializable {
         return marquage;
     }
 
+    /**
+     * Méthode qui permet de donner un certain marquage au modèle.
+     * @param marquage vecteur de marquage.
+     */
     public void setMarquage(Vector<Integer> marquage){
         if(marquage.size() == placeVector.size()) {
             for (int i = 0; i < placeVector.size(); i++){
@@ -499,6 +519,10 @@ public class Model implements Serializable {
         }
     }
 
+    /**
+     * Méthode qui permet de récupérer la liste des transitions franchissables pour le marquage actuel du modèle.
+     * @return liste des transitions franchissables.
+     */
     public List<Transition> getTransitionFranchissables(){
         List<Transition> transitionsFranchissables = new ArrayList<>();
 
@@ -511,6 +535,11 @@ public class Model implements Serializable {
         return transitionsFranchissables;
     }
 
+    /**
+     * Méthode qui permet de récupérer la liste des transitions franchissables pour le marquage donné en paramètre.
+     * @param marquage vecteur de marquage.
+     * @return liste des transitions franchissables.
+     */
     public List<Transition> getTransitionFranchissables(Vector<Integer> marquage){
         List<Transition> transitionsFranchissables = new ArrayList<>();
         Model temp = new Model(this);

@@ -54,8 +54,16 @@ public class Arc implements Serializable {
      */
     public Place getPlace() { return this.place; }
 
+    /**
+     * Méthode qui permet de récupérer la transition liée à l'arc.
+     * @return transition
+     */
     public Transition getTransition() { return transition; }
 
+    /**
+     * Méthode qui permet de savoir si un arc est dans le sens place -> transition.
+     * @return Vrai ou Faux.
+     */
     public boolean isPlaceToTransition() { return placeToTransition; }
 
     /**
@@ -166,6 +174,7 @@ public class Arc implements Serializable {
         }
         arrowHead.closePath();
 
+        // faire bouger la tete de la fleche en fonction de l'angle entre la line1 et line 2.
         AffineTransform rotate = new AffineTransform(AffineTransform.getRotateInstance(Math.toRadians(angleBetween2Lines(line1,line2)),line2.getX2(), line2.getY2()));
         arrowHead.transform(rotate);
 
@@ -184,6 +193,12 @@ public class Arc implements Serializable {
         }
     }
 
+    /**
+     * Méthode qui permet de calculer l'angle entre deux droites.
+     * @param line1 ligne droite entre le centre de la place et le centre de la transition.
+     * @param line2 ligne droite entre le centre de l'objet pointé et le point de controle de la courbe (arc).
+     * @return
+     */
     public static double angleBetween2Lines(Line2D.Double line1, Line2D.Double line2)
     {
         double angle1 = Math.atan2(line1.getY1() - line1.getY2(), line1.getX1() - line1.getX2());
@@ -222,6 +237,11 @@ public class Arc implements Serializable {
 
     }
 
+    /**
+     * Méthode qui permet de créer une hitbox qui suit la courbure de l'arc.
+     * @param len distance entre la place et la transition.
+     * @return hitbox
+     */
     public Path2D.Double arcHitbox(double len){
         int ecart = 7;
         Path2D.Double hitbox = new Path2D.Double();
@@ -282,8 +302,16 @@ public class Arc implements Serializable {
         return pointCtr1;
     }
 
+    /**
+     * Méthode qui permet de récupérer la transformée affine de l'arc.
+     * @return transformée affine.
+     */
     public AffineTransform getAt() { return at; }
 
+    /**
+     * Méthode qui permet de récupérer la transformée affin inverse de l'arc.
+     * @return transformée affine inverse.
+     */
     public AffineTransform getReverseAt() {
         try{
             return at.createInverse();
