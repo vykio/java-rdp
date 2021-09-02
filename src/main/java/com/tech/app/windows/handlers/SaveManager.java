@@ -34,7 +34,6 @@ public class SaveManager {
         }
 
         try {
-
             FileWriter out = new FileWriter(f);
 
             //Ecriture des places
@@ -66,11 +65,7 @@ public class SaveManager {
                     //ecriture des enfants
                     for(int j=0; j<model.transitionVector.get(i).getChildren().size(); j++){
                         Arc child = model.transitionVector.get(i).getChildren().get(j);
-                        //Point2D.Double pt = new Point2D.Double();
-                        //child.reverse.transform(new Point2D.Double(child.getPointCtr1().getX(),child.getPointCtr1().getY()), pt);
-                        //out.write("a "+child.getPlace().getName()+" "+ child.getPoids()+" "+ (int) pt.getX()+" " + (int) pt.getY()+" ");
                         out.write("a "+child.getPlace().getName()+" "+ child.getPoids()+" "+ (int) child.getPointCtr1().getX()+" " + (int) child.getPointCtr1().getY()+" ");
-
                     }
                 }
 
@@ -80,16 +75,11 @@ public class SaveManager {
                     //ecriture des parents
                     for(int j=0; j<model.transitionVector.get(i).getParents().size(); j++){
                         Arc parent = model.transitionVector.get(i).getParents().get(j);
-                        //Point2D.Double pt = new Point2D.Double();
-                        //parent.reverse.transform(new Point2D.Double(parent.getPointCtr1().getX(),parent.getPointCtr1().getY()), pt);
-                        //out.write("a "+parent.getPlace().getName()+" "+ parent.getPoids()+" " + (int) pt.getX()+" " + (int) pt.getY()+" ");
                         out.write("a "+parent.getPlace().getName()+" "+ parent.getPoids()+" " + (int) parent.getPointCtr1().getX()+" " + (int) parent.getPointCtr1().getY()+" ");
-
                     }
                 }
                 out.write("\n");
             }
-
             out.close();
             return true;
 
@@ -101,14 +91,14 @@ public class SaveManager {
 
     /**
      * Méthode qui permet de recupérer une place en la recherchant par son nom.
-     * @param placeVector : vecteur de place.
+     * @param placeVector : liste de places.
      * @param name : nom de la place à trouver.
      * @return place
      */
     public static Place findPlaceByName(List<Place> placeVector, String name){
         //permet de recupérer une place de la liste de place du model par son attribut nom
         return placeVector.stream().filter(place -> name.equals(place.getName())).findFirst().orElse(null);
-}
+    }
 
 
     /**
@@ -179,7 +169,7 @@ public class SaveManager {
 
                             boolean actionPerformed = false;
 
-                            // Si on a déjà ajouter un arc enfant et que l'indice j du tableau de mot vaut "a" -> jamais vrai au premier tour.
+                            // Si on a déjà ajouté un arc enfant et que l'indice j du tableau de mot vaut "a" -> jamais vrai au premier tour.
                             if(childrenSection && words[j].equals("a")){
                                 Place p = findPlaceByName(mo.placeVector, words[j+1]);
                                 Arc a = new Arc(p,Integer.parseInt(words[j+2]),t.getX(), t.getY(), false, t);
@@ -190,7 +180,7 @@ public class SaveManager {
                                 j=j+5;
                             }
 
-                            // Si on n'a pas déjà ajouter un arc dans cette itération, que l'on a déjà ajouté un premier parent et que l'indice j du tableau de mot vaut "a"
+                            // Si on n'a pas déjà ajouté un arc dans cette itération, que l'on a déjà ajouté un premier parent et que l'indice j du tableau de mot vaut "a"
                             if(!actionPerformed && parentSection && words[j].equals("a")){
                                 Place p = findPlaceByName(mo.placeVector, words[j+1]);
                                 Arc a = new Arc(p,Integer.parseInt(words[j+2]),t.getX(), t.getY(), true, t);
@@ -201,7 +191,7 @@ public class SaveManager {
                                 j=j+5;
                             }
 
-                            // Si on n'a pas déjà ajouter un arc dans cette itération, que l'indice j du tableau de mot vaut "c"
+                            // Si on n'a pas déjà ajouté un arc dans cette itération, que l'indice j du tableau de mot vaut "c"
                             if(!actionPerformed && words[j].equals("c")){
                                 childrenSection = true;
                                 parentSection = false;
@@ -214,7 +204,7 @@ public class SaveManager {
                                 j=j+6;
                             }
 
-                            // Si on n'a pas déjà ajouter un arc dans cette itération, l'indice j du tableau de mot vaut "p"
+                            // Si on n'a pas déjà ajouté un arc dans cette itération, l'indice j du tableau de mot vaut "p"
                             if(!actionPerformed && words[j].equals("p") ){
                                 childrenSection = false;
                                 parentSection = true;
