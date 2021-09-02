@@ -532,7 +532,7 @@ public class DrawPanel extends JPanel {
                 int newMarquage = Integer.parseInt(inputMarquage.getText());
                 int newCapacite;
 
-                if(Integer.parseInt(inputMarquage.getText()) > 0){
+                if(Integer.parseInt(inputMarquage.getText()) > 0 && Integer.parseInt(inputMarquage.getText()) <= Integer.parseInt(inputCapacite.getText())){
                     ((Place)obj).setMarquage(newMarquage);
                 }
 
