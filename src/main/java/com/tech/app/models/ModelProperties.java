@@ -256,7 +256,6 @@ public class ModelProperties {
                 "<li>Bornitude : </li> " + this.getModelBornitude() +
                 "<li>Vivacité : </li>" + this.getModelVivacite() +
                 "<li>Réinitialisable : </li>" + this.getModelReinitialisable() +
-                //"<li>Répétitivité : </li>" + this.getModelRepetitivite() +
                "<li>Blocage : </li>" + this.getModelBlocage() +
                 "</ul>" +
                 "<br>" +

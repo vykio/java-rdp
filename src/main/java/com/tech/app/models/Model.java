@@ -186,20 +186,15 @@ public class Model implements Serializable {
         try {
             for (Transition t : transitionVector) {             
                 if(t.getChildren().contains(a)) {
-                    System.out.println(t.getChildren());
                     t.removeChildren(a);
                 }
-
                 if(t.getParents().contains(a)) {
-                    System.out.println(t.getParents());
                     t.removeParent(a);
                 }
-
             }
         } catch (ConcurrentModificationException e){
             e.printStackTrace();
         }
-
         this.arcVector.remove(a);
         this.nbArc--;
         this.updateMatrices();
@@ -210,7 +205,6 @@ public class Model implements Serializable {
      * @param arcToDelete liste des arcs à supprimer.
      */
     public void removeArcs(List<Arc> arcToDelete){
-        //try{*/
             for(int i = arcToDelete.size() - 1; i >= 0;){
                 for(int j = transitionVector.size() - 1; j >= 0;){
 
@@ -218,9 +212,7 @@ public class Model implements Serializable {
                         transitionVector.get(j).removeChildren(arcToDelete.get(i));
                         arcVector.remove(arcToDelete.get(i));
                         nbArc--;
-
                     }
-
                     if(!transitionVector.get(j).getParents().isEmpty() && transitionVector.get(j).getParents().contains(arcToDelete.get(i))){
                         transitionVector.get(j).removeParent(arcToDelete.get(i));
                         arcVector.remove(arcToDelete.get(i));
@@ -231,11 +223,7 @@ public class Model implements Serializable {
                 arcToDelete.remove(i);
                 i--;
             }
-     
-        System.out.println(this);
         this.updateMatrices();
-        System.out.println("apres :");
-        System.out.println(this);
     }
 
     /**

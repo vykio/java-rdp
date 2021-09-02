@@ -81,6 +81,7 @@ public class DrawPanel extends JPanel {
         this.frame = frame;
         this.model = model;
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
+
         this.getInputMap(IFW).put(KeyStroke.getKeyStroke("DELETE"), DELETE);
         this.getActionMap().put(DELETE, new AbstractAction() {
             @Override
@@ -457,17 +458,13 @@ public class DrawPanel extends JPanel {
                 }
                 this.model.removeArcs(arcToDelete);
                 this.model.removePlace((Place) selectedObject);
-                selectedObject = null;
-                repaint();
             }
             if (selectedObject instanceof Transition){
                 this.model.removeTransition((Transition) selectedObject);
             }
-
             if(selectedObject instanceof Arc){
-                this.model.removeArc(((Arc) selectedObject));
+                this.model.removeArc((Arc) selectedObject);
             }
-
             selectedObject = null;
             repaint();
         }
@@ -530,11 +527,7 @@ public class DrawPanel extends JPanel {
                 JOptionPane.showMessageDialog(frame, panel, "Attributs de la place " + ((Place) obj).getName(), JOptionPane.QUESTION_MESSAGE);
 
                 int newMarquage = Integer.parseInt(inputMarquage.getText());
-                int newCapacite;
-
-                if(Integer.parseInt(inputMarquage.getText()) > 0 && Integer.parseInt(inputMarquage.getText()) <= Integer.parseInt(inputCapacite.getText())){
-                    ((Place)obj).setMarquage(newMarquage);
-                }
+                int newCapacite = 0;
 
                 if(inputCapacite.getText().equals("+inf")){
                     newCapacite = Integer.MAX_VALUE;
@@ -542,7 +535,16 @@ public class DrawPanel extends JPanel {
                 } else if(Integer.parseInt(inputCapacite.getText()) > 0) {
                     newCapacite = Integer.parseInt(inputCapacite.getText());
                     ((Place)obj).setCapacite(newCapacite);
+                    if(((Place)obj).getMarquage() > newCapacite){
+                        ((Place)obj).setMarquage(newCapacite);
+                    }
                 }
+
+                if(Integer.parseInt(inputMarquage.getText()) > 0 && Integer.parseInt(inputMarquage.getText()) <= newCapacite){
+                    ((Place)obj).setMarquage(newMarquage);
+                }
+
+
 
 
             } catch (Exception e){
