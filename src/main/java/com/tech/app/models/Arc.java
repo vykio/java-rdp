@@ -197,7 +197,7 @@ public class Arc implements Serializable {
      * Méthode qui permet de calculer l'angle entre deux droites.
      * @param line1 ligne droite entre le centre de la place et le centre de la transition.
      * @param line2 ligne droite entre le centre de l'objet pointé et le point de controle de la courbe (arc).
-     * @return
+     * @return angle en degré
      */
     public static double angleBetween2Lines(Line2D.Double line1, Line2D.Double line2)
     {
