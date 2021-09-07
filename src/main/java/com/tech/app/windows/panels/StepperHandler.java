@@ -11,6 +11,9 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.List;
 
+/**
+ * Classe qui gère l'affichage du Stepper.
+ */
 public class StepperHandler extends JPanel {
 
     private final JFrame frame;
@@ -30,7 +33,11 @@ public class StepperHandler extends JPanel {
 
     public final Stepper stepper;
 
-
+    /**
+     * Constructeur.
+     * @param frame : frame.
+     * @param stepper : stepper.
+     */
     public StepperHandler(JFrame frame, Stepper stepper){
         this.scaleFactor = FUtils.Screen.getScaleFactor();
         this.scaleX = scaleFactor;
@@ -43,10 +50,11 @@ public class StepperHandler extends JPanel {
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
 
         //System.out.println("stepper from handler hash : "+stepper.hashCode());
-
-
     }
 
+    /**
+     * Rendre la zone de dessin visible dans la fenêtre
+     */
     public void applyPanel() {
         this.frame.add(this);
         this.frame.setVisible(true);
@@ -63,6 +71,10 @@ public class StepperHandler extends JPanel {
         }
     }
 
+    /**
+     * Afficher tous les objets dans la zone de dessin.
+     * @param g : Graphics.
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // clear
 
@@ -115,6 +127,18 @@ public class StepperHandler extends JPanel {
 
     }
 
+    /**
+     * Méthode qui déplace tous les objets du panel de dessin, appelée
+     * lors de l'appui clic-molette. Elle met à jour les positions de
+     * tous les objets en fonction du facteur d'agrandissement (lié au
+     * zoom et au facteur d'agrandissement de l'OS) ainsi que du
+     * déplacement (dx, dy). Nous utilisons (dx,dy) car cette fonction est
+     * appelée à chaque tick.
+     * @param scaleX Facteur d'agrandissement sur X
+     * @param scaleY Facteur d'agrandissement sur Y
+     * @param dx Plus petit déplacement sur X
+     * @param dy Plus petit déplacement sur Y
+     */
     public void updatePositions(double scaleX, double scaleY, double dx, double dy) {
         for (Place p : model.placeVector) {
             p.updatePosition(p.getX() + dx * 1 / scaleX, p.getY() + dy * 1 / scaleY);
@@ -132,6 +156,12 @@ public class StepperHandler extends JPanel {
         arcDestY += dy / scaleY*scaleFactor;
     }
 
+    /**
+     * Retourne l'objet sur lequel on a cliqué
+     * @param x Coordonnée X du click
+     * @param y Coordonnée Y du click
+     * @return Objet
+     */
     public Object getSelectedObject(double x, double y){
         List<Transition> transitionFranchissable = model.getTransitionFranchissables();
         for(Transition t : transitionFranchissable){
@@ -142,6 +172,10 @@ public class StepperHandler extends JPanel {
         return null;
     }
 
+    /**
+     * Méthode qui permet d'afficher les 20 dernières transitions franchies.
+     * @param g : Graphics.
+     */
     private void drawSequence(Graphics g){
         g.setFont(new Font("Console", Font.PLAIN, (int)(15/scaleX*scaleFactor)));
         //g.drawString("Séquence : {"+stepper.getSequenceMarquageTransition(stepper.getSequenceTransition(),stepper.getMarquagesPasse()),(int)(10/scaleX*scaleFactor), (int)((this.frame.getContentPane().getSize().getHeight()-90)*scaleFactor/scaleY));

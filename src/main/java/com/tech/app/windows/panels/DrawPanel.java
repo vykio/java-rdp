@@ -81,6 +81,7 @@ public class DrawPanel extends JPanel {
         this.frame = frame;
         this.model = model;
         this.transform  = AffineTransform.getScaleInstance(scaleX, scaleY);
+
         this.getInputMap(IFW).put(KeyStroke.getKeyStroke("DELETE"), DELETE);
         this.getActionMap().put(DELETE, new AbstractAction() {
             @Override
@@ -277,14 +278,22 @@ public class DrawPanel extends JPanel {
         repaint();
     }
 
-    private Transition findTransition(List<Transition> transitions, Object selectedObject){
-        return transitions.stream().filter(t -> t.equals(selectedObject)).findFirst().orElse(null);
-    }
-
+    /**
+     * Méthode qui permet de vérifier si l'arc qui l'utilisateur tente de créer existe déjà.
+     * @param arcs liste des arcs.
+     * @param arc arc à tester.
+     * @return Vrai ou Faux.
+     */
     private boolean arcAlreadyExist(List<Arc> arcs, Arc arc){
         return arcs.stream().anyMatch(a -> a.getPlace().equals(arc.getPlace()) && a.getTransition().equals(arc.getTransition()) && a.isPlaceToTransition() == arc.isPlaceToTransition());
     }
 
+    /**
+     * Méthode qui permet de récupérer un arc existant dans la liste d'arcs.
+     * @param arcs liste des arcs.
+     * @param arc arc existant.
+     * @return arc
+     */
     private Arc getAlreadyExistingArc(List<Arc> arcs, Arc arc){
         // Si un arc du vecteur a le meme sens, la meme transition et la meme place, on le retourne.
         return arcs.stream().filter(a -> a.getPlace().equals(arc.getPlace()) && a.getTransition().equals(arc.getTransition()) && a.isPlaceToTransition() == arc.isPlaceToTransition()).findFirst().orElse(null);
@@ -311,8 +320,10 @@ public class DrawPanel extends JPanel {
                 this.clickError = false;
                 if (obj1 instanceof Transition) {
                     Arc arc = new Arc((Place) obj2, 1, ((Transition) obj1).getX(), ((Transition) obj1).getY(), false, (Transition)obj1);
+                    // SI l'arc existe déjà
                     if(arcAlreadyExist(model.arcVector, arc)){
                         Arc alreadyExistingArc = getAlreadyExistingArc(model.arcVector, arc);
+                        // on ne crée pas un nouvel arc mais on ajoute simplement 1 au poids de l'arc existant.
                         alreadyExistingArc.setPoids(alreadyExistingArc.getPoids() + arc.getPoids());
                     } else {
                         ((Transition) obj1).addChildren(arc);
@@ -321,8 +332,10 @@ public class DrawPanel extends JPanel {
                     }
                 } else {
                     Arc b = new Arc((Place) obj1, 1, ((Transition) obj2).getX(), ((Transition) obj2).getY(), true, (Transition)obj2);
+                    // SI l'arc existe déjà
                     if(arcAlreadyExist(model.arcVector, b)){
                         Arc alreadyExistingArc = getAlreadyExistingArc(model.arcVector, b);
+                        // on ne crée pas un nouvel arc mais on ajoute simplement 1 au poids de l'arc existant.
                         alreadyExistingArc.setPoids(alreadyExistingArc.getPoids() + b.getPoids());
                     }else {
                         ((Transition) obj2).addParent(b);
@@ -431,7 +444,7 @@ public class DrawPanel extends JPanel {
     }
 
     /**
-     * Non utilisé: Supprimer l'objet sélectionné
+     * Méthode qui permet de supprimer l'objet sélectionné.
      */
     public void deleteSelectedObject() {
         if (selectedObject != null) {
@@ -445,17 +458,13 @@ public class DrawPanel extends JPanel {
                 }
                 this.model.removeArcs(arcToDelete);
                 this.model.removePlace((Place) selectedObject);
-                selectedObject = null;
-                repaint();
             }
             if (selectedObject instanceof Transition){
                 this.model.removeTransition((Transition) selectedObject);
             }
-
             if(selectedObject instanceof Arc){
-                this.model.removeArc(((Arc) selectedObject));
+                this.model.removeArc((Arc) selectedObject);
             }
-
             selectedObject = null;
             repaint();
         }
@@ -487,7 +496,7 @@ public class DrawPanel extends JPanel {
      * Permet à l'utilisateur de définir le marquage d'une place
      * ainsi que l'orientation d'une transition via l'affichage
      * d'une boite de dialogue.
-     * @param obj Transition ou Place
+     * @param obj Transition, Place ou Arc.
      */
     public void showOptions(Object obj) {
         if (obj instanceof Place) {
@@ -518,11 +527,7 @@ public class DrawPanel extends JPanel {
                 JOptionPane.showMessageDialog(frame, panel, "Attributs de la place " + ((Place) obj).getName(), JOptionPane.QUESTION_MESSAGE);
 
                 int newMarquage = Integer.parseInt(inputMarquage.getText());
-                int newCapacite;
-
-                if(Integer.parseInt(inputMarquage.getText()) > 0){
-                    ((Place)obj).setMarquage(newMarquage);
-                }
+                int newCapacite = 0;
 
                 if(inputCapacite.getText().equals("+inf")){
                     newCapacite = Integer.MAX_VALUE;
@@ -530,7 +535,16 @@ public class DrawPanel extends JPanel {
                 } else if(Integer.parseInt(inputCapacite.getText()) > 0) {
                     newCapacite = Integer.parseInt(inputCapacite.getText());
                     ((Place)obj).setCapacite(newCapacite);
+                    if(((Place)obj).getMarquage() > newCapacite){
+                        ((Place)obj).setMarquage(newCapacite);
+                    }
                 }
+
+                if(Integer.parseInt(inputMarquage.getText()) > 0 && Integer.parseInt(inputMarquage.getText()) <= newCapacite){
+                    ((Place)obj).setMarquage(newMarquage);
+                }
+
+
 
 
             } catch (Exception e){

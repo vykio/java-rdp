@@ -13,6 +13,9 @@ import org.jgrapht.graph.DefaultListenableGraph;
 import javax.swing.*;
 import java.util.List;
 
+/**
+ * Classe qui gère l'affichage du Graphe de couverture.
+ */
 public class GChandler {
 
     private final JFrame frame;
@@ -21,8 +24,8 @@ public class GChandler {
     private final List<Node> liste_nodes;
 
     /**
-     * Constructeur du GMAhandler, qui nous permet
-     * d'afficher le GMA dans la fenêtre dans laquelle
+     * Constructeur du GChandler, qui nous permet
+     * d'afficher le GMA/Graphe de couverture dans la fenêtre dans laquelle
      * il est appelé
      * @param frame Fenêtre d'appel
      * @param liste_nodes Liste des noeuds du GMA
@@ -35,7 +38,7 @@ public class GChandler {
     }
 
     /**
-     * Visualiser le GMA
+     * Visualiser le GMA/ Graphe de couverture
      */
     public void init() {
         // create a visualization using JGraph, via an adapter
@@ -57,34 +60,5 @@ public class GChandler {
 
         var layout = new mxHierarchicalLayout(jgxAdapter, SwingConstants.WEST);
         layout.execute(jgxAdapter.getDefaultParent());
-
-
-    /*
-    // pour affichage circulaire
-    mxCircleLayout layout2 = new mxCircleLayout(jgxAdapter);
-
-    float edgeDistance = 10;
-    layout2.setUseBoundingBox(true);
-    layout2.setResizeParent(true);
-    layout2.setLevelDistance((int)(edgeDistance*1.5f));
-    layout2.setNodeDistance((int)(0.2f * edgeDistance*edgeDistance*2f));
-    layout2.setInvert(true);
-
-
-
-    // center the circle
-    int radius = 100;
-
-    layout.setX0((this.frame.getWidth() / 2.0) - radius);
-    layout.setY0((this.frame.getHeight() / 2.0) - radius);
-    layout.setRadius(radius);
-    layout.setMoveCircle(true);
-
-    layout.execute(jgxAdapter.getDefaultParent());
-    */
-
     }
-
-
-
 }

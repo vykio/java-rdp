@@ -3,6 +3,9 @@ package com.tech.app.windows.handlers;
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 
+/**
+ * Classe qui permet de gérer la fenêtre du stepper.
+ */
 public class StepperWindowHandler extends WindowHandler {
 
     public StepperWindowHandler(JFrame frame) {

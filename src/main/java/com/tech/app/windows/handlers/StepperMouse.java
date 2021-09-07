@@ -11,6 +11,9 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Classe qui permet de gérer les actions de la souris dans le fenêtre du Stepper.
+ */
 public class StepperMouse extends MouseAdapter {
 
     public StepperHandler stepperHandler;
@@ -27,6 +30,10 @@ public class StepperMouse extends MouseAdapter {
 
     private Object selectedObject = null;
 
+    /**
+     * Constructeur
+     * @param stepperHandler : gestionnaire du stepper.
+     */
     public StepperMouse(StepperHandler stepperHandler) {
         this.stepperHandler = stepperHandler;
         this.stepper = stepperHandler.stepper;

@@ -14,7 +14,7 @@ public final class FUtils {
         /**
          * @return Retourne la version du logiciel
          */
-        public static String getVersion() { return "2021.05-1"; }
+        public static String getVersion() { return "2021.09-1"; }
 
     }
 

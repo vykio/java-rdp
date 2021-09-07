@@ -29,7 +29,6 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 public class Menu extends MenuBar {
     /* Construction de l'interface graphique pour tester à part*/
     private Model model;
-    private ModelProperties modelProperties;
     private SaveManager saveManager;
     private DrawPanel dp;
 
@@ -252,6 +251,10 @@ public class Menu extends MenuBar {
         return toolbar;
     }
 
+    /**
+     * Méthode qui permet d'ouvrir la fenêtre du graphe de couverture.
+     * @param actionEvent event.
+     */
     private void openGCWindow(ActionEvent actionEvent) {
         EventQueue.invokeLater(
                 () -> {
@@ -264,6 +267,10 @@ public class Menu extends MenuBar {
         );
     }
 
+    /**
+     * Méthode qui permet d'ouvrir la fenêtre du Stepper.
+     * @param actionEvent event.
+     */
     private void openStepperWindow(ActionEvent actionEvent){
         EventQueue.invokeLater(
                 () -> {
@@ -276,8 +283,6 @@ public class Menu extends MenuBar {
                 }
         );
     }
-
-    // Test d'une fenêtre pop-up après une action (ici lors de la création d'un nouveau fichier)
 
     /**
      * Non utilisé : Nouveau fichier
@@ -381,10 +386,13 @@ public class Menu extends MenuBar {
         JOptionPane.showMessageDialog(null, message, "A Propos de JRDP", JOptionPane.QUESTION_MESSAGE);
     }
 
-
+    /**
+     * Méthode qui permet d'ouvrir la fenêtre des propriétés.
+     * @param event event.
+     */
     public void openPropsPopup(ActionEvent event){
 
-        modelProperties = new ModelProperties(model);
+        ModelProperties modelProperties = new ModelProperties(model);
 
         String message = modelProperties.toString();
 

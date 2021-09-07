@@ -12,17 +12,29 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Objects;
 
+/**
+ * Classe pour créer la barre d'outil du Stepper.
+ */
 public class StepperToolbar extends Toolbar{
 
     public Model model;
     public Stepper stepper;
 
+    /**
+     * Constructeur
+     * @param frame : fenêtre d'appel.
+     * @param stepperMouse : gestionnaire de la souris.
+     */
     public StepperToolbar(JFrame frame, StepperMouse stepperMouse){
         super(frame);
         this.model = stepperMouse.model;
         this.stepper = stepperMouse.stepper;
     }
 
+    /**
+     * Retourne l'objet Toolbar avec nos paramètres.
+     * @return JToolbar
+     */
     @Override
     public JToolBar getToolbar() {
         JToolBar toolBar = new JToolBar();
@@ -197,6 +209,9 @@ public class StepperToolbar extends Toolbar{
         return toolBar;
     }
 
+    /**
+     * Rends la toolbar visible.
+     */
     @Override
     public void applyToolbar() {
         frame.getContentPane();
@@ -204,10 +219,18 @@ public class StepperToolbar extends Toolbar{
         this.frame.setVisible(true);
     }
 
+    /**
+     * Listener executé quand on clique sur le bouton Reset.
+     * @param event ActionEvent
+     */
     public void btnResetListener(ActionEvent event){
         stepper.reset();
     }
 
+    /**
+     * Listener executé quand on clique sur le bouton First.
+     * @param event ActionEvent
+     */
     public void btnOriginListener(ActionEvent event){
         if(!stepper.marquagesPasse.isEmpty()) {
             stepper.goToFirstMarquage();
@@ -215,6 +238,10 @@ public class StepperToolbar extends Toolbar{
         ((JButton) event.getSource()).setSelected(false);
     }
 
+    /**
+     * Listener executé quand on clique sur le bouton Précédent.
+     * @param event ActionEvent
+     */
     public void btnPreviousListener(ActionEvent event){
         if(!stepper.marquagesPasse.isEmpty()){
             stepper.goToPreviousMarquage();
@@ -222,12 +249,20 @@ public class StepperToolbar extends Toolbar{
         ((JButton) event.getSource()).setSelected(false);
     }
 
+    /**
+     * Listener executé quand on clique sur le bouton Suivant.
+     * @param event ActionEvent
+     */
     public void btnNextListener(ActionEvent event){
         stepper.goToNextMarquage();
         ((JButton) event.getSource()).setSelected(false);
 
     }
 
+    /**
+     * Listener executé quand on clique sur le bouton Dernier.
+     * @param event ActionEvent
+     */
     public void btnLastListener(ActionEvent event){
         if(!stepper.marquagesPasse.isEmpty()) {
             stepper.goToLastMarquage();
@@ -235,10 +270,18 @@ public class StepperToolbar extends Toolbar{
         ((JButton) event.getSource()).setSelected(false);
     }
 
+    /**
+     * Listener executé quand on clique sur le bouton Sequence.
+     * @param event ActionEvent
+     */
     public void btnSequenceListener(ActionEvent event){
         stepper.setShowSequence(((JToggleButton) event.getSource()).isSelected());
     }
 
+    /**
+     * Listener executé quand on clique sur le bouton Sequence complète.
+     * @param event ActionEvent
+     */
     public void btnFullSequenceListener(ActionEvent event){
         if(!stepper.sequenceTransition.isEmpty()) {
 
@@ -254,6 +297,4 @@ public class StepperToolbar extends Toolbar{
             JOptionPane.showMessageDialog(this, String.format(message, w), "Séquence complète de simulation", JOptionPane.PLAIN_MESSAGE);
         }
     }
-
-
 }

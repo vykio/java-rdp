@@ -101,8 +101,16 @@ public class Place implements Serializable {
      */
     public void resetMarquage() { this.marquage = 0; }
 
+    /**
+     * Méthode qui récupérer la capacité de la place.
+     * @return capacité.
+     */
     public int getCapacite() { return capacite; }
 
+    /**
+     * Méthode qui permet de donner/modifier la capacité de la place.
+     * @param capacite int
+     */
     public void setCapacite(int capacite) { this.capacite = capacite; }
 
     /**
@@ -116,6 +124,10 @@ public class Place implements Serializable {
      */
     public void resetlabel() { this.label = " "; }
 
+    /**
+     * Méthode qui permet de récupérer le label de la place.
+     * @return String label.
+     */
     public String getLabel() {return label;}
 
     /**
@@ -124,6 +136,10 @@ public class Place implements Serializable {
      */
     public void addPosition(int convert) { this.position = convert; }
 
+    /**
+     * Méthode qui permet de récupérer la position du label de la place.*
+     * @return position
+     */
     public int getPosition(){return position;}
 
     /**

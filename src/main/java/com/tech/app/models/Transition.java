@@ -154,6 +154,10 @@ public class Transition implements Serializable {
      */
     public void addLabel(String label) { this.label = label; }
 
+    /**
+     * Méthode qui permet de récupérer le label de la transition.
+     * @return String label.
+     */
     public String getLabel() {return label;}
 
     /**
@@ -167,6 +171,10 @@ public class Transition implements Serializable {
      */
     public void addPosition(int convert) { this.position = convert; }
 
+    /**
+     * Méthode qui permet de récupérer la position du label de la transition.
+     * @return position
+     */
     public int getPosition(){return position;}
 
     /**
@@ -174,8 +182,12 @@ public class Transition implements Serializable {
      */
     public void resetPosition() { this.position = 1; }
 
+    /**
+     * Méthode qui permet de savoir si une transition est franchissable.
+     * @return Vrai ou Faux
+     */
     public boolean estFranchissable(){
-        List<Integer> marques = new ArrayList<>();
+
         if(this.getParents() == null || this.getParents().isEmpty()){
             return false;
         }
@@ -289,12 +301,20 @@ public class Transition implements Serializable {
         }
     }
 
+    /**
+     * Méthode qui permet d'afficher les arcs parents de la transition.
+     * @param g : Graphics.
+     */
     public void drawParents(Graphics g){
         for (Arc a : this.parents) {
             a.draw(g);
         }
     }
 
+    /**
+     * Méthode qui permet d'afficher les arcs enfants de la transition.
+     * @param g : Graphics.
+     */
     public void drawChildren(Graphics g){
         for (Arc a : this.children) {
             a.draw(g);

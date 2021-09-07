@@ -109,6 +109,10 @@ public class PointControle implements Serializable {
         this.moved = moved;
     }
 
+    /**
+     * Méthode qui permet de récuperer l'arc auquel appartien le point de contrôle.
+     * @return
+     */
     public Arc getParent() { return parent; }
 
     /**

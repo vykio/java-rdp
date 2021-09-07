@@ -2,6 +2,7 @@ com.tech.app
 com.tech.app.functions
 com.tech.app.models
 com.tech.app.models.gma
+com.tech.app.models.stepper
 com.tech.app.windows
 com.tech.app.windows.handlers
 com.tech.app.windows.panels

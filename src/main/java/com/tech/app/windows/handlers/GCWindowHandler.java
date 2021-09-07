@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.event.WindowEvent;
 
 /**
- * Classe qui permet de gérer la fenêtre du GMA. Elle hérite de la classe abstraite WindowHandler.
+ * Classe qui permet de gérer la fenêtre du GMA/Graphe de couverture. Elle hérite de la classe abstraite WindowHandler.
  */
 public class GCWindowHandler extends WindowHandler {
     /**
-     * Constructeur de la fenêtre du GMA.
+     * Constructeur de la fenêtre.
      * @param frame : JFrame.
      */
     public GCWindowHandler(JFrame frame) {

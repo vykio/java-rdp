@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Cette classe nous permet de créer une structure d'arbre que l'on utilise dans la création du GMA.
+ * Cette classe nous permet de créer une structure d'arbre que l'on utilise dans la création du GMA / Graphe de couverture.
  * Un noeud représente un marquage accessible et contient une référence de ses enfants et parents.
  */
 public class Node {
@@ -47,6 +47,11 @@ public class Node {
         this(m, new ArrayList<>(), new ArrayList<>());
     }
 
+    /**
+     * Constructeur
+     * @param m : marquage.
+     * @param name : nom du marquage.
+     */
     public Node(Marquage m, String name) {
         this(m, new ArrayList<>(), new ArrayList<>(),name);
     }
@@ -139,7 +144,7 @@ public class Node {
 
     /**
      * Méthode qui permet de récupérer le marquage d'un noeud à la verticale sous forme de String.
-     * Utilisé pour l'affichage des marquages dans le GMA.
+     * Utilisé pour l'affichage des marquages dans le GMA / Graphe de couverture.
      * @return marquage du noeud sous la forme d'un string.
      */
     public String getMarquage(){
