@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: com.tech.app.App
-Class-Path: lib/*
-
