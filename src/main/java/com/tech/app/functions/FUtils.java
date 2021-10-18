@@ -2,7 +2,17 @@ package com.tech.app.functions;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Locale;
+import java.util.jar.Manifest;
+import java.util.stream.Collectors;
 
 /**
  * Classe avec des fonctions utiles. Notamment pour la gestion du zoom pour différents OS
@@ -14,7 +24,36 @@ public final class FUtils {
         /**
          * @return Retourne la version du logiciel
          */
-        public static String getVersion() { return "2021.09-1"; }
+        public static String getVersion()
+        {
+            try {
+                Enumeration<URL> resources = Program.class.getClassLoader()
+                        .getResources("version.txt");
+                InputStream inputStream = resources.nextElement().openStream();
+                return new BufferedReader(
+                        new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                        .lines()
+                        .collect(Collectors.joining("\n"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "version not found";
+        }
+
+        public static boolean isUpgradable(String internetVersion)
+        {
+            String currentVersion = getVersion();
+            String[] currentVersionParts = currentVersion.split("[v.-]");
+            String[] internetVersionParts = internetVersion.split("[v.-]");
+
+            for(int i = 1; i < currentVersionParts.length; i++) {
+                if (Integer.parseInt(currentVersionParts[i]) < Integer.parseInt(internetVersionParts[i])) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
     }
 
